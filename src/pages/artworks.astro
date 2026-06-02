@@ -30,6 +30,14 @@ import Layout from '../layouts/Layout.astro';
           <option value="people">People</option>
         </select>
       </div>
+
+      <div class="filter-group search-group">
+        <label for="filter-search" class="filter-label label-search">Search</label>
+        <div class="search-input-wrapper">
+          <input type="text" id="filter-search" class="filter-input search-input" placeholder="Search by title..." autocomplete="off" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+      </div>
     </section>
 
     <!-- Artworks Grid -->
@@ -92,7 +100,34 @@ import Layout from '../layouts/Layout.astro';
     color: var(--color-hockney-blue);
   }
 
-  .filter-select {
+  .label-search {
+    color: var(--color-hockney-orange);
+  }
+
+  .search-group {
+    margin-left: auto; /* Push search to the right */
+    min-width: 280px;
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.4rem 2.5rem 0.4rem 0.75rem !important;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 0.75rem;
+    color: var(--color-text-muted);
+    pointer-events: none;
+  }
+
+  .filter-select, .filter-input {
     padding: 0.4rem 2rem 0.4rem 0.75rem;
     font-size: 0.85rem;
     font-family: var(--font-sans);
@@ -101,10 +136,11 @@ import Layout from '../layouts/Layout.astro';
     background-color: var(--color-bg);
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
     transition: border-color 0.2s ease;
+  }
+
+  .filter-input {
+    cursor: text;
   }
 
   #filter-year:hover, #filter-year:focus {
@@ -119,6 +155,11 @@ import Layout from '../layouts/Layout.astro';
 
   #filter-subject:hover, #filter-subject:focus {
     border-color: var(--color-hockney-blue);
+    outline: none;
+  }
+
+  #filter-search:hover, #filter-search:focus {
+    border-color: var(--color-text);
     outline: none;
   }
 
@@ -367,6 +408,7 @@ import Layout from '../layouts/Layout.astro';
     const selectYear = document.getElementById('filter-year') as HTMLSelectElement;
     const selectShow = document.getElementById('filter-show') as HTMLSelectElement;
     const selectSubject = document.getElementById('filter-subject') as HTMLSelectElement;
+    const inputSearch = document.getElementById('filter-search') as HTMLInputElement;
     const emptyState = document.getElementById('empty-state');
     
     let cards: HTMLDivElement[] = [];
@@ -375,6 +417,7 @@ import Layout from '../layouts/Layout.astro';
       const yearVal = selectYear?.value || 'all';
       const showVal = selectShow?.value || 'all';
       const subjectVal = selectSubject?.value || 'all';
+      const searchVal = inputSearch?.value.toLowerCase().trim() || '';
 
       let visibleCount = 0;
 
@@ -382,8 +425,12 @@ import Layout from '../layouts/Layout.astro';
         const matchesYear = yearVal === 'all' || card.dataset.year === yearVal;
         const matchesShow = showVal === 'all' || card.dataset.show === showVal;
         const matchesSubject = subjectVal === 'all' || card.dataset.subject === subjectVal;
+        
+        // Search matches title in overlay or data attribute (we'll look at the title text specifically)
+        const titleText = card.querySelector('.overlay-title')?.textContent?.toLowerCase() || '';
+        const matchesSearch = searchVal === '' || titleText.includes(searchVal);
 
-        if (matchesYear && matchesShow && matchesSubject) {
+        if (matchesYear && matchesShow && matchesSubject && matchesSearch) {
           card.classList.remove('filtered-out');
           visibleCount++;
         } else {
@@ -403,6 +450,9 @@ import Layout from '../layouts/Layout.astro';
     [selectYear, selectShow, selectSubject].forEach(select => {
       select?.addEventListener('change', applyFilters);
     });
+
+    // Search Listener
+    inputSearch?.addEventListener('input', applyFilters);
 
     // Load live content from Firestore database
     async function loadLiveArtworks() {
