@@ -127,7 +127,7 @@ import Layout from '../layouts/Layout.astro';
     pointer-events: none;
   }
 
-  .filter-select, .filter-input {
+  .filter-select {
     padding: 0.4rem 2rem 0.4rem 0.75rem;
     font-size: 0.85rem;
     font-family: var(--font-sans);
@@ -137,9 +137,19 @@ import Layout from '../layouts/Layout.astro';
     cursor: pointer;
     appearance: none;
     transition: border-color 0.2s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
   }
 
   .filter-input {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    font-family: var(--font-sans);
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    background-color: var(--color-bg);
+    transition: border-color 0.2s ease;
     cursor: text;
   }
 
@@ -249,10 +259,11 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .overlay-title {
-    font-size: 1.2rem;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     margin-bottom: 0.5rem;
     color: var(--color-text);
   }
@@ -278,23 +289,7 @@ import Layout from '../layouts/Layout.astro';
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: 0.25rem 0.5rem;
-    border-radius: 2px;
-  }
-
-  .status-available {
-    background-color: rgba(57, 181, 74, 0.1);
-    color: var(--color-hockney-green);
-  }
-
-  .status-sold {
-    background-color: rgba(255, 91, 132, 0.1);
-    color: var(--color-hockney-pink);
-  }
-
-  .status-private-collection {
-    background-color: rgba(0, 163, 224, 0.1);
-    color: var(--color-hockney-blue);
+    color: var(--color-text);
   }
 
   .overlay-price {
@@ -514,8 +509,6 @@ import Layout from '../layouts/Layout.astro';
             card.dataset.subject = subject;
             card.dataset.availability = availability;
 
-            const badgeClass = availability.toLowerCase().replace(/\s+/g, '-');
-
             card.innerHTML = `
               <div class="artwork-image-container">
                 <img src="${imageUrl}" alt="${title}" class="artwork-image" loading="lazy" />
@@ -528,7 +521,7 @@ import Layout from '../layouts/Layout.astro';
                     </p>
                     <p class="overlay-meta">${year}</p>
                     <div class="overlay-footer">
-                      <span class="status-badge status-${badgeClass}">${availability}</span>
+                      <span class="status-badge">${availability}</span>
                       ${price ? `<span class="overlay-price">$${price}</span>` : ''}
                     </div>
                   </div>

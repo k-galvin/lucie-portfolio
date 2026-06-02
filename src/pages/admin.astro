@@ -314,17 +314,6 @@ import Layout from '../layouts/Layout.astro';
               </div>
             </div>
 
-            <div class="form-row">
-              <div class="form-group">
-                <label for="exh-reception" class="form-label">Reception Info</label>
-                <input type="text" id="exh-reception" required class="form-input" placeholder="Opening Reception: Thursday, July 16, 2026, 6:00 PM – 9:00 PM" />
-              </div>
-              <div class="form-group">
-                <label for="exh-catalogue" class="form-label">Catalogue Details</label>
-                <input type="text" id="exh-catalogue" required class="form-input" placeholder="A fully illustrated catalogue will be available..." />
-              </div>
-            </div>
-
             <div class="form-group">
               <label for="exh-desc" class="form-label">Description / Essay</label>
               <textarea id="exh-desc" required rows="4" class="form-textarea"></textarea>
@@ -989,8 +978,6 @@ import Layout from '../layouts/Layout.astro';
     const exhInputDates = document.getElementById('exh-dates') as HTMLInputElement;
     const exhInputVenue = document.getElementById('exh-venue') as HTMLInputElement;
     const exhInputCity = document.getElementById('exh-city') as HTMLInputElement;
-    const exhInputReception = document.getElementById('exh-reception') as HTMLInputElement;
-    const exhInputCatalogue = document.getElementById('exh-catalogue') as HTMLInputElement;
     const exhInputDesc = document.getElementById('exh-desc') as HTMLTextAreaElement;
     const exhInputImage = document.getElementById('exh-image') as HTMLInputElement;
     const exhInputImageUrl = document.getElementById('exh-image-url') as HTMLInputElement;
@@ -1222,8 +1209,6 @@ import Layout from '../layouts/Layout.astro';
           exhInputDates.value = data.dates || '';
           exhInputVenue.value = data.venue || '';
           exhInputCity.value = data.city || '';
-          exhInputReception.value = data.reception || '';
-          exhInputCatalogue.value = data.catalogue || '';
           exhInputDesc.value = data.description || '';
           
           if (data.image) {
@@ -1519,8 +1504,6 @@ import Layout from '../layouts/Layout.astro';
           dates: exhInputDates.value,
           venue: exhInputVenue.value,
           city: exhInputCity.value,
-          reception: exhInputReception.value,
-          catalogue: exhInputCatalogue.value,
           description: exhInputDesc.value,
           image: imageUrl
         };
