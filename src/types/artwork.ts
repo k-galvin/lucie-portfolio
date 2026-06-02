@@ -1,4 +1,4 @@
-export type TypeOfWork = 'Painting' | 'Drawing' | 'Print' | 'Sculpture' | string;
+export type TypeOfWork = 'Paper Picture' | 'Drawing' | 'Photograph' | 'Painting' | 'Print' | string;
 
 export type Availability = 'Available' | 'Sold' | 'Private Collection';
 
@@ -21,4 +21,5 @@ export interface Artwork {
   dimensions: Dimensions;
   medium: string;
   price?: number; // Optional pricing
+  order: number; // For manual sorting
 }

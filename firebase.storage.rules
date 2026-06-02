@@ -6,8 +6,12 @@ service firebase.storage {
       // Establish public read access for all users
       allow read: if true;
       
-      // Strict write protection locked down to an authenticated admin UID
-      allow write: if request.auth != null && request.auth.uid == 'PhKwKVAwe4N6dPvXBwLHSW4wWsg1';
+      // Write protection aligned with Firestore admin logic
+      allow write: if request.auth != null && (
+        request.auth.uid == '4oY0H5lnPnUFkVdON7cFlOIlWLK2' || 
+        request.auth.token.admin == true ||
+        request.auth.token.email.matches('(?i)studio@luciegalvin.com')
+      );
     }
   }
 }

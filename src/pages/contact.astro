@@ -7,6 +7,7 @@ import Layout from '../layouts/Layout.astro';
     <div class="contact-card fade-in">
       <div class="contact-header">
         <h2 class="contact-title">Get in Touch</h2>
+        <a href="mailto:studio@luciegalvin.com" class="contact-email-link">studio@luciegalvin.com</a>
         <p class="contact-subtitle">
           For inquiries about commissions, representation, or purchasing original works.
         </p>
@@ -82,6 +83,21 @@ import Layout from '../layouts/Layout.astro';
     letter-spacing: 0.05em;
     color: var(--color-text);
     margin-bottom: 0.5rem;
+  }
+
+  .contact-email-link {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-hockney-blue);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-email-link:hover {
+    color: var(--color-hockney-pink);
+    text-decoration: underline;
   }
 
   .contact-subtitle {
@@ -271,6 +287,7 @@ import Layout from '../layouts/Layout.astro';
             email: emailVal,
             message: messageVal,
             _honey: honeyVal,
+            _captcha: "false",
             _subject: `New contact from ${nameVal}`
           })
         });
@@ -279,9 +296,12 @@ import Layout from '../layouts/Layout.astro';
           statusSuccess?.classList.remove('hidden');
           form.reset();
         } else {
+          const errorData = await response.json().catch(() => ({}));
+          console.error("FormSubmit Error:", errorData);
           statusError?.classList.remove('hidden');
         }
       } catch (err) {
+        console.error("Contact Submission Error:", err);
         statusError?.classList.remove('hidden');
       } finally {
         // Reset states

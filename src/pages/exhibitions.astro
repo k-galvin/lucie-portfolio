@@ -1,26 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-const featuredExhibition = {
-  title: 'Splashed Pools',
-  dates: 'July 15 – August 30, 2026',
-  venue: 'Royal Academy of Arts',
-  city: 'London, UK',
-  image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200&auto=format&fit=crop',
-  reception: 'Opening Reception: Thursday, July 16, 2026, 6:00 PM – 9:00 PM',
-  catalogue: 'A fully illustrated catalogue with an essay by curator Marcus Vance will be available during the exhibition.',
-  description: 'Lucie Galvin\'s upcoming solo exhibition, Splashed Pools, represents a milestone in her artistic journey, bringing together her latest series of vibrant acrylic canvases and monumental screenprints. Inspired by the saturated light of California and David Hockney’s iconic pool paintings, the collection explores the refraction of light on moving water, framed within structural, minimalist grid landscapes. Each piece invites the viewer to contemplate the boundary between architectural representation and fluid movement, celebrating color as a primary structural element.'
-};
 ---
 
 <Layout title="Exhibitions | Lucie Galvin">
-  <div class="exhibition-page-container">
+  <div id="exh-page-container" class="exhibition-page-container hidden">
     <div class="exh-split-layout fade-in">
       
       <!-- Left Column: Visual Exhibition Poster -->
       <div class="exh-visual-column">
         <div class="exh-image-wrapper">
-          <img src={featuredExhibition.image} alt={featuredExhibition.title} id="exh-image-elem" class="exh-featured-image" />
+          <img src="" alt="" id="exh-image-elem" class="exh-featured-image" />
           <div class="exh-badge-overlay">
             <span>Upcoming Exhibition</span>
           </div>
@@ -33,20 +22,21 @@ const featuredExhibition = {
           
           <span class="exh-label">Featured Exhibition</span>
 
-          <h2 class="exh-main-title" id="exh-title-container">{featuredExhibition.title}</h2>
+          <h2 class="exh-main-title" id="exh-title-container">Loading...</h2>
 
           <div class="exh-meta-block" id="exh-meta-container">
-            <p class="exh-date" id="exh-dates-text">{featuredExhibition.dates}</p>
+            <p class="exh-date" id="exh-dates-text"></p>
             <p class="exh-location">
-              <strong id="exh-venue-text">{featuredExhibition.venue}</strong> — 
-              <span id="exh-city-text">{featuredExhibition.city}</span>
+              <strong id="exh-venue-text"></strong>
+              <span id="exh-city-divider" class="hidden"> — </span>
+              <span id="exh-city-text"></span>
             </p>
           </div>
 
           <div class="exh-divider"></div>
 
           <div class="exh-essay" id="exh-essay-container">
-            <p>{featuredExhibition.description}</p>
+            <!-- Populated from Firebase -->
           </div>
 
           <div class="exh-additional-info" id="exh-info-container">
@@ -55,7 +45,7 @@ const featuredExhibition = {
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
               </svg>
-              <p id="exh-reception-text">{featuredExhibition.reception}</p>
+              <p id="exh-reception-text"></p>
             </div>
             
             <div class="info-item">
@@ -63,7 +53,7 @@ const featuredExhibition = {
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
               </svg>
-              <p id="exh-catalogue-text">{featuredExhibition.catalogue}</p>
+              <p id="exh-catalogue-text"></p>
             </div>
           </div>
 
@@ -72,9 +62,14 @@ const featuredExhibition = {
 
     </div>
   </div>
+
+  <div id="exh-loading-panel" class="status-panel">
+    <div class="spinner"></div>
+    <p>Loading exhibition details...</p>
+  </div>
 </Layout>
 
-<style>
+<style is:global>
   .exhibition-page-container {
     width: 100%;
     height: 100%;
@@ -85,6 +80,34 @@ const featuredExhibition = {
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  .status-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-hockney-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .hidden {
+    display: none !important;
   }
 
   .exh-split-layout {
@@ -278,11 +301,15 @@ const featuredExhibition = {
   import { doc, getDoc } from 'firebase/firestore';
 
   async function loadLiveExhibition() {
+    const pageContainer = document.getElementById('exh-page-container');
+    const loadingPanel = document.getElementById('exh-loading-panel');
+
     const imgElem = document.getElementById('exh-image-elem') as HTMLImageElement;
     const titleContainer = document.getElementById('exh-title-container');
     const datesText = document.getElementById('exh-dates-text');
     const venueText = document.getElementById('exh-venue-text');
     const cityText = document.getElementById('exh-city-text');
+    const cityDivider = document.getElementById('exh-city-divider');
     const essayContainer = document.getElementById('exh-essay-container');
     const receptionText = document.getElementById('exh-reception-text');
     const catalogueText = document.getElementById('exh-catalogue-text');
@@ -295,31 +322,47 @@ const featuredExhibition = {
         const data = docSnap.data();
 
         // 1. Image
-        if (data.image && imgElem) {
-          imgElem.src = data.image;
+        if (imgElem) {
+          if (data.image) {
+            imgElem.src = data.image;
+            imgElem.alt = data.title || 'Exhibition Poster';
+          } else {
+            imgElem.src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200&auto=format&fit=crop'; // Minimal fallback if no image
+          }
         }
 
         // 2. Title
-        if (data.title && titleContainer) {
-          titleContainer.textContent = data.title;
+        if (titleContainer) {
+          titleContainer.textContent = data.title || 'Exhibition Title';
         }
 
         // 3. Meta Dates & Location
-        if (data.dates && datesText) datesText.textContent = data.dates;
-        if (data.venue && venueText) venueText.textContent = data.venue;
-        if (data.city && cityText) cityText.textContent = data.city;
+        if (datesText) datesText.textContent = data.dates || '';
+        if (venueText) venueText.textContent = data.venue || '';
+        if (cityText) cityText.textContent = data.city || '';
+        if (cityDivider && data.venue && data.city) cityDivider.classList.remove('hidden');
 
         // 4. Essay Description
-        if (data.description && essayContainer) {
-          essayContainer.innerHTML = `<p>${data.description}</p>`;
+        if (essayContainer) {
+          essayContainer.innerHTML = `<p>${data.description || 'Details coming soon...'}</p>`;
         }
 
         // 5. Reception & Catalogue Info Block
-        if (data.reception && receptionText) receptionText.textContent = data.reception;
-        if (data.catalogue && catalogueText) catalogueText.textContent = data.catalogue;
+        if (receptionText) receptionText.textContent = data.reception || '';
+        if (catalogueText) catalogueText.textContent = data.catalogue || '';
+
+        // Show Page
+        loadingPanel?.classList.add('hidden');
+        pageContainer?.classList.remove('hidden');
+      } else {
+        if (titleContainer) titleContainer.textContent = 'No Featured Exhibition';
+        loadingPanel?.classList.add('hidden');
+        pageContainer?.classList.remove('hidden');
       }
     } catch (err) {
-      console.warn('Exhibition client loading failed, fell back to static HTML.', err);
+      console.warn('Exhibition client loading failed.', err);
+      loadingPanel?.classList.add('hidden');
+      pageContainer?.classList.remove('hidden');
     }
   }
 

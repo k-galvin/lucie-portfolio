@@ -1,68 +1,45 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-// Featured items for the hero carousel
-const featuredSlides = [
-  {
-    image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1600&auto=format&fit=crop',
-    title: 'Lucie Galvin',
-    subtitle: 'Fine Art, Drawing & Printmaking',
-    actionText: 'View Gallery',
-    actionLink: '/artworks'
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1600&auto=format&fit=crop',
-    title: 'Vibrant Horizons',
-    subtitle: 'Explore the new collection of landscape oil paintings',
-    actionText: 'Discover Works',
-    actionLink: '/artworks'
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=1600&auto=format&fit=crop',
-    title: 'Splashed Pools Exhibition',
-    subtitle: 'Upcoming Solo Show at the Royal Academy, July 2026',
-    actionText: 'Exhibition Details',
-    actionLink: '/exhibitions'
-  }
-];
 ---
 
 <Layout>
-  <div class="hero-slideshow">
-    {featuredSlides.map((slide, index) => (
-      <div class={`slide ${index === 0 ? 'active' : ''}`} data-index={index}>
-        <img src={slide.image} alt={slide.title} class="slide-image" />
-        <div class="slide-overlay">
-          <div class="slide-content">
-            <h2 class="slide-title">{slide.title}</h2>
-            <p class="slide-subtitle">{slide.subtitle}</p>
-            <a href={slide.actionLink} class="slide-cta">
-              <span>{slide.actionText}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cta-arrow">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    ))}
-
-    <div class="slider-controls">
-      {featuredSlides.map((_, index) => (
-        <button class={`dot ${index === 0 ? 'active' : ''}`} data-index={index} aria-label={`Go to slide ${index + 1}`}></button>
-      ))}
+  <div id="hero-slideshow" class="hero-slideshow">
+    <!-- Hydrated from Firebase -->
+    <div id="hero-loading" class="hero-loading">
+      <div class="spinner"></div>
     </div>
   </div>
 </Layout>
 
-<style>
+<style is:global>
   .hero-slideshow {
     width: 100%;
     height: 100%;
     position: relative;
     overflow: hidden;
-    background-color: #000; /* Black base for image contrast */
+    background-color: #000;
+  }
+
+  .hero-loading {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fcfcfc;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #eee;
+    border-top-color: var(--color-hockney-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 
   .slide {
@@ -88,11 +65,10 @@ const featuredSlides = [
     height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: brightness(0.85); /* Subtle dark overlay to ensure text readability */
+    filter: brightness(0.85);
     transition: transform 8s ease;
   }
 
-  /* Ken Burns zoom effect on active slide */
   .slide.active .slide-image {
     transform: scale(1.05);
   }
@@ -106,12 +82,12 @@ const featuredSlides = [
     background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
     color: #ffffff;
     z-index: 3;
-    pointer-events: none; /* Let clicks pass through if needed */
+    pointer-events: none;
   }
 
   .slide-content {
     max-width: 650px;
-    pointer-events: auto; /* Re-enable clicks for child items */
+    pointer-events: auto;
   }
 
   .slide-title {
@@ -160,7 +136,6 @@ const featuredSlides = [
     transform: translateX(4px);
   }
 
-  /* Slider Dots */
   .slider-controls {
     position: absolute;
     bottom: 2.5rem;
@@ -176,6 +151,7 @@ const featuredSlides = [
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.4);
     transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
   }
 
   .dot.active {
@@ -203,7 +179,75 @@ const featuredSlides = [
 </style>
 
 <script>
-  function initHeroSlider() {
+  import { db } from '../lib/firebase';
+  import { doc, getDoc } from 'firebase/firestore';
+
+  async function initHeroSlider() {
+    const slideshow = document.getElementById('hero-slideshow');
+    if (!slideshow) return;
+
+    try {
+      const docRef = doc(db, 'settings', 'homepage');
+      const docSnap = await getDoc(docRef);
+      
+      let slidesData = [];
+      
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        slidesData = data.heroSlides || [];
+      }
+
+      if (slidesData.length === 0) {
+        // Fallback if no settings yet
+        slideshow.innerHTML = `
+          <div class="slide active">
+            <img src="/images/lucie_portrait.png" alt="Lucie Galvin" class="slide-image" />
+            <div class="slide-overlay">
+              <div class="slide-content">
+                <h2 class="slide-title">Lucie Galvin</h2>
+                <p class="slide-subtitle">Paper Pictures, Drawing & Printmaking</p>
+                <a href="/artworks" class="slide-cta"><span>View Gallery</span></a>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Build Slides
+      slideshow.innerHTML = slidesData.map((slide: any, index: number) => `
+        <div class="slide ${index === 0 ? 'active' : ''}" data-index="${index}">
+          <img src="${slide.image}" alt="${slide.title}" class="slide-image" />
+          <div class="slide-overlay">
+            <div class="slide-content">
+              <h2 class="slide-title">${slide.title}</h2>
+              <p class="slide-subtitle">${slide.subtitle}</p>
+              <a href="${slide.link || '/artworks'}" class="slide-cta">
+                <span>Explore</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cta-arrow">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join('') + `
+        <div class="slider-controls">
+          ${slidesData.map((_: any, index: number) => `
+            <button class="dot ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="Go to slide ${index + 1}"></button>
+          `).join('')}
+        </div>
+      `;
+
+      startSliderLogic();
+
+    } catch (err) {
+      console.error("Hero slider load failed:", err);
+    }
+  }
+
+  function startSliderLogic() {
     const slides = document.querySelectorAll('.slide');
     const dots = document.querySelectorAll('.dot');
     let currentSlide = 0;
@@ -228,25 +272,18 @@ const featuredSlides = [
     };
 
     const startAutoplay = () => {
-      stopAutoplay();
+      if (slideInterval) clearInterval(slideInterval);
       slideInterval = window.setInterval(nextSlide, 6000);
-    };
-
-    const stopAutoplay = () => {
-      if (slideInterval) {
-        clearInterval(slideInterval);
-      }
     };
 
     dots.forEach((dot) => {
       dot.addEventListener('click', (e) => {
         const index = parseInt((e.currentTarget as HTMLButtonElement).dataset.index || '0');
         showSlide(index);
-        startAutoplay(); // Reset timer on interaction
+        startAutoplay(); 
       });
     });
 
-    // Start
     startAutoplay();
   }
 

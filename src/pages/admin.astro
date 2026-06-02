@@ -49,6 +49,7 @@ import Layout from '../layouts/Layout.astro';
 
         <nav class="sidebar-nav">
           <button class="nav-tab-btn active" data-tab="artworks">Artworks Gallery</button>
+          <button class="nav-tab-btn" data-tab="homepage">Homepage Hero</button>
           <button class="nav-tab-btn" data-tab="exhibition">Exhibition Show</button>
           <button class="nav-tab-btn" data-tab="biography">Biography</button>
         </nav>
@@ -111,10 +112,11 @@ import Layout from '../layouts/Layout.astro';
                   <div class="form-group">
                     <label for="art-type" class="form-label">Type of Work</label>
                     <select id="art-type" required class="form-select">
-                      <option value="Painting">Painting</option>
+                      <option value="Paper Picture" selected>Paper Picture</option>
                       <option value="Drawing">Drawing</option>
+                      <option value="Photograph">Photograph</option>
+                      <option value="Painting">Painting</option>
                       <option value="Print">Print</option>
-                      <option value="Sculpture">Sculpture</option>
                     </select>
                   </div>
                 </div>
@@ -197,6 +199,92 @@ import Layout from '../layouts/Layout.astro';
               </form>
             </div>
           </div>
+        </section>
+
+        <!-- HOMEPAGE HERO MANAGER TAB -->
+        <section id="tab-homepage" class="tab-pane" aria-labelledby="Homepage Manager">
+          <div class="tab-pane-header">
+            <h2 class="pane-title">Homepage Hero Slides</h2>
+          </div>
+
+          <form id="homepage-form" class="admin-full-form scrollable-form">
+            <p class="form-hint" style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 1rem;">
+              Customize the three featured slides on your home page. You can use direct links to your existing artwork images.
+            </p>
+            
+            <!-- Slide 1 -->
+            <div class="form-slide-editor">
+              <h3 class="slide-header">Slide 1</h3>
+              <div class="form-group">
+                <label for="slide1-image" class="form-label">Image URL</label>
+                <input type="url" id="slide1-image" required class="form-input" placeholder="https://..." />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="slide1-title" class="form-label">Title</label>
+                  <input type="text" id="slide1-title" required class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="slide1-subtitle" class="form-label">Subtitle</label>
+                  <input type="text" id="slide1-subtitle" required class="form-input" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="slide1-link" class="form-label">Action Link (e.g. /artworks or /contact)</label>
+                <input type="text" id="slide1-link" required class="form-input" value="/artworks" />
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="form-slide-editor" style="margin-top: 2rem;">
+              <h3 class="slide-header">Slide 2</h3>
+              <div class="form-group">
+                <label for="slide2-image" class="form-label">Image URL</label>
+                <input type="url" id="slide2-image" required class="form-input" placeholder="https://..." />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="slide2-title" class="form-label">Title</label>
+                  <input type="text" id="slide2-title" required class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="slide2-subtitle" class="form-label">Subtitle</label>
+                  <input type="text" id="slide2-subtitle" required class="form-input" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="slide2-link" class="form-label">Action Link</label>
+                <input type="text" id="slide2-link" required class="form-input" value="/artworks" />
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="form-slide-editor" style="margin-top: 2rem; border-bottom: none;">
+              <h3 class="slide-header">Slide 3</h3>
+              <div class="form-group">
+                <label for="slide3-image" class="form-label">Image URL</label>
+                <input type="url" id="slide3-image" required class="form-input" placeholder="https://..." />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="slide3-title" class="form-label">Title</label>
+                  <input type="text" id="slide3-title" required class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="slide3-subtitle" class="form-label">Subtitle</label>
+                  <input type="text" id="slide3-subtitle" required class="form-input" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="slide3-link" class="form-label">Action Link</label>
+                <input type="text" id="slide3-link" required class="form-input" value="/contact" />
+              </div>
+            </div>
+
+            <button type="submit" id="home-form-submit" class="admin-btn primary-btn" style="margin-top: 1rem;">
+              <span class="btn-text">Save Homepage Content</span>
+            </button>
+          </form>
         </section>
 
         <!-- FEATURED EXHIBITION MANAGER TAB -->
@@ -289,7 +377,7 @@ import Layout from '../layouts/Layout.astro';
   </div>
 </Layout>
 
-<style>
+<style is:global>
   .admin-page-container {
     width: 100%;
     height: 100%;
@@ -543,19 +631,39 @@ import Layout from '../layouts/Layout.astro';
     resize: none;
   }
 
+  .form-slide-editor {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    background-color: #fafafa;
+  }
+
+  .slide-header {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-hockney-blue);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
   /* Image Preview */
   .image-preview-container {
     margin-top: 0.5rem;
     border: 1px solid var(--color-border);
-    max-width: 120px;
-    max-height: 120px;
+    max-width: 80px; /* Signficantly smaller preview */
+    max-height: 80px;
     overflow: hidden;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .image-preview-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 
   /* Button Elements */
@@ -624,7 +732,7 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .artwork-table th, .artwork-table td {
-    padding: 0.85rem 1rem;
+    padding: 0.5rem 0.75rem;
     text-align: left;
     border-bottom: 1px solid var(--color-border);
   }
@@ -643,20 +751,20 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .table-thumb {
-    width: 40px;
-    height: 40px;
+    width: 24px;
+    height: 24px;
     object-fit: cover;
     border: 1px solid var(--color-border);
   }
 
   .btn-row {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.35rem;
   }
 
   .sm-btn {
-    padding: 0.35rem 0.6rem;
-    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
     font-weight: 600;
     border: 1px solid var(--color-border);
     background-color: #ffffff;
@@ -679,7 +787,7 @@ import Layout from '../layouts/Layout.astro';
 
   /* Form Slider Panel */
   .artwork-form-panel {
-    width: 380px;
+    width: 340px; /* Narrower sidebar */
     border: 1px solid var(--color-border);
     background-color: #ffffff;
     display: flex;
@@ -688,7 +796,7 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .form-panel-header {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--color-border);
     display: flex;
     justify-content: space-between;
@@ -697,14 +805,14 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .form-panel-title {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
   .close-btn {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 300;
     color: var(--color-text-muted);
     cursor: pointer;
@@ -716,7 +824,7 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .panel-form {
-    padding: 1.5rem;
+    padding: 1.25rem;
     flex: 1;
     overflow-y: auto;
   }
@@ -893,6 +1001,23 @@ import Layout from '../layouts/Layout.astro';
     const biographyForm = document.getElementById('biography-form') as HTMLFormElement;
     const bioText = document.getElementById('bio-text') as HTMLTextAreaElement;
 
+    // Homepage Hero Form
+    const homepageForm = document.getElementById('homepage-form') as HTMLFormElement;
+    const s1Img = document.getElementById('slide1-image') as HTMLInputElement;
+    const s1Title = document.getElementById('slide1-title') as HTMLInputElement;
+    const s1Sub = document.getElementById('slide1-subtitle') as HTMLInputElement;
+    const s1Link = document.getElementById('slide1-link') as HTMLInputElement;
+    
+    const s2Img = document.getElementById('slide2-image') as HTMLInputElement;
+    const s2Title = document.getElementById('slide2-title') as HTMLInputElement;
+    const s2Sub = document.getElementById('slide2-subtitle') as HTMLInputElement;
+    const s2Link = document.getElementById('slide2-link') as HTMLInputElement;
+    
+    const s3Img = document.getElementById('slide3-image') as HTMLInputElement;
+    const s3Title = document.getElementById('slide3-title') as HTMLInputElement;
+    const s3Sub = document.getElementById('slide3-subtitle') as HTMLInputElement;
+    const s3Link = document.getElementById('slide3-link') as HTMLInputElement;
+
     // Active state helpers
     let currentArtworks: Artwork[] = [];
     let activeExhImageUrl = '';
@@ -968,6 +1093,7 @@ import Layout from '../layouts/Layout.astro';
     async function loadAllData() {
       await Promise.all([
         loadArtworks(),
+        loadHomepageSettings(),
         loadExhibition(),
         loadBiography()
       ]);
@@ -979,8 +1105,7 @@ import Layout from '../layouts/Layout.astro';
       artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Loading works...</td></tr>';
       
       try {
-        const q = query(collection(db, 'artworks'), orderBy('year', 'desc'));
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(collection(db, 'artworks'));
         currentArtworks = [];
         
         artworkTbody.innerHTML = '';
@@ -1002,10 +1127,19 @@ import Layout from '../layouts/Layout.astro';
             imageUrl: data.imageUrl,
             dimensions: data.dimensions,
             medium: data.medium,
-            price: data.price
+            price: data.price,
+            order: data.order ?? 999 // Default high number for existing works
           };
           currentArtworks.push(artwork);
+        });
 
+        // Sort by order asc, then by year desc
+        currentArtworks.sort((a, b) => {
+          if (a.order !== b.order) return a.order - b.order;
+          return b.year - a.year;
+        });
+
+        currentArtworks.forEach((artwork, index) => {
           // Render Row
           const tr = document.createElement('tr');
           tr.innerHTML = `
@@ -1016,20 +1150,63 @@ import Layout from '../layouts/Layout.astro';
             <td>${artwork.price ? `$${artwork.price}` : '—'}</td>
             <td>
               <div class="btn-row">
-                <button class="sm-btn edit-btn" data-id="${artwork.id}">Edit</button>
-                <button class="sm-btn delete-btn" data-id="${artwork.id}">Delete</button>
+                <button class="sm-btn move-up-btn" title="Move Up" ${index === 0 ? 'disabled' : ''}>↑</button>
+                <button class="sm-btn move-down-btn" title="Move Down" ${index === currentArtworks.length - 1 ? 'disabled' : ''}>↓</button>
+                <button class="sm-btn edit-btn">Edit</button>
+                <button class="sm-btn delete-btn">Delete</button>
               </div>
             </td>
           `;
 
           // Bind Actions
+          tr.querySelector('.move-up-btn')?.addEventListener('click', () => moveArtwork(index, -1));
+          tr.querySelector('.move-down-btn')?.addEventListener('click', () => moveArtwork(index, 1));
           tr.querySelector('.edit-btn')?.addEventListener('click', () => editArtwork(artwork.id));
           tr.querySelector('.delete-btn')?.addEventListener('click', () => deleteArtwork(artwork.id));
 
           artworkTbody.appendChild(tr);
         });
       } catch (err) {
+        console.error("Load Artworks Error:", err);
         artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Failed to load artworks. Check storage rules!</td></tr>';
+      }
+    }
+
+    // Move Artwork Up/Down
+    async function moveArtwork(index: number, direction: number) {
+      const otherIndex = index + direction;
+      if (otherIndex < 0 || otherIndex >= currentArtworks.length) return;
+
+      // Work with a copy of the list
+      const newList = [...currentArtworks];
+      const art1 = newList[index];
+      const art2 = newList[otherIndex];
+
+      // Swap their positions in our local array
+      newList[index] = art2;
+      newList[otherIndex] = art1;
+
+      // To ensure reordering works even if orders were identical (like 999),
+      // we'll assign new sequential orders to EVERY item based on their new positions.
+      // This "normalizes" the order values (0, 10, 20...) in the database.
+      try {
+        const updates = newList.map((art, idx) => {
+          const newOrder = idx * 10;
+          // Only update if the order actually changed to save on writes
+          if (art.order !== newOrder) {
+            return updateDoc(doc(db, 'artworks', art.id), { order: newOrder });
+          }
+          return null;
+        }).filter(p => p !== null);
+
+        if (updates.length > 0) {
+          await Promise.all(updates);
+        }
+        
+        loadArtworks();
+      } catch (err) {
+        console.error("Reorder Error:", err);
+        showToast('Error reordering artworks', true);
       }
     }
 
@@ -1081,6 +1258,40 @@ import Layout from '../layouts/Layout.astro';
         }
       } catch (err) {
         showToast('Error loading biography data', true);
+      }
+    }
+
+    // Load Homepage Hero Settings
+    async function loadHomepageSettings() {
+      try {
+        const docRef = doc(db, 'settings', 'homepage');
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const slides = data.heroSlides || [];
+          
+          if (slides[0]) {
+            s1Img.value = slides[0].image || '';
+            s1Title.value = slides[0].title || '';
+            s1Sub.value = slides[0].subtitle || '';
+            s1Link.value = slides[0].link || '/artworks';
+          }
+          if (slides[1]) {
+            s2Img.value = slides[1].image || '';
+            s2Title.value = slides[1].title || '';
+            s2Sub.value = slides[1].subtitle || '';
+            s2Link.value = slides[1].link || '/artworks';
+          }
+          if (slides[2]) {
+            s3Img.value = slides[2].image || '';
+            s3Title.value = slides[2].title || '';
+            s3Sub.value = slides[2].subtitle || '';
+            s3Link.value = slides[2].link || '/contact';
+          }
+        }
+      } catch (err) {
+        console.error("Load Homepage Settings Error:", err);
       }
     }
 
@@ -1229,7 +1440,7 @@ import Layout from '../layouts/Layout.astro';
           throw new Error('An artwork image or URL is required.');
         }
 
-        const artworkData = {
+        const artworkData: any = {
           title: artInputTitle.value,
           year: parseInt(artInputYear.value),
           typeOfWork: artInputType.value,
@@ -1252,6 +1463,12 @@ import Layout from '../layouts/Layout.astro';
           showToast('Artwork updated successfully');
         } else {
           // Create new document
+          // Set order to be at the end of the current list
+          const maxOrder = currentArtworks.length > 0 
+            ? Math.max(...currentArtworks.map(a => a.order ?? 0)) 
+            : 0;
+          artworkData.order = maxOrder + 1;
+
           await addDoc(collection(db, 'artworks'), artworkData);
           showToast('Artwork added successfully');
         }
@@ -1259,7 +1476,15 @@ import Layout from '../layouts/Layout.astro';
         closeArtworkForm();
         loadArtworks();
       } catch (err: any) {
-        showToast(err.message || 'Error saving artwork', true);
+        console.error("Save Artwork Error:", err);
+        if (err.code === 'permission-denied') {
+          const user = auth.currentUser;
+          console.log("Current User UID:", user?.uid);
+          console.log("Current User Email:", user?.email);
+          showToast('Permission denied. Your account (' + (user?.email || 'unknown') + ') may not have admin rights.', true);
+        } else {
+          showToast(err.message || 'Error saving artwork', true);
+        }
       } finally {
         if (submitBtn) submitBtn.disabled = false;
       }
@@ -1304,7 +1529,11 @@ import Layout from '../layouts/Layout.astro';
         showToast('Exhibition saved successfully');
         loadExhibition();
       } catch (err: any) {
-        showToast('Error saving exhibition', true);
+        console.error("Save Exhibition Error:", err);
+        const msg = err.code === 'permission-denied' 
+          ? 'Permission denied. Your account may not have admin rights.' 
+          : 'Error saving exhibition';
+        showToast(msg, true);
       } finally {
         if (submitBtn) submitBtn.disabled = false;
       }
@@ -1326,7 +1555,49 @@ import Layout from '../layouts/Layout.astro';
         showToast('Biography saved successfully');
         loadBiography();
       } catch (err: any) {
-        showToast('Error saving biography', true);
+        console.error("Save Biography Error:", err);
+        if (err.code === 'permission-denied') {
+          const user = auth.currentUser;
+          console.log("Current User UID:", user?.uid);
+          console.log("Current User Email:", user?.email);
+          showToast('Permission denied. Your account (' + (user?.email || 'unknown') + ') may not have admin rights.', true);
+        } else {
+          showToast(err.message || 'Error saving biography', true);
+        }
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+
+    // Homepage Hero Form Submit
+    homepageForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('home-form-submit') as HTMLButtonElement;
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const homepageData = {
+          heroSlides: [
+            { image: s1Img.value, title: s1Title.value, subtitle: s1Sub.value, link: s1Link.value },
+            { image: s2Img.value, title: s2Title.value, subtitle: s2Sub.value, link: s2Link.value },
+            { image: s3Img.value, title: s3Title.value, subtitle: s3Sub.value, link: s3Link.value }
+          ]
+        };
+
+        await setDoc(doc(db, 'settings', 'homepage'), homepageData);
+        showToast('Homepage hero content saved successfully');
+        loadHomepageSettings();
+      } catch (err: any) {
+        console.error("Save Homepage Error:", err);
+        if (err.code === 'permission-denied') {
+          const user = auth.currentUser;
+          console.log("Current User UID:", user?.uid);
+          console.log("Current User Email:", user?.email);
+          showToast('Permission denied. Your account (' + (user?.email || 'unknown') + ') may not have admin rights.', true);
+        } else {
+          showToast(err.message || 'Error saving homepage content', true);
+        }
       } finally {
         if (submitBtn) submitBtn.disabled = false;
       }
