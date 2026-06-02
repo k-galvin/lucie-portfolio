@@ -1,0 +1,1339 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Admin Dashboard | Lucie Galvin">
+  <div class="admin-page-container">
+    
+    <!-- LOADING STATE PANEL -->
+    <div id="loading-panel" class="status-panel">
+      <div class="spinner"></div>
+      <p>Loading secure space...</p>
+    </div>
+
+    <!-- AUTHENTICATION (LOGIN) PANEL -->
+    <div id="login-panel" class="admin-card login-card fade-in hidden">
+      <div class="admin-card-header">
+        <h2 class="admin-card-title">Admin Login</h2>
+        <p class="admin-card-subtitle">Lucie Galvin Fine Art Portfolio Management</p>
+      </div>
+
+      <form id="login-form" class="admin-form">
+        <div class="form-group">
+          <label for="login-email" class="form-label">Email</label>
+          <input type="email" id="login-email" required class="form-input" autocomplete="email" />
+        </div>
+
+        <div class="form-group">
+          <label for="login-password" class="form-label">Password</label>
+          <input type="password" id="login-password" required class="form-input" autocomplete="current-password" />
+        </div>
+
+        <button type="submit" id="login-submit" class="admin-btn primary-btn">
+          <span class="btn-text">Log In</span>
+        </button>
+
+        <div id="login-error" class="error-msg hidden"></div>
+      </form>
+    </div>
+
+    <!-- MAIN ADMIN DASHBOARD PANEL -->
+    <div id="admin-panel" class="admin-dashboard fade-in hidden">
+      
+      <!-- Left sidebar navigation -->
+      <aside class="admin-sidebar" aria-label="Admin Navigation">
+        <div class="admin-profile">
+          <h2 class="profile-name">Lucie Galvin</h2>
+          <span class="profile-role">Artist Admin</span>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-tab-btn active" data-tab="artworks">Artworks Gallery</button>
+          <button class="nav-tab-btn" data-tab="exhibition">Exhibition Show</button>
+          <button class="nav-tab-btn" data-tab="biography">Biography</button>
+        </nav>
+
+        <button id="logout-btn" class="logout-btn">Log Out</button>
+      </aside>
+
+      <!-- Right content pane -->
+      <main class="admin-main-content">
+        
+        <!-- ARTWORKS MANAGER TAB -->
+        <section id="tab-artworks" class="tab-pane active" aria-labelledby="Artworks Manager">
+          <div class="tab-pane-header">
+            <h2 class="pane-title">Manage Artworks Gallery</h2>
+            <button id="btn-add-artwork" class="admin-btn action-btn">+ Add Artwork</button>
+          </div>
+
+          <div class="artwork-workspace">
+            <!-- Table List -->
+            <div id="artwork-list-container" class="artwork-list-container">
+              <div class="table-scroll">
+                <table class="artwork-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Title</th>
+                      <th>Type</th>
+                      <th>Availability</th>
+                      <th>Price</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="artwork-list-tbody">
+                    <!-- Hydrated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Add/Edit Form Sidebar Panel -->
+            <div id="artwork-form-panel" class="artwork-form-panel hidden">
+              <div class="form-panel-header">
+                <h3 id="form-panel-title" class="form-panel-title">Add New Artwork</h3>
+                <button id="btn-close-form" class="close-btn" aria-label="Close form">&times;</button>
+              </div>
+
+              <form id="artwork-form" class="panel-form scrollable-form">
+                <input type="hidden" id="art-id" name="id" />
+
+                <div class="form-group">
+                  <label for="art-title" class="form-label">Title</label>
+                  <input type="text" id="art-title" required class="form-input" />
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="art-year" class="form-label">Year</label>
+                    <input type="number" id="art-year" required class="form-input" value="2026" />
+                  </div>
+                  <div class="form-group">
+                    <label for="art-type" class="form-label">Type of Work</label>
+                    <select id="art-type" required class="form-select">
+                      <option value="Painting">Painting</option>
+                      <option value="Drawing">Drawing</option>
+                      <option value="Print">Print</option>
+                      <option value="Sculpture">Sculpture</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="art-show" class="form-label">Exhibition / Show</label>
+                    <input type="text" id="art-show" class="form-input" placeholder="Splashed Pools or Independent" value="Independent" />
+                  </div>
+                  <div class="form-group">
+                    <label for="art-avail" class="form-label">Availability</label>
+                    <select id="art-avail" required class="form-select">
+                      <option value="Available">Available</option>
+                      <option value="Sold">Sold</option>
+                      <option value="Private Collection">Private Collection</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="art-subject" class="form-label">Subject</label>
+                    <select id="art-subject" required class="form-select">
+                      <option value="garden">Garden</option>
+                      <option value="ocean">Ocean</option>
+                      <option value="boat">Boat</option>
+                      <option value="people">People</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <span class="form-label">&nbsp;</span>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="art-width" class="form-label">Width</label>
+                    <input type="number" id="art-width" step="any" required class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label for="art-height" class="form-label">Height</label>
+                    <input type="number" id="art-height" step="any" required class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label for="art-unit" class="form-label">Unit</label>
+                    <select id="art-unit" required class="form-select">
+                      <option value="in">Inches (in)</option>
+                      <option value="cm">Centimeters (cm)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="art-medium" class="form-label">Medium</label>
+                  <input type="text" id="art-medium" required class="form-input" placeholder="Acrylic on Canvas" />
+                </div>
+
+                <div class="form-group">
+                  <label for="art-price" class="form-label">Price ($ USD - Optional)</label>
+                  <input type="number" id="art-price" class="form-input" />
+                </div>
+
+                <div class="form-group">
+                  <label for="art-image" class="form-label">Artwork Image File (Requires Firebase Storage)</label>
+                  <input type="file" id="art-image" class="form-input-file" accept="image/*" />
+                </div>
+
+                <div class="form-group">
+                  <label for="art-image-url" class="form-label">Artwork Image URL (Alternative for Free Plan)</label>
+                  <input type="url" id="art-image-url" class="form-input" placeholder="https://example.com/image.jpg" />
+                </div>
+
+                <div id="art-image-preview-container" class="image-preview-container hidden">
+                  <img id="art-image-preview" src="" alt="Preview" />
+                </div>
+
+                <button type="submit" id="art-form-submit" class="admin-btn primary-btn">
+                  <span class="btn-text">Save Artwork</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- FEATURED EXHIBITION MANAGER TAB -->
+        <section id="tab-exhibition" class="tab-pane" aria-labelledby="Exhibition Manager">
+          <div class="tab-pane-header">
+            <h2 class="pane-title">Featured Exhibition Details</h2>
+          </div>
+
+          <form id="exhibition-form" class="admin-full-form scrollable-form">
+            <div class="form-group">
+              <label for="exh-title" class="form-label">Exhibition Title</label>
+              <input type="text" id="exh-title" required class="form-input" />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="exh-dates" class="form-label">Dates</label>
+                <input type="text" id="exh-dates" required class="form-input" placeholder="July 15 - August 30, 2026" />
+              </div>
+              <div class="form-group">
+                <label for="exh-venue" class="form-label">Venue Name</label>
+                <input type="text" id="exh-venue" required class="form-input" placeholder="Royal Academy of Arts" />
+              </div>
+              <div class="form-group">
+                <label for="exh-city" class="form-label">City & Country</label>
+                <input type="text" id="exh-city" required class="form-input" placeholder="London, UK" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="exh-reception" class="form-label">Reception Info</label>
+                <input type="text" id="exh-reception" required class="form-input" placeholder="Opening Reception: Thursday, July 16, 2026, 6:00 PM – 9:00 PM" />
+              </div>
+              <div class="form-group">
+                <label for="exh-catalogue" class="form-label">Catalogue Details</label>
+                <input type="text" id="exh-catalogue" required class="form-input" placeholder="A fully illustrated catalogue will be available..." />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="exh-desc" class="form-label">Description / Essay</label>
+              <textarea id="exh-desc" required rows="4" class="form-textarea"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="exh-image" class="form-label">Featured Exhibition Image (Requires Firebase Storage)</label>
+              <input type="file" id="exh-image" class="form-input-file" accept="image/*" />
+            </div>
+
+            <div class="form-group">
+              <label for="exh-image-url" class="form-label">Featured Exhibition Image URL (Alternative for Free Plan)</label>
+              <input type="url" id="exh-image-url" class="form-input" placeholder="https://example.com/exhibition.jpg" />
+            </div>
+
+            <div id="exh-image-preview-container" class="image-preview-container hidden">
+              <img id="exh-image-preview" src="" alt="Preview" />
+            </div>
+
+            <button type="submit" id="exh-form-submit" class="admin-btn primary-btn">
+              <span class="btn-text">Save Exhibition</span>
+            </button>
+          </form>
+        </section>
+
+        <!-- BIOGRAPHY MANAGER TAB -->
+        <section id="tab-biography" class="tab-pane" aria-labelledby="Biography Manager">
+          <div class="tab-pane-header">
+            <h2 class="pane-title">Biography Copy</h2>
+          </div>
+
+          <form id="biography-form" class="admin-full-form scrollable-form">
+            <div class="form-group">
+              <label for="bio-text" class="form-label">Biography Text (Use new lines for paragraphs)</label>
+              <textarea id="bio-text" required rows="10" class="form-textarea"></textarea>
+            </div>
+
+            <button type="submit" id="bio-form-submit" class="admin-btn primary-btn">
+              <span class="btn-text">Save Biography</span>
+            </button>
+          </form>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+  </div>
+</Layout>
+
+<style>
+  .admin-page-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fcfcfc;
+  }
+
+  /* Status Panel */
+  .status-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-hockney-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Shared Cards */
+  .admin-card {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    padding: 2.5rem 3rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+  }
+
+  .admin-card-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .admin-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+  }
+
+  .admin-card-subtitle {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+  }
+
+  /* Dashboard Shell */
+  .admin-dashboard {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--color-bg);
+  }
+
+  /* Sidebar Layout */
+  .admin-sidebar {
+    width: 260px;
+    background-color: #fafafa;
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+  }
+
+  .admin-profile {
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1.5rem;
+  }
+
+  .profile-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .profile-role {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-hockney-pink);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-top: 0.25rem;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+  }
+
+  .nav-tab-btn {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+  }
+
+  .nav-tab-btn:hover {
+    color: var(--color-text);
+    background-color: #f0f0f0;
+  }
+
+  .nav-tab-btn.active {
+    color: var(--color-text);
+    background-color: #ffffff;
+    border-left-color: var(--color-hockney-blue);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.01);
+  }
+
+  .logout-btn {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-hockney-pink);
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .logout-btn:hover {
+    color: var(--color-hockney-magenta);
+  }
+
+  /* Main Workspace */
+  .admin-main-content {
+    flex-grow: 1;
+    height: 100%;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .tab-pane {
+    display: none;
+    height: 100%;
+    flex-direction: column;
+    padding: 2.5rem 3rem;
+  }
+
+  .tab-pane.active {
+    display: flex;
+  }
+
+  .tab-pane-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .pane-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  /* Form Elements */
+  .admin-form, .panel-form, .admin-full-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .admin-full-form {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .form-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+  }
+
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--color-border);
+    padding: 0.5rem 0;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--color-text);
+    border-radius: 0;
+    transition: border-color 0.25s ease;
+  }
+
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    padding-right: 1.5rem;
+  }
+
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    outline: none;
+    border-bottom-color: var(--color-hockney-blue);
+  }
+
+  .form-input-file {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+
+  .form-textarea {
+    resize: none;
+  }
+
+  /* Image Preview */
+  .image-preview-container {
+    margin-top: 0.5rem;
+    border: 1px solid var(--color-border);
+    max-width: 120px;
+    max-height: 120px;
+    overflow: hidden;
+  }
+
+  .image-preview-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Button Elements */
+  .admin-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .primary-btn {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    border: 1px solid var(--color-text);
+  }
+
+  .primary-btn:hover {
+    background-color: var(--color-hockney-blue);
+    border-color: var(--color-hockney-blue);
+  }
+
+  .action-btn {
+    background-color: var(--color-hockney-pink);
+    color: #ffffff;
+    border: 1px solid var(--color-hockney-pink);
+  }
+
+  .action-btn:hover {
+    background-color: var(--color-hockney-magenta);
+    border-color: var(--color-hockney-magenta);
+  }
+
+  /* Works Workspace Split */
+  .artwork-workspace {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    gap: 2rem;
+  }
+
+  .artwork-list-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    overflow-y: auto;
+    flex-grow: 1;
+    border: 1px solid var(--color-border);
+  }
+
+  .artwork-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  .artwork-table th, .artwork-table td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .artwork-table th {
+    background-color: #fafafa;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+
+  .artwork-table tbody tr:hover {
+    background-color: #fcfcfc;
+  }
+
+  .table-thumb {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .sm-btn {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid var(--color-border);
+    background-color: #ffffff;
+    cursor: pointer;
+  }
+
+  .edit-btn:hover {
+    border-color: var(--color-hockney-blue);
+    color: var(--color-hockney-blue);
+  }
+
+  .delete-btn {
+    color: var(--color-hockney-pink);
+  }
+
+  .delete-btn:hover {
+    border-color: var(--color-hockney-pink);
+    background-color: rgba(255,91,132,0.03);
+  }
+
+  /* Form Slider Panel */
+  .artwork-form-panel {
+    width: 380px;
+    border: 1px solid var(--color-border);
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -5px 0 25px rgba(0,0,0,0.02);
+  }
+
+  .form-panel-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fafafa;
+  }
+
+  .form-panel-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .close-btn {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .close-btn:hover {
+    color: var(--color-text);
+  }
+
+  .panel-form {
+    padding: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  /* Toast Notification */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2.5rem;
+    padding: 0.85rem 1.5rem;
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    z-index: 1000;
+    transform: translateY(10px);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .toast.error {
+    background-color: var(--color-hockney-pink);
+  }
+
+  .error-msg {
+    color: var(--color-hockney-pink);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  @media (max-width: 900px) {
+    .admin-dashboard {
+      flex-direction: column;
+    }
+    .admin-sidebar {
+      width: 100%;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
+      padding: 1rem;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .admin-profile, .logout-btn {
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+    .sidebar-nav {
+      flex-direction: row;
+      flex-grow: 0;
+      gap: 0.5rem;
+    }
+    .nav-tab-btn {
+      border-left: none;
+      border-bottom: 3px solid transparent;
+      padding: 0.5rem;
+    }
+    .nav-tab-btn.active {
+      border-bottom-color: var(--color-hockney-blue);
+    }
+    .tab-pane {
+      padding: 1.5rem;
+    }
+    .artwork-workspace {
+      flex-direction: column;
+    }
+    .artwork-form-panel {
+      width: 100%;
+      box-shadow: 0 -5px 25px rgba(0,0,0,0.02);
+    }
+  }
+</style>
+
+<script>
+  import { auth, db, storage } from '../lib/firebase';
+  import { 
+    onAuthStateChanged, 
+    signInWithEmailAndPassword, 
+    signOut 
+  } from 'firebase/auth';
+  import { 
+    collection, 
+    getDocs, 
+    addDoc, 
+    updateDoc, 
+    deleteDoc, 
+    doc, 
+    getDoc, 
+    setDoc,
+    query,
+    orderBy
+  } from 'firebase/firestore';
+  import { 
+    ref, 
+    uploadBytes, 
+    getDownloadURL 
+  } from 'firebase/storage';
+  import type { Artwork } from '../types/artwork';
+
+  function initAdminDashboard() {
+    // Panel Hooks
+    const loadingPanel = document.getElementById('loading-panel');
+    const loginPanel = document.getElementById('login-panel');
+    const adminPanel = document.getElementById('admin-panel');
+
+    // Forms
+    const loginForm = document.getElementById('login-form') as HTMLFormElement;
+    const loginEmail = document.getElementById('login-email') as HTMLInputElement;
+    const loginPassword = document.getElementById('login-password') as HTMLInputElement;
+    const loginError = document.getElementById('login-error');
+    
+    // Global Dashboard Hooks
+    const btnLogout = document.getElementById('logout-btn');
+    const tabButtons = document.querySelectorAll('.nav-tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    // Toast
+    const toast = document.getElementById('toast');
+
+    // Artworks Workspace
+    const artworkTbody = document.getElementById('artwork-list-tbody');
+    const artworkFormPanel = document.getElementById('artwork-form-panel');
+    const btnAddArtwork = document.getElementById('btn-add-artwork');
+    const btnCloseForm = document.getElementById('btn-close-form');
+    
+    const artworkForm = document.getElementById('artwork-form') as HTMLFormElement;
+    const formPanelTitle = document.getElementById('form-panel-title');
+    const artInputId = document.getElementById('art-id') as HTMLInputElement;
+    const artInputTitle = document.getElementById('art-title') as HTMLInputElement;
+    const artInputYear = document.getElementById('art-year') as HTMLInputElement;
+    const artInputType = document.getElementById('art-type') as HTMLSelectElement;
+    const artInputShow = document.getElementById('art-show') as HTMLInputElement;
+    const artInputAvail = document.getElementById('art-avail') as HTMLSelectElement;
+    const artInputSubject = document.getElementById('art-subject') as HTMLSelectElement;
+    const artInputWidth = document.getElementById('art-width') as HTMLInputElement;
+    const artInputHeight = document.getElementById('art-height') as HTMLInputElement;
+    const artInputUnit = document.getElementById('art-unit') as HTMLSelectElement;
+    const artInputMedium = document.getElementById('art-medium') as HTMLInputElement;
+    const artInputPrice = document.getElementById('art-price') as HTMLInputElement;
+    const artInputImage = document.getElementById('art-image') as HTMLInputElement;
+    const artInputImageUrl = document.getElementById('art-image-url') as HTMLInputElement;
+    const artImagePreviewContainer = document.getElementById('art-image-preview-container');
+    const artImagePreview = document.getElementById('art-image-preview') as HTMLImageElement;
+
+    // Exhibition Form
+    const exhibitionForm = document.getElementById('exhibition-form') as HTMLFormElement;
+    const exhInputTitle = document.getElementById('exh-title') as HTMLInputElement;
+    const exhInputDates = document.getElementById('exh-dates') as HTMLInputElement;
+    const exhInputVenue = document.getElementById('exh-venue') as HTMLInputElement;
+    const exhInputCity = document.getElementById('exh-city') as HTMLInputElement;
+    const exhInputReception = document.getElementById('exh-reception') as HTMLInputElement;
+    const exhInputCatalogue = document.getElementById('exh-catalogue') as HTMLInputElement;
+    const exhInputDesc = document.getElementById('exh-desc') as HTMLTextAreaElement;
+    const exhInputImage = document.getElementById('exh-image') as HTMLInputElement;
+    const exhInputImageUrl = document.getElementById('exh-image-url') as HTMLInputElement;
+    const exhImagePreviewContainer = document.getElementById('exh-image-preview-container');
+    const exhImagePreview = document.getElementById('exh-image-preview') as HTMLImageElement;
+
+    // Biography Form
+    const biographyForm = document.getElementById('biography-form') as HTMLFormElement;
+    const bioText = document.getElementById('bio-text') as HTMLTextAreaElement;
+
+    // Active state helpers
+    let currentArtworks: Artwork[] = [];
+    let activeExhImageUrl = '';
+
+    // Show Notification Toast
+    const showToast = (message: string, isError = false) => {
+      if (!toast) return;
+      toast.textContent = message;
+      toast.className = `toast show ${isError ? 'error' : ''}`;
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    };
+
+    // Listen to Auth State change
+    onAuthStateChanged(auth, (user) => {
+      loadingPanel?.classList.add('hidden');
+      if (user) {
+        // Authenticated
+        loginPanel?.classList.add('hidden');
+        adminPanel?.classList.remove('hidden');
+        loadAllData();
+      } else {
+        // Unauthenticated
+        adminPanel?.classList.add('hidden');
+        loginPanel?.classList.remove('hidden');
+      }
+    });
+
+    // Login Submission
+    loginForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (loginError) loginError.classList.add('hidden');
+      
+      try {
+        await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
+        loginForm.reset();
+      } catch (err: any) {
+        if (loginError) {
+          loginError.textContent = err.message || 'Incorrect credentials';
+          loginError.classList.remove('hidden');
+        }
+      }
+    });
+
+    // Logout Action
+    btnLogout?.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+      } catch (err) {
+        showToast('Error logging out', true);
+      }
+    });
+
+    // Tab Switching
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetTab = (e.currentTarget as HTMLButtonElement).dataset.tab;
+        
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        tabPanes.forEach(pane => {
+          pane.classList.remove('active');
+          if (pane.id === `tab-${targetTab}`) {
+            pane.classList.add('active');
+          }
+        });
+      });
+    });
+
+    // --- DATA LOADING ---
+    async function loadAllData() {
+      await Promise.all([
+        loadArtworks(),
+        loadExhibition(),
+        loadBiography()
+      ]);
+    }
+
+    // Load Artworks List
+    async function loadArtworks() {
+      if (!artworkTbody) return;
+      artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Loading works...</td></tr>';
+      
+      try {
+        const q = query(collection(db, 'artworks'), orderBy('year', 'desc'));
+        const querySnapshot = await getDocs(q);
+        currentArtworks = [];
+        
+        artworkTbody.innerHTML = '';
+        if (querySnapshot.empty) {
+          artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No artworks in database. Add one to get started!</td></tr>';
+          return;
+        }
+
+        querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const artwork: Artwork = {
+            id: docSnap.id,
+            title: data.title,
+            year: data.year,
+            typeOfWork: data.typeOfWork,
+            show: data.show,
+            availability: data.availability,
+            subject: data.subject || 'garden',
+            imageUrl: data.imageUrl,
+            dimensions: data.dimensions,
+            medium: data.medium,
+            price: data.price
+          };
+          currentArtworks.push(artwork);
+
+          // Render Row
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><img src="${artwork.imageUrl}" class="table-thumb" alt="thumb"/></td>
+            <td><strong>${artwork.title}</strong></td>
+            <td>${artwork.typeOfWork}</td>
+            <td><span style="font-size:0.75rem; font-weight:600;">${artwork.availability}</span></td>
+            <td>${artwork.price ? `$${artwork.price}` : '—'}</td>
+            <td>
+              <div class="btn-row">
+                <button class="sm-btn edit-btn" data-id="${artwork.id}">Edit</button>
+                <button class="sm-btn delete-btn" data-id="${artwork.id}">Delete</button>
+              </div>
+            </td>
+          `;
+
+          // Bind Actions
+          tr.querySelector('.edit-btn')?.addEventListener('click', () => editArtwork(artwork.id));
+          tr.querySelector('.delete-btn')?.addEventListener('click', () => deleteArtwork(artwork.id));
+
+          artworkTbody.appendChild(tr);
+        });
+      } catch (err) {
+        artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Failed to load artworks. Check storage rules!</td></tr>';
+      }
+    }
+
+    // Load Exhibition Doc
+    async function loadExhibition() {
+      try {
+        const docRef = doc(db, 'exhibitions', 'featured');
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          exhInputTitle.value = data.title || '';
+          exhInputDates.value = data.dates || '';
+          exhInputVenue.value = data.venue || '';
+          exhInputCity.value = data.city || '';
+          exhInputReception.value = data.reception || '';
+          exhInputCatalogue.value = data.catalogue || '';
+          exhInputDesc.value = data.description || '';
+          
+          if (data.image) {
+            activeExhImageUrl = data.image;
+            if (exhImagePreview && exhImagePreviewContainer) {
+              exhImagePreview.src = data.image;
+              exhImagePreviewContainer.classList.remove('hidden');
+            }
+            if (exhInputImageUrl) {
+              if (data.image.includes('firebasestorage.googleapis.com')) {
+                exhInputImageUrl.value = '';
+              } else {
+                exhInputImageUrl.value = data.image;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        showToast('Error loading exhibition data', true);
+      }
+    }
+
+    // Load Biography Doc
+    async function loadBiography() {
+      try {
+        const docRef = doc(db, 'biography', 'main');
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          bioText.value = data.text || '';
+        }
+      } catch (err) {
+        showToast('Error loading biography data', true);
+      }
+    }
+
+    // --- ARTWORKS MANAGER WORKFLOWS ---
+    const openArtworkForm = () => {
+      artworkForm.reset();
+      artInputId.value = '';
+      if (artInputImageUrl) artInputImageUrl.value = '';
+      if (formPanelTitle) formPanelTitle.textContent = 'Add New Artwork';
+      artImagePreviewContainer?.classList.add('hidden');
+      artworkFormPanel?.classList.remove('hidden');
+    };
+
+    const closeArtworkForm = () => {
+      artworkFormPanel?.classList.add('hidden');
+    };
+
+    btnAddArtwork?.addEventListener('click', openArtworkForm);
+    btnCloseForm?.addEventListener('click', closeArtworkForm);
+
+    // Edit Artwork Form Setup
+    const editArtwork = (id: string) => {
+      const art = currentArtworks.find(item => item.id === id);
+      if (!art) return;
+
+      if (formPanelTitle) formPanelTitle.textContent = 'Edit Artwork';
+      artInputId.value = art.id;
+      artInputTitle.value = art.title;
+      artInputYear.value = art.year.toString();
+      artInputType.value = art.typeOfWork;
+      artInputShow.value = art.show;
+      artInputAvail.value = art.availability;
+      artInputSubject.value = art.subject || 'garden';
+      artInputWidth.value = art.dimensions.width.toString();
+      artInputHeight.value = art.dimensions.height.toString();
+      artInputUnit.value = art.dimensions.unit;
+      artInputMedium.value = art.medium;
+      artInputPrice.value = art.price ? art.price.toString() : '';
+
+      if (art.imageUrl) {
+        if (artImagePreview && artImagePreviewContainer) {
+          artImagePreview.src = art.imageUrl;
+          artImagePreviewContainer.classList.remove('hidden');
+        }
+        if (artInputImageUrl) {
+          if (art.imageUrl.includes('firebasestorage.googleapis.com')) {
+            artInputImageUrl.value = '';
+          } else {
+            artInputImageUrl.value = art.imageUrl;
+          }
+        }
+      }
+
+      artworkFormPanel?.classList.remove('hidden');
+    };
+
+    // Delete Artwork Action
+    const deleteArtwork = async (id: string) => {
+      const confirmDelete = confirm('Are you sure you want to delete this artwork?');
+      if (!confirmDelete) return;
+
+      try {
+        await deleteDoc(doc(db, 'artworks', id));
+        showToast('Artwork deleted successfully');
+        loadArtworks();
+      } catch (err) {
+        showToast('Failed to delete artwork', true);
+      }
+    };
+
+    // Form Image Preview Binding
+    artInputImage?.addEventListener('change', () => {
+      const file = artInputImage.files?.[0];
+      if (file && artImagePreview && artImagePreviewContainer) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          artImagePreview.src = e.target?.result as string;
+          artImagePreviewContainer.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+        if (artInputImageUrl) artInputImageUrl.value = ''; // Clear URL if file selected
+      }
+    });
+
+    artInputImageUrl?.addEventListener('input', () => {
+      const url = artInputImageUrl.value;
+      if (url && artImagePreview && artImagePreviewContainer) {
+        artImagePreview.src = url;
+        artImagePreviewContainer.classList.remove('hidden');
+      }
+    });
+
+    exhInputImage?.addEventListener('change', () => {
+      const file = exhInputImage.files?.[0];
+      if (file && exhImagePreview && exhImagePreviewContainer) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          exhImagePreview.src = e.target?.result as string;
+          exhImagePreviewContainer.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+        if (exhInputImageUrl) exhInputImageUrl.value = ''; // Clear URL if file selected
+      }
+    });
+
+    exhInputImageUrl?.addEventListener('input', () => {
+      const url = exhInputImageUrl.value;
+      if (url && exhImagePreview && exhImagePreviewContainer) {
+        exhImagePreview.src = url;
+        exhImagePreviewContainer.classList.remove('hidden');
+      }
+    });
+
+    // Artwork Form Submit
+    artworkForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('art-form-submit') as HTMLButtonElement;
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const id = artInputId.value;
+        const file = artInputImage.files?.[0];
+        let imageUrl = '';
+
+        // If editing, find existing image URL in case they didn't upload a new one
+        if (id) {
+          const currentArt = currentArtworks.find(a => a.id === id);
+          if (currentArt) imageUrl = currentArt.imageUrl;
+        }
+
+        // If URL input is manually provided, use it
+        if (artInputImageUrl && artInputImageUrl.value) {
+          imageUrl = artInputImageUrl.value;
+        }
+
+        // Upload new image if file selected (takes priority if selected)
+        if (file) {
+          const filename = `${Date.now()}_${file.name}`;
+          const storageRef = ref(storage, `artwork/${filename}`);
+          const snapshot = await uploadBytes(storageRef, file);
+          imageUrl = await getDownloadURL(snapshot.ref);
+        }
+
+        if (!imageUrl) {
+          throw new Error('An artwork image or URL is required.');
+        }
+
+        const artworkData = {
+          title: artInputTitle.value,
+          year: parseInt(artInputYear.value),
+          typeOfWork: artInputType.value,
+          show: artInputShow.value || 'Independent',
+          availability: artInputAvail.value,
+          subject: artInputSubject.value,
+          imageUrl: imageUrl,
+          dimensions: {
+            width: parseFloat(artInputWidth.value),
+            height: parseFloat(artInputHeight.value),
+            unit: artInputUnit.value
+          },
+          medium: artInputMedium.value,
+          price: artInputPrice.value ? parseFloat(artInputPrice.value) : null
+        };
+
+        if (id) {
+          // Edit existing document
+          await updateDoc(doc(db, 'artworks', id), artworkData);
+          showToast('Artwork updated successfully');
+        } else {
+          // Create new document
+          await addDoc(collection(db, 'artworks'), artworkData);
+          showToast('Artwork added successfully');
+        }
+
+        closeArtworkForm();
+        loadArtworks();
+      } catch (err: any) {
+        showToast(err.message || 'Error saving artwork', true);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+
+    // Exhibition Form Submit
+    exhibitionForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('exh-form-submit') as HTMLButtonElement;
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const file = exhInputImage.files?.[0];
+        let imageUrl = activeExhImageUrl;
+
+        // If URL input is manually provided, use it
+        if (exhInputImageUrl && exhInputImageUrl.value) {
+          imageUrl = exhInputImageUrl.value;
+        }
+
+        // Upload new poster if selected (takes priority if selected)
+        if (file) {
+          const filename = `exhibition_${Date.now()}_${file.name}`;
+          const storageRef = ref(storage, `artwork/${filename}`);
+          const snapshot = await uploadBytes(storageRef, file);
+          imageUrl = await getDownloadURL(snapshot.ref);
+        }
+
+        const exhibitionData = {
+          title: exhInputTitle.value,
+          dates: exhInputDates.value,
+          venue: exhInputVenue.value,
+          city: exhInputCity.value,
+          reception: exhInputReception.value,
+          catalogue: exhInputCatalogue.value,
+          description: exhInputDesc.value,
+          image: imageUrl
+        };
+
+        await setDoc(doc(db, 'exhibitions', 'featured'), exhibitionData);
+        showToast('Exhibition saved successfully');
+        loadExhibition();
+      } catch (err: any) {
+        showToast('Error saving exhibition', true);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+
+    // Biography Form Submit
+    biographyForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('bio-form-submit') as HTMLButtonElement;
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const biographyData = {
+          text: bioText.value
+        };
+
+        await setDoc(doc(db, 'biography', 'main'), biographyData);
+        showToast('Biography saved successfully');
+        loadBiography();
+      } catch (err: any) {
+        showToast('Error saving biography', true);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+
+  }
+
+  // Bind on lifecycle load
+  document.addEventListener('astro:page-load', initAdminDashboard);
+</script>

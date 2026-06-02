@@ -1,0 +1,190 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { 
+  title = "Lucie Galvin | Artist Portfolio", 
+  description = "Custom fine art portfolio of Lucie Galvin, featuring modern landscape paintings and printmaking." 
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Optimization -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+
+
+
+    <!-- Client Router for smooth SPA transitions -->
+    <ClientRouter />
+
+    <script>
+      // Global scroll reset for Astro SPA transitions to prevent window scroll retention on mobile
+      const resetScrolls = () => {
+        window.scrollTo(0, 0);
+        if (document.documentElement) document.documentElement.scrollTop = 0;
+        if (document.body) document.body.scrollTop = 0;
+        
+        // Also reset any scrollable page containers
+        const scrollContainers = document.querySelectorAll(
+          '.about-container, .exhibition-page-container, .artworks-grid, .contact-container'
+        );
+        scrollContainers.forEach(container => {
+          container.scrollTop = 0;
+        });
+      };
+
+      document.addEventListener('astro:after-swap', resetScrolls);
+      document.addEventListener('astro:page-load', resetScrolls);
+    </script>
+  </head>
+  <body>
+    <div class="app-container">
+      <Header />
+      <main id="main-content">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --font-sans: 'Outfit', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+    --color-bg: #ffffff;
+    --color-text: #111111;
+    --color-text-muted: #666666;
+    --color-border: #e8e8e8;
+    
+    /* David Hockney Color Palette */
+    --color-hockney-blue: #00A3E0;
+    --color-hockney-pink: #FF5B84;
+    --color-hockney-green: #39B54A;
+    --color-hockney-orange: #FF6C2F;
+    --color-hockney-yellow: #FFD100;
+    --color-hockney-magenta: #E52E71;
+
+    --transition-speed: 0.3s;
+  }
+
+  /* CSS Reset */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden; /* Zero vertical body scroll allowed */
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Structural shell */
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+  }
+
+  main {
+    flex: 1 1 0%;
+    min-height: 0; /* Let main shrink inside the flex-container */
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Custom Scrollbar for inner components (e.g. Exhibitions list or filters if overflowing) */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #e0e0e0;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-hockney-blue);
+  }
+
+
+
+  /* Typography Defaults */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  p {
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .artwork-title {
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: none;
+  }
+
+  /* Simple animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .fade-in {
+    animation: fadeIn var(--transition-speed) ease forwards;
+  }
+</style>

@@ -1,0 +1,247 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About Me | Lucie Galvin">
+  <div class="about-container">
+    <div class="about-split">
+      
+      <!-- Text Information Column -->
+      <section class="about-text-column" aria-label="Biography">
+        <div class="scrollable-content">
+          <div class="bio-section fade-in">
+            <h2 class="section-title hockney-green-border">Biography</h2>
+            
+            <div class="bio-text" id="bio-text-container">
+              <p>
+                Lucie Galvin is a contemporary fine artist and printmaker whose work explores the dialogue between organic landscapes and structured geometry. Heavily influenced by the bold colors of David Hockney and the clean structures of mid-century minimalism, she utilizes vivid palettes, grid overlays, and rich textures to capture the essence of coastal light and architectural forms.
+              </p>
+              
+              <p>
+                Working primarily in oil, acrylic, and woodcut printing, Lucie divides her time between her London studio and the coastal landscapes of southern Spain. Her paintings are characterized by intense saturations of cobalt blue, hot pinks, and spring greens, creating dreamlike representations of familiar spaces.
+              </p>
+
+              <p>
+                Her structural approaches integrate mathematical mapping grid lines drawn over fluid sky washes and ocean swells. She believes that geometry acts as a visual anchor, capturing a precise memory of space within nature's chaotic formations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Images Collage Column -->
+      <section class="about-collage-column" aria-label="Artist photos">
+        <div class="collage-grid fade-in">
+          <div class="collage-item portrait-item">
+            <img src="/images/lucie_portrait.png" alt="Lucie Galvin in her art studio" class="collage-image" />
+          </div>
+          <div class="collage-item studio-item">
+            <img src="/images/lucie_studio.png" alt="Artist paint work table" class="collage-image" />
+          </div>
+          <div class="collage-item landscape-item">
+            <img src="/images/lucie_landscape.png" alt="Easel displaying landscape painting outdoors" class="collage-image" />
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .about-container {
+    width: 100%;
+    height: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about-split {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    height: 100%;
+    min-height: 0; /* Let children expand and contain themselves */
+  }
+
+  .about-text-column {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    justify-content: center;
+  }
+
+  .scrollable-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid var(--color-border);
+  }
+
+  .hockney-green-border {
+    border-bottom-color: var(--color-hockney-green);
+  }
+
+  .bio-text p {
+    font-size: clamp(0.85rem, 1.8vh, 0.98rem);
+    margin-bottom: 1.25rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+  }
+
+  .bio-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Collage Layout */
+  .about-collage-column {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .collage-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+    max-height: 580px; /* Constrain max height for perfect proportions */
+  }
+
+  .collage-item {
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    position: relative;
+    background-color: #fafafa;
+  }
+
+  .portrait-item {
+    grid-row: 1 / span 2;
+    grid-column: 1;
+  }
+
+  .studio-item {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .landscape-item {
+    grid-row: 2;
+    grid-column: 2;
+  }
+
+  .collage-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .collage-item:hover .collage-image {
+    transform: scale(1.03);
+  }
+
+  @media (max-width: 900px) {
+    .about-container {
+      padding: 1.25rem 1rem;
+      overflow-y: auto;
+    }
+    .about-split {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      height: auto;
+      min-height: auto;
+    }
+    .about-text-column {
+      display: block;
+      height: auto;
+      min-height: auto;
+      flex: none;
+    }
+    .scrollable-content {
+      display: block;
+      overflow-y: visible;
+      padding: 0;
+      height: auto;
+      min-height: auto;
+      flex: none;
+    }
+    .about-collage-column {
+      display: block;
+      height: auto;
+      min-height: auto;
+      flex: none;
+    }
+    .collage-grid {
+      height: auto;
+      aspect-ratio: 1.35;
+      max-height: none;
+    }
+    .section-title {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+
+<script>
+  import { db } from '../lib/firebase';
+  import { doc, getDoc } from 'firebase/firestore';
+
+  async function loadLiveBiography() {
+    const container = document.getElementById('bio-text-container');
+    if (!container) return;
+
+    try {
+      const docRef = doc(db, 'biography', 'main');
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const bioText = data.text || '';
+
+        if (bioText) {
+          container.innerHTML = '';
+
+          // Add English paragraphs
+          const paragraphs = bioText.split('\n').map((p: string) => p.trim()).filter((p: string) => p.length > 0);
+          paragraphs.forEach((pText: string) => {
+            const p = document.createElement('p');
+            p.textContent = pText;
+            container.appendChild(p);
+          });
+        }
+      }
+    } catch (err) {
+      console.warn('Biography client loading failed, fell back to static HTML.', err);
+    }
+  }
+
+  function initAboutPage() {
+    loadLiveBiography();
+  }
+
+  document.addEventListener('astro:page-load', initAboutPage);
+</script>

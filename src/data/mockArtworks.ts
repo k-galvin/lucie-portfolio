@@ -1,0 +1,120 @@
+import type { Artwork } from '../types/artwork';
+
+export const mockArtworks: Artwork[] = [
+  {
+    id: 'art-001',
+    title: 'Pool Side Reflections',
+    year: 2025,
+    typeOfWork: 'Painting',
+    show: 'Splashed Pools',
+    availability: 'Available',
+    subject: 'garden',
+    imageUrl: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200&auto=format&fit=crop',
+    dimensions: { width: 36, height: 36, unit: 'in' },
+    medium: 'Acrylic on Canvas',
+    price: 3200
+  },
+  {
+    id: 'art-002',
+    title: 'Vibrant Horizon I',
+    year: 2024,
+    typeOfWork: 'Painting',
+    show: 'Vibrant Horizons',
+    availability: 'Sold',
+    subject: 'ocean',
+    imageUrl: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1200&auto=format&fit=crop',
+    dimensions: { width: 48, height: 36, unit: 'in' },
+    medium: 'Oil on Canvas',
+    price: 4500
+  },
+  {
+    id: 'art-003',
+    title: 'Grid Landscape Study',
+    year: 2025,
+    typeOfWork: 'Drawing',
+    show: 'Splashed Pools',
+    availability: 'Available',
+    subject: 'garden',
+    imageUrl: 'https://images.unsplash.com/photo-1579783928621-7a13d66a62d1?w=1200&auto=format&fit=crop',
+    dimensions: { width: 18, height: 24, unit: 'in' },
+    medium: 'Charcoal and Pastel on Paper',
+    price: 950
+  },
+  {
+    id: 'art-004',
+    title: 'Summer Splash',
+    year: 2025,
+    typeOfWork: 'Painting',
+    show: 'Splashed Pools',
+    availability: 'Private Collection',
+    subject: 'ocean',
+    imageUrl: 'https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=1200&auto=format&fit=crop',
+    dimensions: { width: 40, height: 40, unit: 'in' },
+    medium: 'Acrylic and Mixed Media on Canvas'
+  },
+  {
+    id: 'art-005',
+    title: 'Harbor Shadows',
+    year: 2024,
+    typeOfWork: 'Print',
+    show: 'Vibrant Horizons',
+    availability: 'Available',
+    subject: 'boat',
+    imageUrl: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=1200&auto=format&fit=crop',
+    dimensions: { width: 20, height: 16, unit: 'in' },
+    medium: 'Linocut Print on Archival Paper',
+    price: 450
+  },
+  {
+    id: 'art-006',
+    title: 'Gathering in the Sun',
+    year: 2024,
+    typeOfWork: 'Painting',
+    show: 'Vibrant Horizons',
+    availability: 'Available',
+    subject: 'people',
+    imageUrl: 'https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?w=1200&auto=format&fit=crop',
+    dimensions: { width: 30, height: 40, unit: 'in' },
+    medium: 'Oil on Canvas',
+    price: 2800
+  },
+  {
+    id: 'art-007',
+    title: 'Pacific Coast Blue',
+    year: 2026,
+    typeOfWork: 'Painting',
+    show: 'Independent',
+    availability: 'Available',
+    subject: 'ocean',
+    imageUrl: 'https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=1200&auto=format&fit=crop',
+    dimensions: { width: 60, height: 48, unit: 'in' },
+    medium: 'Acrylic on Canvas',
+    price: 6200
+  },
+  {
+    id: 'art-008',
+    title: 'Boats on Golden Sands',
+    year: 2023,
+    typeOfWork: 'Painting',
+    show: 'Independent',
+    availability: 'Sold',
+    subject: 'boat',
+    imageUrl: 'https://images.unsplash.com/photo-1549887534-1541e9326642?w=1200&auto=format&fit=crop',
+    dimensions: { width: 24, height: 24, unit: 'in' },
+    medium: 'Oil and Wax on Wood Panel',
+    price: 1800
+  },
+  {
+    id: 'art-009',
+    title: 'Portrait in Magenta',
+    year: 2026,
+    typeOfWork: 'Print',
+    show: 'Independent',
+    availability: 'Available',
+    subject: 'people',
+    imageUrl: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=1200&auto=format&fit=crop',
+    dimensions: { width: 12, height: 12, unit: 'in' },
+    medium: 'Screenprint on Paper',
+    price: 250
+  }
+];

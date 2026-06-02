@@ -1,0 +1,618 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { mockArtworks } from '../data/mockArtworks';
+
+// Extract unique filter criteria for dropdown lists
+const years = [...new Set(mockArtworks.map(art => art.year))].sort((a, b) => b - a);
+const shows = [...new Set(mockArtworks.map(art => art.show))].sort();
+---
+
+<Layout title="Artworks | Lucie Galvin">
+  <div class="artworks-container">
+    <!-- Filter Controls -->
+    <section class="filters-bar" aria-label="Filters">
+      <div class="filter-group">
+        <label for="filter-year" class="filter-label label-year">Year</label>
+        <select id="filter-year" class="filter-select">
+          <option value="all">All</option>
+          {years.map(year => <option value={year}>{year}</option>)}
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-show" class="filter-label label-exhibition">Exhibition</label>
+        <select id="filter-show" class="filter-select">
+          <option value="all">All</option>
+          {shows.map(show => <option value={show}>{show}</option>)}
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-subject" class="filter-label label-subject">Subject</label>
+        <select id="filter-subject" class="filter-select">
+          <option value="all">All</option>
+          <option value="boat">Boat</option>
+          <option value="ocean">Ocean</option>
+          <option value="garden">Garden</option>
+          <option value="people">People</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Artworks Grid -->
+    <div class="grid-wrapper">
+      <div id="artworks-grid" class="artworks-grid">
+        {mockArtworks.map((art) => (
+          <div 
+            class="artwork-card fade-in" 
+            data-id={art.id}
+            data-year={art.year}
+            data-type={art.typeOfWork}
+            data-show={art.show}
+            data-subject={art.subject}
+            data-availability={art.availability}
+          >
+            <div class="artwork-image-container">
+              <img src={art.imageUrl} alt={art.title} class="artwork-image" loading="lazy" />
+              <div class="artwork-overlay">
+                <div class="overlay-details">
+                  <h3 class="overlay-title">{art.title}</h3>
+                  <p class="overlay-meta">{art.medium}</p>
+                  <p class="overlay-meta">
+                    {art.dimensions.width} × {art.dimensions.height} {art.dimensions.unit}
+                  </p>
+                  <p class="overlay-meta">{art.year}</p>
+                  <div class="overlay-footer">
+                    <span class={`status-badge status-${art.availability.toLowerCase().replace(' ', '-')}`}>
+                      {art.availability}
+                    </span>
+                    {art.price && (
+                      <span class="overlay-price">${art.price}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        <!-- Empty State Container -->
+        <div id="empty-state" class="empty-state hidden">
+          <p>No artworks found matching the selected filters.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <nav class="pagination-bar" aria-label="Pagination">
+      <button id="prev-page" class="page-btn nav-btn" aria-label="Previous page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div id="page-numbers" class="page-numbers-container">
+        <!-- Dynically populated -->
+      </div>
+      <button id="next-page" class="page-btn nav-btn" aria-label="Next page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </nav>
+  </div>
+</Layout>
+
+<style>
+  .artworks-container {
+    width: 100%;
+    height: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Filters Bar */
+  .filters-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: flex-end;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 1rem;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .filter-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .label-year {
+    color: var(--color-hockney-pink);
+  }
+
+  .label-exhibition {
+    color: var(--color-hockney-green);
+  }
+
+  .label-subject {
+    color: var(--color-hockney-blue);
+  }
+
+  .filter-select {
+    padding: 0.4rem 2rem 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    font-family: var(--font-sans);
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    background-color: var(--color-bg);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    transition: border-color 0.2s ease;
+  }
+
+  #filter-year:hover, #filter-year:focus {
+    border-color: var(--color-hockney-pink);
+    outline: none;
+  }
+
+  #filter-show:hover, #filter-show:focus {
+    border-color: var(--color-hockney-green);
+    outline: none;
+  }
+
+  #filter-subject:hover, #filter-subject:focus {
+    border-color: var(--color-hockney-blue);
+    outline: none;
+  }
+
+  /* Grid Layout and Pagination Bounds logic */
+  .grid-wrapper {
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+    min-height: 0;
+  }
+
+  .artworks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 2rem;
+    align-content: start;
+  }
+
+  .artwork-card {
+    position: relative;
+    border: 1px solid var(--color-border);
+    aspect-ratio: 1;
+    overflow: hidden;
+    background-color: #fafafa;
+  }
+
+  .artwork-card.filtered-out {
+    display: none !important;
+  }
+
+  .artwork-image-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .artwork-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  /* Overlay details panel */
+  .artwork-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+  }
+
+  .artwork-card:hover .artwork-overlay {
+    opacity: 1;
+  }
+
+  .artwork-card:hover .artwork-image {
+    transform: scale(1.03);
+  }
+
+  .overlay-title {
+    font-size: 1.2rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .overlay-meta {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+  }
+
+  .overlay-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+  }
+
+  .status-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .status-available {
+    background-color: rgba(57, 181, 74, 0.1);
+    color: var(--color-hockney-green);
+  }
+
+  .status-sold {
+    background-color: rgba(255, 91, 132, 0.1);
+    color: var(--color-hockney-pink);
+  }
+
+  .status-private-collection {
+    background-color: rgba(0, 163, 224, 0.1);
+    color: var(--color-hockney-blue);
+  }
+
+  .overlay-price {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  /* Empty State */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    font-size: 1rem;
+    color: var(--color-text-muted);
+  }
+
+  .empty-state.hidden {
+    display: none !important;
+  }
+
+  /* Pagination Bar */
+  .pagination-bar {
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .page-btn {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+    transition: all 0.25s ease;
+    color: var(--color-text-muted);
+  }
+
+  .page-btn:hover:not(:disabled) {
+    border-color: var(--color-hockney-blue);
+    color: var(--color-hockney-blue);
+  }
+
+  .page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .page-numbers-container {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  :global(.page-num) {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: all 0.25s ease;
+    color: var(--color-text-muted);
+  }
+
+  :global(.page-num:hover) {
+    color: var(--color-hockney-blue);
+  }
+
+  :global(.page-num.active) {
+    border-color: var(--color-text);
+    color: var(--color-text);
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .filters-bar {
+      gap: 1rem;
+    }
+    .filter-checkbox-container {
+      height: auto;
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .artworks-container {
+      padding: 1rem;
+    }
+    .filter-select {
+      font-size: 0.75rem;
+      padding: 0.3rem 1.5rem 0.3rem 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  import { db } from '../lib/firebase';
+  import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+
+  function initArtworkGallery() {
+    const grid = document.getElementById('artworks-grid');
+    const selectYear = document.getElementById('filter-year') as HTMLSelectElement;
+    const selectShow = document.getElementById('filter-show') as HTMLSelectElement;
+    const selectSubject = document.getElementById('filter-subject') as HTMLSelectElement;
+    const emptyState = document.getElementById('empty-state');
+    
+    // Pagination nodes
+    const btnPrev = document.getElementById('prev-page') as HTMLButtonElement;
+    const btnNext = document.getElementById('next-page') as HTMLButtonElement;
+    const pageNumbers = document.getElementById('page-numbers');
+
+    let cards = Array.from(grid?.querySelectorAll('.artwork-card') || []) as HTMLDivElement[];
+    let filteredCards: HTMLDivElement[] = [];
+
+    // Layout configuration
+    let currentPage = 1;
+    let itemsPerPage = 8; // Default fallback
+
+    // Determine how many items we can fit based on screen size/height
+    const calculateItemsPerPage = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      
+      if (w <= 768) {
+        itemsPerPage = 4; // Minimal view on mobile
+      } else if (h < 750) {
+        itemsPerPage = 6; // Compressed viewport height
+      } else if (w >= 1400) {
+        itemsPerPage = 8; // Generous grid layout
+      } else {
+        itemsPerPage = 8;
+      }
+    };
+
+    const applyFilters = () => {
+      const yearVal = selectYear?.value || 'all';
+      const showVal = selectShow?.value || 'all';
+      const subjectVal = selectSubject?.value || 'all';
+
+      filteredCards = [];
+
+      cards.forEach((card) => {
+        const matchesYear = yearVal === 'all' || card.dataset.year === yearVal;
+        const matchesShow = showVal === 'all' || card.dataset.show === showVal;
+        const matchesSubject = subjectVal === 'all' || card.dataset.subject === subjectVal;
+
+        if (matchesYear && matchesShow && matchesSubject) {
+          filteredCards.push(card);
+        }
+        card.classList.add('filtered-out'); // Reset all
+      });
+
+      // Toggle Empty State Visibility
+      if (filteredCards.length === 0) {
+        emptyState?.classList.remove('hidden');
+      } else {
+        emptyState?.classList.add('hidden');
+      }
+
+      currentPage = 1; // Reset to page 1 on filter trigger
+      paginate();
+    };
+
+    const paginate = () => {
+      calculateItemsPerPage();
+      
+      const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
+      if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+
+      // Hide all initially
+      filteredCards.forEach(card => card.classList.add('filtered-out'));
+
+      // Show only current page items
+      filteredCards.forEach((card, index) => {
+        if (index >= startIndex && index < endIndex) {
+          card.classList.remove('filtered-out');
+        }
+      });
+
+      // Update page numbers
+      if (pageNumbers) {
+        pageNumbers.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement('button');
+          btn.className = `page-num ${i === currentPage ? 'active' : ''}`;
+          btn.textContent = i.toString();
+          btn.addEventListener('click', () => {
+            currentPage = i;
+            paginate();
+          });
+          pageNumbers.appendChild(btn);
+        }
+      }
+
+      // Update navigation buttons status
+      if (btnPrev) btnPrev.disabled = currentPage === 1;
+      if (btnNext) btnNext.disabled = currentPage === totalPages;
+    };
+
+    // Filter Listeners
+    [selectYear, selectShow, selectSubject].forEach(select => {
+      select?.addEventListener('change', applyFilters);
+    });
+
+    // Pagination Listeners
+    btnPrev?.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        paginate();
+      }
+    });
+
+    btnNext?.addEventListener('click', () => {
+      const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        paginate();
+      }
+    });
+
+    // Window resize handler to adapt grid layout bounds
+    window.addEventListener('resize', () => {
+      paginate();
+    });
+
+    // Load live content from Firestore database
+    async function loadLiveArtworks() {
+      try {
+        const q = query(collection(db, 'artworks'), orderBy('year', 'desc'));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          // Clear current static fallback cards
+          const fallbackCards = grid?.querySelectorAll('.artwork-card:not(#empty-state)');
+          fallbackCards?.forEach(card => card.remove());
+
+          querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const id = docSnap.id;
+            const title = data.title || '';
+            const medium = data.medium || '';
+            const availability = data.availability || 'Available';
+            const year = data.year || 2026;
+            const type = data.typeOfWork || 'Painting';
+            const show = data.show || 'Independent';
+            const subject = data.subject || 'garden';
+            const imageUrl = data.imageUrl || '';
+            const price = data.price;
+            const width = data.dimensions?.width || '';
+            const height = data.dimensions?.height || '';
+            const unit = data.dimensions?.unit || 'in';
+
+            const card = document.createElement('div');
+            card.className = 'artwork-card fade-in';
+            card.dataset.id = id;
+            card.dataset.year = year.toString();
+            card.dataset.type = type;
+            card.dataset.show = show;
+            card.dataset.subject = subject;
+            card.dataset.availability = availability;
+
+            const badgeClass = availability.toLowerCase().replace(/\s+/g, '-');
+
+            card.innerHTML = `
+              <div class="artwork-image-container">
+                <img src="${imageUrl}" alt="${title}" class="artwork-image" loading="lazy" />
+                <div class="artwork-overlay">
+                  <div class="overlay-details">
+                    <h3 class="overlay-title">${title}</h3>
+                    <p class="overlay-meta">${medium}</p>
+                    <p class="overlay-meta">
+                      ${width} × ${height} ${unit}
+                    </p>
+                    <p class="overlay-meta">${year}</p>
+                    <div class="overlay-footer">
+                      <span class="status-badge status-${badgeClass}">${availability}</span>
+                      ${price ? `<span class="overlay-price">$${price}</span>` : ''}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+            
+            // Insert before empty state
+            if (grid) {
+              const emptyStateNode = document.getElementById('empty-state');
+              if (emptyStateNode) {
+                grid.insertBefore(card, emptyStateNode);
+              } else {
+                grid.appendChild(card);
+              }
+            }
+          });
+
+          // Re-evaluate query cards array to feed pagination & filter routines
+          if (grid) {
+            cards = Array.from(grid.querySelectorAll('.artwork-card')) as HTMLDivElement[];
+          }
+          applyFilters();
+        }
+      } catch (err) {
+        console.warn('Live artworks client loading failed, fell back to static mock array.', err);
+      }
+    }
+
+    // Initialize
+    applyFilters();
+    loadLiveArtworks();
+  }
+
+  // Bind to page lifecycle
+  document.addEventListener('astro:page-load', initArtworkGallery);
+</script>
