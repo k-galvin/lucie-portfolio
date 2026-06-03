@@ -284,7 +284,7 @@ import Layout from '../layouts/Layout.astro';
 
     const startAutoplay = () => {
       if (activeSlideInterval) clearInterval(activeSlideInterval);
-      activeSlideInterval = window.setInterval(nextSlide, 6000);
+      activeSlideInterval = window.setInterval(nextSlide, 4000);
     };
 
     dots.forEach((dot) => {

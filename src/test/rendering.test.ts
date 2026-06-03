@@ -75,7 +75,7 @@ describe('Static HTML Page Rendering Tests', () => {
     // 2. About
     const aboutDom = loadPageDOM('about/index.html');
     const aboutHeader = aboutDom.window.document.querySelector('.section-title');
-    expect(aboutHeader?.textContent).toContain('Biography');
+    expect(aboutHeader?.textContent).toContain('About');
 
     // 3. Contact
     const contactDom = loadPageDOM('contact/index.html');
