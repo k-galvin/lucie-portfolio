@@ -240,12 +240,12 @@ import Layout from '../layouts/Layout.astro';
 
         if (bioText) {
           // Split by two or more newlines to identify true paragraphs
-          const paragraphs = bioText.split(/\n\s*\n/).map(p => p.trim()).filter(p => p.length > 0);
+          const paragraphs = bioText.split(/\n\s*\n/).map((p: string) => p.trim()).filter((p: string) => p.length > 0);
           
           if (paragraphs.length > 0) {
             // Replace the spinner with actual content
             container.innerHTML = paragraphs
-              .map(pText => `<p>${pText}</p>`)
+              .map((pText: string) => `<p>${pText}</p>`)
               .join('');
           }
         }

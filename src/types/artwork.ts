@@ -1,6 +1,6 @@
 export type TypeOfWork = 'Paper Picture' | 'Drawing' | 'Photograph' | 'Painting' | 'Print' | string;
 
-export type Availability = 'Available' | 'Sold' | 'Private Collection';
+export type Availability = 'Available' | 'Sold' | 'Private Collection' | 'On Exhibition' | '';
 
 export interface Dimensions {
   width: number;
@@ -22,4 +22,6 @@ export interface Artwork {
   medium: string;
   price?: number; // Optional pricing
   order: number; // For manual sorting
+  isPrint?: boolean;
+  printLink?: string;
 }

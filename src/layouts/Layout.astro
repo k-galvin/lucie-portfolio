@@ -38,6 +38,11 @@ const {
     <ClientRouter />
 
     <script>
+      // Disable default browser scroll restoration for SPA navigation
+      if (typeof window !== 'undefined' && window.history && 'scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
+
       // Global scroll reset for Astro SPA transitions to prevent window scroll retention on mobile
       const resetScrolls = () => {
         window.scrollTo(0, 0);

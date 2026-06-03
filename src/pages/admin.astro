@@ -127,11 +127,11 @@ import Layout from '../layouts/Layout.astro';
                     <input type="text" id="art-show" class="form-input" placeholder="Splashed Pools or Independent" value="Independent" />
                   </div>
                   <div class="form-group">
-                    <label for="art-avail" class="form-label">Availability</label>
-                    <select id="art-avail" required class="form-select">
-                      <option value="Available">Available</option>
-                      <option value="Sold">Sold</option>
-                      <option value="Private Collection">Private Collection</option>
+                    <label for="art-avail" class="form-label">Status (Optional)</label>
+                    <select id="art-avail" class="form-select">
+                      <option value="">Blank (No Status)</option>
+                      <option value="Private Collection">In Private Collection</option>
+                      <option value="On Exhibition">On Exhibition</option>
                     </select>
                   </div>
                 </div>
@@ -179,6 +179,16 @@ import Layout from '../layouts/Layout.astro';
                   <input type="number" id="art-price" class="form-input" />
                 </div>
 
+                <div class="form-group" style="display: flex; flex-direction: row; align-items: center; gap: 0.5rem; margin-top: 1rem; margin-bottom: 0.5rem;">
+                  <input type="checkbox" id="art-is-print" style="width: auto; cursor: pointer; height: 16px; width: 16px;" />
+                  <label for="art-is-print" class="form-label" style="margin-bottom: 0; cursor: pointer; text-transform: none; font-size: 0.85rem; font-weight: 500;">Available as Print</label>
+                </div>
+
+                <div id="art-print-link-group" class="form-group hidden">
+                  <label for="art-print-link" class="form-label">Print Link (Required if available as print)</label>
+                  <input type="url" id="art-print-link" class="form-input" placeholder="https://www.saatchiart.com/..." />
+                </div>
+
                 <div class="form-group">
                   <label for="art-image" class="form-label">Artwork Image File (Requires Firebase Storage)</label>
                   <input type="file" id="art-image" class="form-input-file" accept="image/*" />
@@ -216,8 +226,12 @@ import Layout from '../layouts/Layout.astro';
             <div class="form-slide-editor">
               <h3 class="slide-header">Slide 1</h3>
               <div class="form-group">
-                <label for="slide1-image" class="form-label">Image URL</label>
-                <input type="url" id="slide1-image" required class="form-input" placeholder="https://..." />
+                <label for="slide1-image-file" class="form-label">Upload Image</label>
+                <input type="file" id="slide1-image-file" class="form-input-file" accept="image/*" />
+              </div>
+              <input type="hidden" id="slide1-image" />
+              <div id="slide1-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
+                <img id="slide1-image-preview" src="" alt="Slide 1 Preview" style="width: 100%; height: 100%; object-fit: cover;" />
               </div>
               <div class="form-row">
                 <div class="form-group">
@@ -239,8 +253,12 @@ import Layout from '../layouts/Layout.astro';
             <div class="form-slide-editor" style="margin-top: 2rem;">
               <h3 class="slide-header">Slide 2</h3>
               <div class="form-group">
-                <label for="slide2-image" class="form-label">Image URL</label>
-                <input type="url" id="slide2-image" required class="form-input" placeholder="https://..." />
+                <label for="slide2-image-file" class="form-label">Upload Image</label>
+                <input type="file" id="slide2-image-file" class="form-input-file" accept="image/*" />
+              </div>
+              <input type="hidden" id="slide2-image" />
+              <div id="slide2-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
+                <img id="slide2-image-preview" src="" alt="Slide 2 Preview" style="width: 100%; height: 100%; object-fit: cover;" />
               </div>
               <div class="form-row">
                 <div class="form-group">
@@ -262,8 +280,12 @@ import Layout from '../layouts/Layout.astro';
             <div class="form-slide-editor" style="margin-top: 2rem; border-bottom: none;">
               <h3 class="slide-header">Slide 3</h3>
               <div class="form-group">
-                <label for="slide3-image" class="form-label">Image URL</label>
-                <input type="url" id="slide3-image" required class="form-input" placeholder="https://..." />
+                <label for="slide3-image-file" class="form-label">Upload Image</label>
+                <input type="file" id="slide3-image-file" class="form-input-file" accept="image/*" />
+              </div>
+              <input type="hidden" id="slide3-image" />
+              <div id="slide3-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
+                <img id="slide3-image-preview" src="" alt="Slide 3 Preview" style="width: 100%; height: 100%; object-fit: cover;" />
               </div>
               <div class="form-row">
                 <div class="form-group">
@@ -916,9 +938,7 @@ import Layout from '../layouts/Layout.astro';
     deleteDoc, 
     doc, 
     getDoc, 
-    setDoc,
-    query,
-    orderBy
+    setDoc
   } from 'firebase/firestore';
   import { 
     ref, 
@@ -967,6 +987,9 @@ import Layout from '../layouts/Layout.astro';
     const artInputUnit = document.getElementById('art-unit') as HTMLSelectElement;
     const artInputMedium = document.getElementById('art-medium') as HTMLInputElement;
     const artInputPrice = document.getElementById('art-price') as HTMLInputElement;
+    const artIsPrint = document.getElementById('art-is-print') as HTMLInputElement;
+    const artPrintLinkGroup = document.getElementById('art-print-link-group');
+    const artPrintLink = document.getElementById('art-print-link') as HTMLInputElement;
     const artInputImage = document.getElementById('art-image') as HTMLInputElement;
     const artInputImageUrl = document.getElementById('art-image-url') as HTMLInputElement;
     const artImagePreviewContainer = document.getElementById('art-image-preview-container');
@@ -1004,6 +1027,18 @@ import Layout from '../layouts/Layout.astro';
     const s3Title = document.getElementById('slide3-title') as HTMLInputElement;
     const s3Sub = document.getElementById('slide3-subtitle') as HTMLInputElement;
     const s3Link = document.getElementById('slide3-link') as HTMLInputElement;
+
+    const s1File = document.getElementById('slide1-image-file') as HTMLInputElement;
+    const s2File = document.getElementById('slide2-image-file') as HTMLInputElement;
+    const s3File = document.getElementById('slide3-image-file') as HTMLInputElement;
+
+    const s1Preview = document.getElementById('slide1-image-preview') as HTMLImageElement;
+    const s2Preview = document.getElementById('slide2-image-preview') as HTMLImageElement;
+    const s3Preview = document.getElementById('slide3-image-preview') as HTMLImageElement;
+
+    const s1PreviewContainer = document.getElementById('slide1-image-preview-container');
+    const s2PreviewContainer = document.getElementById('slide2-image-preview-container');
+    const s3PreviewContainer = document.getElementById('slide3-image-preview-container');
 
     // Active state helpers
     let currentArtworks: Artwork[] = [];
@@ -1109,7 +1144,7 @@ import Layout from '../layouts/Layout.astro';
             year: data.year,
             typeOfWork: data.typeOfWork,
             show: data.show,
-            availability: data.availability,
+            availability: data.availability || '',
             subject: data.subject || 'garden',
             imageUrl: data.imageUrl,
             dimensions: data.dimensions,
@@ -1166,8 +1201,8 @@ import Layout from '../layouts/Layout.astro';
 
       // Work with a copy of the list
       const newList = [...currentArtworks];
-      const art1 = newList[index];
-      const art2 = newList[otherIndex];
+      const art1 = newList[index] as Artwork;
+      const art2 = newList[otherIndex] as Artwork;
 
       // Swap their positions in our local array
       newList[index] = art2;
@@ -1261,18 +1296,30 @@ import Layout from '../layouts/Layout.astro';
             s1Title.value = slides[0].title || '';
             s1Sub.value = slides[0].subtitle || '';
             s1Link.value = slides[0].link || '/artworks';
+            if (slides[0].image && s1Preview && s1PreviewContainer) {
+              s1Preview.src = slides[0].image;
+              s1PreviewContainer.classList.remove('hidden');
+            }
           }
           if (slides[1]) {
             s2Img.value = slides[1].image || '';
             s2Title.value = slides[1].title || '';
             s2Sub.value = slides[1].subtitle || '';
             s2Link.value = slides[1].link || '/artworks';
+            if (slides[1].image && s2Preview && s2PreviewContainer) {
+              s2Preview.src = slides[1].image;
+              s2PreviewContainer.classList.remove('hidden');
+            }
           }
           if (slides[2]) {
             s3Img.value = slides[2].image || '';
             s3Title.value = slides[2].title || '';
             s3Sub.value = slides[2].subtitle || '';
             s3Link.value = slides[2].link || '/contact';
+            if (slides[2].image && s3Preview && s3PreviewContainer) {
+              s3Preview.src = slides[2].image;
+              s3PreviewContainer.classList.remove('hidden');
+            }
           }
         }
       } catch (err) {
@@ -1287,6 +1334,10 @@ import Layout from '../layouts/Layout.astro';
       if (artInputImageUrl) artInputImageUrl.value = '';
       if (formPanelTitle) formPanelTitle.textContent = 'Add New Artwork';
       artImagePreviewContainer?.classList.add('hidden');
+      artIsPrint.checked = false;
+      artPrintLinkGroup?.classList.add('hidden');
+      artPrintLink.required = false;
+      artPrintLink.value = '';
       artworkFormPanel?.classList.remove('hidden');
     };
 
@@ -1315,6 +1366,17 @@ import Layout from '../layouts/Layout.astro';
       artInputUnit.value = art.dimensions.unit;
       artInputMedium.value = art.medium;
       artInputPrice.value = art.price ? art.price.toString() : '';
+
+      artIsPrint.checked = art.isPrint || false;
+      if (art.isPrint) {
+        artPrintLinkGroup?.classList.remove('hidden');
+        artPrintLink.required = true;
+        artPrintLink.value = art.printLink || '';
+      } else {
+        artPrintLinkGroup?.classList.add('hidden');
+        artPrintLink.required = false;
+        artPrintLink.value = '';
+      }
 
       if (art.imageUrl) {
         if (artImagePreview && artImagePreviewContainer) {
@@ -1346,6 +1408,55 @@ import Layout from '../layouts/Layout.astro';
         showToast('Failed to delete artwork', true);
       }
     };
+
+    // Available as Print checkbox toggle listener
+    artIsPrint?.addEventListener('change', () => {
+      if (artIsPrint.checked) {
+        artPrintLinkGroup?.classList.remove('hidden');
+        artPrintLink.required = true;
+      } else {
+        artPrintLinkGroup?.classList.add('hidden');
+        artPrintLink.required = false;
+        artPrintLink.value = '';
+      }
+    });
+
+    // Hero Slides Image Upload Preview Bindings
+    s1File?.addEventListener('change', () => {
+      const file = s1File.files?.[0];
+      if (file && s1Preview && s1PreviewContainer) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          s1Preview.src = e.target?.result as string;
+          s1PreviewContainer.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    s2File?.addEventListener('change', () => {
+      const file = s2File.files?.[0];
+      if (file && s2Preview && s2PreviewContainer) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          s2Preview.src = e.target?.result as string;
+          s2PreviewContainer.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    s3File?.addEventListener('change', () => {
+      const file = s3File.files?.[0];
+      if (file && s3Preview && s3PreviewContainer) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          s3Preview.src = e.target?.result as string;
+          s3PreviewContainer.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
 
     // Form Image Preview Binding
     artInputImage?.addEventListener('change', () => {
@@ -1439,7 +1550,9 @@ import Layout from '../layouts/Layout.astro';
             unit: artInputUnit.value
           },
           medium: artInputMedium.value,
-          price: artInputPrice.value ? parseFloat(artInputPrice.value) : null
+          price: artInputPrice.value ? parseFloat(artInputPrice.value) : null,
+          isPrint: artIsPrint.checked,
+          printLink: artIsPrint.checked ? artPrintLink.value : ''
         };
 
         if (id) {
@@ -1560,11 +1673,49 @@ import Layout from '../layouts/Layout.astro';
       if (submitBtn) submitBtn.disabled = true;
 
       try {
+        let s1Url = s1Img.value;
+        let s2Url = s2Img.value;
+        let s3Url = s3Img.value;
+
+        const file1 = s1File?.files?.[0];
+        if (file1) {
+          const filename = `${Date.now()}_hero1_${file1.name}`;
+          const storageRef = ref(storage, `artwork/${filename}`);
+          const snapshot = await uploadBytes(storageRef, file1);
+          s1Url = await getDownloadURL(snapshot.ref);
+        }
+
+        const file2 = s2File?.files?.[0];
+        if (file2) {
+          const filename = `${Date.now()}_hero2_${file2.name}`;
+          const storageRef = ref(storage, `artwork/${filename}`);
+          const snapshot = await uploadBytes(storageRef, file2);
+          s2Url = await getDownloadURL(snapshot.ref);
+        }
+
+        const file3 = s3File?.files?.[0];
+        if (file3) {
+          const filename = `${Date.now()}_hero3_${file3.name}`;
+          const storageRef = ref(storage, `artwork/${filename}`);
+          const snapshot = await uploadBytes(storageRef, file3);
+          s3Url = await getDownloadURL(snapshot.ref);
+        }
+
+        if (!s1Url) {
+          throw new Error('Please upload an image for Slide 1.');
+        }
+        if (!s2Url) {
+          throw new Error('Please upload an image for Slide 2.');
+        }
+        if (!s3Url) {
+          throw new Error('Please upload an image for Slide 3.');
+        }
+
         const homepageData = {
           heroSlides: [
-            { image: s1Img.value, title: s1Title.value, subtitle: s1Sub.value, link: s1Link.value },
-            { image: s2Img.value, title: s2Title.value, subtitle: s2Sub.value, link: s2Link.value },
-            { image: s3Img.value, title: s3Title.value, subtitle: s3Sub.value, link: s3Link.value }
+            { image: s1Url, title: s1Title.value, subtitle: s1Sub.value, link: s1Link.value },
+            { image: s2Url, title: s2Title.value, subtitle: s2Sub.value, link: s2Link.value },
+            { image: s3Url, title: s3Title.value, subtitle: s3Sub.value, link: s3Link.value }
           ]
         };
 

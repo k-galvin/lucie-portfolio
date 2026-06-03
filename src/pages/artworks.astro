@@ -287,7 +287,7 @@ import Layout from '../layouts/Layout.astro';
   .status-badge {
     font-size: 0.7rem;
     font-weight: 700;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.05em;
     color: var(--color-text);
   }
@@ -296,6 +296,23 @@ import Layout from '../layouts/Layout.astro';
     font-size: 0.9rem;
     font-weight: 700;
     color: var(--color-text);
+  }
+
+  .print-available-link {
+    display: inline-block;
+    width: fit-content;
+    text-align: left;
+    margin-top: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+  .print-available-link:hover {
+    color: var(--color-hockney-pink);
   }
 
   /* Empty State */
@@ -396,7 +413,7 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
   import { db } from '../lib/firebase';
-  import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+  import { collection, getDocs } from 'firebase/firestore';
 
   function initArtworkGallery() {
     const grid = document.getElementById('artworks-grid');
@@ -485,7 +502,14 @@ import Layout from '../layouts/Layout.astro';
             const id = data.id;
             const title = data.title || '';
             const medium = data.medium || '';
-            const availability = data.availability || 'Available';
+            const rawAvailability = data.availability || '';
+            let availability = '';
+            const lowerAvail = rawAvailability.trim().toLowerCase();
+            if (lowerAvail === 'private collection' || lowerAvail === 'in private collection') {
+              availability = 'In private collection';
+            } else if (lowerAvail === 'on exhibition') {
+              availability = 'On exhibition';
+            }
             const year = data.year || 2026;
             const show = data.show || 'Independent';
             
@@ -521,9 +545,14 @@ import Layout from '../layouts/Layout.astro';
                     </p>
                     <p class="overlay-meta">${year}</p>
                     <div class="overlay-footer">
-                      <span class="status-badge">${availability}</span>
+                      ${availability ? `<span class="status-badge">${availability}</span>` : '<span></span>'}
                       ${price ? `<span class="overlay-price">$${price}</span>` : ''}
                     </div>
+                    ${data.isPrint && data.printLink ? `
+                      <a href="${data.printLink}" target="_blank" rel="noopener noreferrer" class="print-available-link">
+                        Prints available
+                      </a>
+                    ` : ''}
                   </div>
                 </div>
               </div>
