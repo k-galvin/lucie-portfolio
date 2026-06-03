@@ -12,7 +12,7 @@ function loadPageDOM(relativeFilePath: string) {
 describe('Static HTML Page Rendering Tests', () => {
   const pages = [
     { name: 'Home', path: 'index.html', heading: 'Lucie Galvin' },
-    { name: 'About', path: 'about/index.html', heading: 'About Me' },
+    { name: 'About', path: 'about/index.html', heading: 'About' },
     { name: 'Admin', path: 'admin/index.html', heading: 'Admin Dashboard' },
     { name: 'Artworks', path: 'artworks/index.html', heading: 'Artworks' },
     { name: 'Exhibitions', path: 'exhibitions/index.html', heading: 'Exhibitions' },
