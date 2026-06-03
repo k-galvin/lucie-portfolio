@@ -48,194 +48,25 @@ import Layout from '../layouts/Layout.astro';
   </div>
 </Layout>
 
-<style is:global>
-  .exhibition-page-container {
-    width: 100%;
-    height: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 2rem;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
 
-  .status-panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    gap: 1rem;
-    font-size: 0.95rem;
-    color: var(--color-text-muted);
-  }
-
-  .spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid var(--color-border);
-    border-top-color: var(--color-hockney-blue);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  .hidden {
-    display: none !important;
-  }
-
-  .exh-split-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    height: 100%;
-    max-height: 700px; /* Force bounds layout */
-    min-height: 0;
-    align-items: center;
-  }
-
-  .exh-visual-column {
-    height: 100%;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .exh-image-wrapper {
-    width: 100%;
-    height: 100%;
-    max-height: 600px;
-    border: 1px solid var(--color-border);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .exh-featured-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .exh-image-wrapper:hover .exh-featured-image {
-    transform: scale(1.03);
-  }
-
-  .exh-details-column {
-    height: 100%;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-right: 2rem;
-  }
-
-  .details-content-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .exh-label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-hockney-blue);
-    margin-bottom: 0.75rem;
-    display: inline-block;
-  }
-
-  .exh-main-title {
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 4.5vh, 3.5rem);
-    font-style: italic;
-    font-weight: 600;
-    line-height: 1.1;
-    color: var(--color-text);
-    margin-bottom: 1rem;
-    letter-spacing: -0.01em;
-  }
-
-  .exh-meta-block {
-    margin-bottom: 1.5rem;
-  }
-
-  .exh-date {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--color-hockney-green);
-    margin-bottom: 0.25rem;
-  }
-
-  .exh-location {
-    font-size: 0.95rem;
-    color: var(--color-text-muted);
-  }
-
-  .exh-location strong {
-    color: var(--color-text);
-  }
-
-  .exh-divider {
-    height: 2px;
-    width: 80px;
-    background-color: var(--color-hockney-pink);
-    margin-bottom: 1.5rem;
-  }
-
-  .exh-essay p {
-    font-size: clamp(0.85rem, 1.8vh, 0.98rem);
-    line-height: 1.65;
-    color: var(--color-text-muted);
-    margin-bottom: 1.5rem;
-  }
-
-  @media (max-width: 900px) {
-    .exhibition-page-container {
-      padding: 1.5rem 1rem 3rem 1rem;
-      overflow-y: auto;
-      justify-content: flex-start; /* Avoid top overflow clipping */
-    }
-    .exh-split-layout {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      max-height: none;
-      height: auto;
-    }
-    .exh-visual-column {
-      height: 250px;
-      flex-shrink: 0;
-    }
-    .exh-details-column {
-      height: auto;
-      padding-right: 0;
-    }
-    .exh-main-title {
-      font-size: 1.8rem;
-    }
-    .exh-essay p {
-      margin-bottom: 1rem;
-    }
-  }
-</style>
 
 <script>
   import { db } from '../lib/firebase';
   import { doc, getDoc } from 'firebase/firestore';
 
+  let loaded = false;
+
   async function loadLiveExhibition() {
     const pageContainer = document.getElementById('exh-page-container');
-    const loadingPanel = document.getElementById('exh-loading-panel');
+    if (!pageContainer) {
+      loaded = false; // Reset loaded flag if we navigated away
+      return;
+    }
 
+    if (loaded) return; // Prevent double load
+    loaded = true;
+
+    const loadingPanel = document.getElementById('exh-loading-panel');
     const imgElem = document.getElementById('exh-image-elem') as HTMLImageElement;
     const titleContainer = document.getElementById('exh-title-container');
     const datesText = document.getElementById('exh-dates-text');
@@ -292,6 +123,9 @@ import Layout from '../layouts/Layout.astro';
     }
   }
 
-  // Load exhibition
+  // Run immediately in case the script executes after astro:page-load has already fired
+  loadLiveExhibition();
+
+  // Listen for subsequent transitions
   document.addEventListener('astro:page-load', loadLiveExhibition);
 </script>
