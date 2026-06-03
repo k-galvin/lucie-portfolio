@@ -4,68 +4,37 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout title="Exhibitions | Lucie Galvin">
   <div id="exh-page-container" class="exhibition-page-container hidden">
-    <div class="exh-split-layout fade-in">
-      
-      <!-- Left Column: Visual Exhibition Poster -->
-      <div class="exh-visual-column">
-        <div class="exh-image-wrapper">
-          <img src="" alt="" id="exh-image-elem" class="exh-featured-image" />
-        </div>
-      </div>
-
-      <!-- Right Column: Show Details & Bio Essay -->
-      <div class="exh-details-column">
-        <div class="details-content-wrapper">
-          
-          <span class="exh-label">Featured Exhibition</span>
-
-          <h2 class="exh-main-title" id="exh-title-container">Loading...</h2>
-
-          <div class="exh-meta-block" id="exh-meta-container">
-            <p class="exh-date" id="exh-dates-text"></p>
-            <p class="exh-location">
-              <strong id="exh-venue-text"></strong>
-              <span id="exh-city-divider" class="hidden"> — </span>
-              <span id="exh-city-text"></span>
-            </p>
-          </div>
-
-          <div class="exh-divider"></div>
-
-          <div class="exh-essay" id="exh-essay-container">
-            <!-- Populated from Firebase -->
-          </div>
-
-        </div>
-      </div>
-
+    <h1 class="section-title hockney-green-border">Exhibitions and Events</h1>
+    
+    <div id="exh-list-container" class="exh-list-container fade-in">
+      <!-- Dynamically loaded list of exhibitions goes here -->
     </div>
   </div>
 
   <div id="exh-loading-panel" class="status-panel">
     <div class="spinner"></div>
-    <p>Loading exhibition details...</p>
+    <p id="exh-title-container">Loading...</p>
   </div>
 </Layout>
 
-
-
 <script>
   import { db } from '../lib/firebase';
-  import { doc, getDoc } from 'firebase/firestore';
+  import { collection, getDocs } from 'firebase/firestore';
 
   interface Exhibition {
+    id: string;
     title?: string;
     dates?: string;
     venue?: string;
     city?: string;
     description?: string;
     image?: string;
+    order?: number;
   }
 
   let loaded = false;
 
-  async function loadLiveExhibition() {
+  async function loadLiveExhibitions() {
     const pageContainer = document.getElementById('exh-page-container');
     if (!pageContainer) {
       loaded = false; // Reset loaded flag if we navigated away
@@ -76,68 +45,263 @@ import Layout from '../layouts/Layout.astro';
     loaded = true;
 
     const loadingPanel = document.getElementById('exh-loading-panel');
-    const imgElem = document.getElementById('exh-image-elem') as HTMLImageElement;
-    const titleContainer = document.getElementById('exh-title-container');
-    const datesText = document.getElementById('exh-dates-text');
-    const venueText = document.getElementById('exh-venue-text');
-    const cityText = document.getElementById('exh-city-text');
-    const cityDivider = document.getElementById('exh-city-divider');
-    const essayContainer = document.getElementById('exh-essay-container');
+    const listContainer = document.getElementById('exh-list-container');
+
+    if (!listContainer) return;
+    listContainer.innerHTML = '';
 
     try {
-      const docRef = doc(db, 'exhibitions', 'featured');
-      const docSnap = await getDoc(docRef);
+      const querySnapshot = await getDocs(collection(db, 'exhibitions'));
+      const exhibitions: Exhibition[] = [];
 
-      if (docSnap.exists()) {
-        const data = docSnap.data() as Exhibition;
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        exhibitions.push({
+          id: docSnap.id,
+          title: data.title,
+          dates: data.dates,
+          venue: data.venue,
+          city: data.city,
+          description: data.description,
+          image: data.image,
+          order: data.order ?? 0
+        });
+      });
 
-        // 1. Image
-        if (imgElem) {
-          if (data.image) {
-            imgElem.src = data.image;
-            imgElem.alt = data.title || 'Exhibition Poster';
-          } else {
-            imgElem.src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200&auto=format&fit=crop';
-          }
-        }
+      // Sort by order descending (newest/highest order at the top)
+      exhibitions.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
 
-        // 2. Title
-        if (titleContainer) {
-          titleContainer.textContent = data.title || 'Exhibition Title';
-        }
+      if (exhibitions.length > 0) {
+        exhibitions.forEach((exh) => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'exh-list-item';
 
-        // 3. Meta Dates & Location
-        if (datesText) datesText.textContent = data.dates || '';
-        if (venueText) venueText.textContent = data.venue || '';
-        if (cityText) cityText.textContent = data.city || '';
-        if (cityDivider && data.venue && data.city) cityDivider.classList.remove('hidden');
+          const defaultImg = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200&auto=format&fit=crop';
+          const imgSrc = exh.image || defaultImg;
 
-        // 4. Essay Description
-        if (essayContainer) {
-          essayContainer.innerHTML = `<p>${data.description || 'Details coming soon...'}</p>`;
-        }
-
-        // Show Page
-        loadingPanel?.classList.add('hidden');
-        pageContainer?.classList.remove('hidden');
+          itemDiv.innerHTML = `
+            <div class="exh-item-image-wrapper">
+              <img src="${imgSrc}" alt="${exh.title || 'Exhibition'}" class="exh-item-image" />
+            </div>
+            <div class="exh-item-details">
+              <h2 class="exh-item-title">${exh.title || 'Untitled Exhibition'}</h2>
+              <p class="exh-item-dates">${exh.dates || ''}</p>
+              <p class="exh-item-location">
+                <strong>${exh.venue || ''}</strong>${(exh.venue && exh.city) ? ' — ' : ''}<span>${exh.city || ''}</span>
+              </p>
+            </div>
+            ${exh.description ? `<p class="exh-item-description">${exh.description}</p>` : ''}
+          `;
+          listContainer.appendChild(itemDiv);
+        });
       } else {
-        if (titleContainer) titleContainer.textContent = 'No Featured Exhibition';
-        loadingPanel?.classList.add('hidden');
-        pageContainer?.classList.remove('hidden');
+        listContainer.innerHTML = '<p style="text-align: center; color: var(--color-text-muted); padding: 3rem 0;">No exhibitions or events listed at the moment.</p>';
       }
+
+      // Show Page
+      loadingPanel?.classList.add('hidden');
+      pageContainer?.classList.remove('hidden');
     } catch (err) {
-      console.warn('Exhibition client loading failed.', err);
-      if (titleContainer) titleContainer.textContent = 'Unable to Load Exhibition';
-      if (essayContainer) {
-        essayContainer.innerHTML = '<p style="color: var(--color-hockney-pink); font-weight: 600;">Unable to connect to the database. Please check your internet connection and try again.</p>';
-      }
+      console.warn('Exhibitions client loading failed.', err);
+      listContainer.innerHTML = '<p style="text-align: center; color: var(--color-hockney-pink); padding: 3rem 0;">Unable to load exhibitions. Please try again later.</p>';
       loadingPanel?.classList.add('hidden');
       pageContainer?.classList.remove('hidden');
     }
   }
 
   // Run immediately in case the script executes after astro:page-load has already fired
-  loadLiveExhibition();
+  loadLiveExhibitions();
 
   // Listen for subsequent transitions
-  document.addEventListener('astro:page-load', loadLiveExhibition);</script>
+  document.addEventListener('astro:page-load', loadLiveExhibitions);
+</script>
+
+<style is:global>
+  /* Exhibitions Page Layout Styles */
+  .exhibition-page-container {
+    width: 100%;
+    height: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .status-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-hockney-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .exh-list-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  .exh-list-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    grid-template-areas:
+      "image details"
+      "image description";
+    column-gap: 2.5rem;
+    row-gap: 0.5rem;
+    align-items: stretch;
+    width: 100%;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .exh-list-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .exh-item-image-wrapper {
+    grid-area: image;
+    height: 100%;
+    min-height: 140px;
+    width: 100%;
+    position: relative;
+    background-color: #fafafa;
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+  }
+
+  .exh-item-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .exh-list-item:hover .exh-item-image {
+    transform: scale(1.03);
+  }
+
+  .exh-item-details {
+    grid-area: details;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    min-height: 140px;
+  }
+
+  .exh-item-title {
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .exh-item-dates {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-hockney-green);
+    margin-bottom: 0.25rem;
+  }
+
+  .exh-item-location {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .exh-item-location strong {
+    color: var(--color-text);
+  }
+
+  .exh-item-description {
+    grid-area: description;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    white-space: pre-line;
+  }
+
+  /* Responsive layout tweaks for smaller viewports */
+  @media (max-width: 768px) {
+    .exh-list-item {
+      grid-template-columns: 140px 1fr;
+      grid-template-areas:
+        "image details"
+        "description description";
+      column-gap: 1.5rem;
+      row-gap: 1rem;
+      padding-bottom: 1.5rem;
+    }
+    .exh-item-image-wrapper {
+      min-height: 110px;
+      height: 100%;
+    }
+    .exh-item-details {
+      min-height: 110px;
+    }
+    .exh-item-title {
+      font-size: 1.3rem;
+    }
+  }
+
+  /* Mobile view layout: image displayed left of heading, description beneath both */
+  @media (max-width: 480px) {
+    .exhibition-page-container {
+      padding: 1.5rem 1rem;
+    }
+    .exh-list-item {
+      grid-template-columns: 110px 1fr;
+      grid-template-areas:
+        "image details"
+        "description description";
+      column-gap: 1.25rem;
+      row-gap: 1rem;
+      padding-bottom: 1.25rem;
+    }
+    .exh-item-image-wrapper {
+      min-height: 85px;
+      height: 100%;
+    }
+    .exh-item-details {
+      min-height: 85px;
+    }
+    .exh-item-title {
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+    .exh-item-dates {
+      font-size: 0.85rem;
+    }
+    .exh-item-location {
+      font-size: 0.8rem;
+    }
+  }
+</style>
+
