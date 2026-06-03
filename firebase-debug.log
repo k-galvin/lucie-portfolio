@@ -1,0 +1,61 @@
+[debug] [2026-06-03T16:39:49.956Z] ----------------------------------------------------------------------
+[debug] [2026-06-03T16:39:49.957Z] Command:       /Users/kategalvin/.nvm/versions/node/v26.3.0/bin/node /Users/kategalvin/.nvm/versions/node/v26.3.0/bin/firebase deploy
+[debug] [2026-06-03T16:39:49.957Z] CLI Version:   15.19.0
+[debug] [2026-06-03T16:39:49.957Z] Platform:      darwin
+[debug] [2026-06-03T16:39:49.957Z] Node Version:  v26.3.0
+[debug] [2026-06-03T16:39:49.957Z] Time:          Wed Jun 03 2026 09:39:49 GMT-0700 (Pacific Daylight Time)
+[debug] [2026-06-03T16:39:49.957Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-06-03T16:39:50.570Z] Field "/hosting/trailingSlash" in "firebase.json" is possibly invalid: must be boolean
+[debug] [2026-06-03T16:39:50.570Z] Field "/hosting" in "firebase.json" is possibly invalid: must be array
+[debug] [2026-06-03T16:39:50.570Z] Field "/hosting" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2026-06-03T16:39:50.571Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-06-03T16:39:50.571Z] > authorizing via signed-in user (katemgalvin@gmail.com)
+[debug] [2026-06-03T16:39:50.571Z] [iam] checking project lucie-portfolio-art for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2026-06-03T16:39:50.571Z] Checked if tokens are valid: false, expires at: 1780505536087
+[debug] [2026-06-03T16:39:50.572Z] Checked if tokens are valid: false, expires at: 1780505536087
+[debug] [2026-06-03T16:39:50.572Z] > refreshing access token with scopes: []
+[debug] [2026-06-03T16:39:50.572Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-06-03T16:39:50.572Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-06-03T16:39:51.901Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-06-03T16:39:51.902Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-06-03T16:39:51.919Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/lucie-portfolio-art:testIamPermissions [none]
+[debug] [2026-06-03T16:39:51.919Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/lucie-portfolio-art:testIamPermissions  x-goog-user-project=lucie-portfolio-art
+[debug] [2026-06-03T16:39:51.920Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/lucie-portfolio-art:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2026-06-03T16:39:52.626Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/lucie-portfolio-art:testIamPermissions 200
+[debug] [2026-06-03T16:39:52.627Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/lucie-portfolio-art:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2026-06-03T16:39:52.628Z] Checked if tokens are valid: true, expires at: 1780508390902
+[debug] [2026-06-03T16:39:52.628Z] Checked if tokens are valid: true, expires at: 1780508390902
+[debug] [2026-06-03T16:39:52.629Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/lucie-portfolio-art [none]
+[debug] [2026-06-03T16:39:53.528Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/lucie-portfolio-art 200
+[debug] [2026-06-03T16:39:53.528Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/lucie-portfolio-art {"projectId":"lucie-portfolio-art","projectNumber":"484173894135","displayName":"lucie-portfolio-art","name":"projects/lucie-portfolio-art","resources":{"hostingSite":"lucie-portfolio-art"},"state":"ACTIVE","etag":"1_bc59258b-b02d-4dbd-b13a-fc62ceb22528"}
+[info] 
+[info] === Deploying to 'lucie-portfolio-art'...
+[info] 
+[info] i  deploying storage, firestore, hosting 
+[info] i  storage: ensuring required API firebasestorage.googleapis.com is enabled... 
+[debug] [2026-06-03T16:39:53.535Z] Checked if tokens are valid: true, expires at: 1780508390902
+[debug] [2026-06-03T16:39:53.535Z] Checked if tokens are valid: true, expires at: 1780508390902
+[debug] [2026-06-03T16:39:53.536Z] >>> [apiv2][query] GET https://firebasestorage.googleapis.com/v1alpha/projects/lucie-portfolio-art/defaultBucket [none]
+[debug] [2026-06-03T16:39:54.393Z] <<< [apiv2][status] GET https://firebasestorage.googleapis.com/v1alpha/projects/lucie-portfolio-art/defaultBucket 200
+[debug] [2026-06-03T16:39:54.393Z] <<< [apiv2][body] GET https://firebasestorage.googleapis.com/v1alpha/projects/lucie-portfolio-art/defaultBucket {"name":"projects/lucie-portfolio-art/defaultBucket","location":"US-EAST1","bucket":{"name":"projects/lucie-portfolio-art/buckets/lucie-portfolio-art.firebasestorage.app"},"storageClass":"REGIONAL"}
+[info] i  firebase.storage: checking firebase.storage.rules for compilation errors... 
+[debug] [2026-06-03T16:39:54.396Z] Checked if tokens are valid: true, expires at: 1780508390902
+[debug] [2026-06-03T16:39:54.396Z] Checked if tokens are valid: true, expires at: 1780508390902
+[debug] [2026-06-03T16:39:54.397Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/lucie-portfolio-art:test [none]
+[debug] [2026-06-03T16:39:54.397Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/lucie-portfolio-art:test [omitted]
+[debug] [2026-06-03T16:39:55.262Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/lucie-portfolio-art:test 200
+[debug] [2026-06-03T16:39:55.263Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/lucie-portfolio-art:test {}
+[info] ✔  firebase.storage: rules file firebase.storage.rules compiled successfully 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2026-06-03T16:39:55.269Z] Checked if tokens are valid: true, expires at: 1780508390902
+[debug] [2026-06-03T16:39:55.269Z] Checked if tokens are valid: true, expires at: 1780508390902
+[debug] [2026-06-03T16:39:55.269Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/lucie-portfolio-art/databases/(default) [none]
+[debug] [2026-06-03T16:39:56.103Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/lucie-portfolio-art/databases/(default) 200
+[debug] [2026-06-03T16:39:56.103Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/lucie-portfolio-art/databases/(default) {"name":"projects/lucie-portfolio-art/databases/(default)","uid":"54f1cbac-23e6-40ce-8ff9-cf84058b5025","createTime":"2026-06-02T17:42:03.188652Z","updateTime":"2026-06-02T17:42:03.188652Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2026-06-03T15:39:56.020540Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"IPfhjJ/B65QDMJuqjJOO6ZQD"}
+[info] i  cloud.firestore: checking firestore.rules for compilation errors... 
+[debug] [2026-06-03T16:39:56.108Z] Checked if tokens are valid: true, expires at: 1780508390902
+[debug] [2026-06-03T16:39:56.108Z] Checked if tokens are valid: true, expires at: 1780508390902
+[debug] [2026-06-03T16:39:56.108Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/lucie-portfolio-art:test [none]
+[debug] [2026-06-03T16:39:56.108Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/lucie-portfolio-art:test [omitted]

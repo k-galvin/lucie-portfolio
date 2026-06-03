@@ -65,7 +65,6 @@ import Layout from '../layouts/Layout.astro';
     height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: brightness(0.85);
   }
 
   .slide-overlay {
@@ -74,7 +73,6 @@ import Layout from '../layouts/Layout.astro';
     left: 0;
     width: 100%;
     padding: 6% 8%;
-    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
     color: #ffffff;
     z-index: 3;
     pointer-events: none;
@@ -92,15 +90,19 @@ import Layout from '../layouts/Layout.astro';
     margin-bottom: 0.5rem;
     line-height: 1.1;
     letter-spacing: -0.03em;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    text-shadow: 
+      0 2px 10px rgba(0, 0, 0, 0.35),
+      0 4px 20px rgba(0, 0, 0, 0.25);
   }
 
   .slide-subtitle {
     font-size: clamp(1rem, 1.5vw, 1.25rem);
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
     margin-bottom: 1.5rem;
-    text-shadow: 0 1px 5px rgba(0,0,0,0.3);
+    text-shadow: 
+      0 1px 6px rgba(0, 0, 0, 0.35),
+      0 3px 12px rgba(0, 0, 0, 0.25);
   }
 
   .slide-cta {
@@ -193,20 +195,33 @@ import Layout from '../layouts/Layout.astro';
       }
 
       if (slidesData.length === 0) {
-        // Fallback if no settings yet
-        slideshow.innerHTML = `
-          <div class="slide active">
-            <img src="/images/lucie_portrait.png" alt="Lucie Galvin" class="slide-image" />
-            <div class="slide-overlay">
-              <div class="slide-content">
-                <h2 class="slide-title">Lucie Galvin</h2>
-                <p class="slide-subtitle">Paper Pictures, Drawing & Printmaking</p>
-                <a href="/artworks" class="slide-cta"><span>View Gallery</span></a>
-              </div>
-            </div>
-          </div>
-        `;
-        return;
+        // Fallback if no settings yet (4 default slides)
+        slidesData = [
+          {
+            image: '/images/lucie_portrait.png',
+            title: 'Lucie Galvin',
+            subtitle: 'Paper Pictures, Drawing & Printmaking',
+            link: '/artworks'
+          },
+          {
+            image: '/images/lucie_studio.png',
+            title: 'In the Studio',
+            subtitle: 'Traditional Drawing & Fine Art Printmaking',
+            link: '/about'
+          },
+          {
+            image: '/images/lucie_landscape.png',
+            title: 'Landscape Series',
+            subtitle: 'Original Paper Pictures & Collages',
+            link: '/artworks'
+          },
+          {
+            image: '/images/lucie_portrait.png',
+            title: 'Fine Art Prints',
+            subtitle: 'Explore Available Prints & Artwork Collections',
+            link: '/artworks'
+          }
+        ];
       }
 
       // Build Slides
@@ -218,7 +233,7 @@ import Layout from '../layouts/Layout.astro';
               <h2 class="slide-title">${slide.title}</h2>
               <p class="slide-subtitle">${slide.subtitle}</p>
               <a href="${slide.link || '/artworks'}" class="slide-cta">
-                <span>Explore</span>
+                <span>Explore Paper Pictures</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cta-arrow">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>

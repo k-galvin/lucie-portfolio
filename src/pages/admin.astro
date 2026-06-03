@@ -290,7 +290,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <!-- Slide 3 -->
-            <div class="form-slide-editor" style="margin-top: 2rem; border-bottom: none;">
+            <div class="form-slide-editor" style="margin-top: 2rem;">
               <h3 class="slide-header">Slide 3</h3>
               <div class="form-group">
                 <label for="slide3-image-file" class="form-label">Upload Image</label>
@@ -313,6 +313,33 @@ import Layout from '../layouts/Layout.astro';
               <div class="form-group">
                 <label for="slide3-link" class="form-label">Action Link</label>
                 <input type="text" id="slide3-link" required class="form-input" value="/contact" />
+              </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="form-slide-editor" style="margin-top: 2rem; border-bottom: none;">
+              <h3 class="slide-header">Slide 4</h3>
+              <div class="form-group">
+                <label for="slide4-image-file" class="form-label">Upload Image</label>
+                <input type="file" id="slide4-image-file" class="form-input-file" accept="image/*" />
+              </div>
+              <input type="hidden" id="slide4-image" />
+              <div id="slide4-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
+                <img id="slide4-image-preview" src="" alt="Slide 4 Preview" style="width: 100%; height: 100%; object-fit: cover;" />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="slide4-title" class="form-label">Title</label>
+                  <input type="text" id="slide4-title" required class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label for="slide4-subtitle" class="form-label">Subtitle</label>
+                  <input type="text" id="slide4-subtitle" required class="form-input" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="slide4-link" class="form-label">Action Link</label>
+                <input type="text" id="slide4-link" required class="form-input" value="/exhibitions" />
               </div>
             </div>
 
@@ -1037,22 +1064,30 @@ import Layout from '../layouts/Layout.astro';
     const s2Sub = document.getElementById('slide2-subtitle') as HTMLInputElement;
     const s2Link = document.getElementById('slide2-link') as HTMLInputElement;
     
-    const s3Img = document.getElementById('slide3-image') as HTMLInputElement;
+     const s3Img = document.getElementById('slide3-image') as HTMLInputElement;
     const s3Title = document.getElementById('slide3-title') as HTMLInputElement;
     const s3Sub = document.getElementById('slide3-subtitle') as HTMLInputElement;
     const s3Link = document.getElementById('slide3-link') as HTMLInputElement;
 
+    const s4Img = document.getElementById('slide4-image') as HTMLInputElement;
+    const s4Title = document.getElementById('slide4-title') as HTMLInputElement;
+    const s4Sub = document.getElementById('slide4-subtitle') as HTMLInputElement;
+    const s4Link = document.getElementById('slide4-link') as HTMLInputElement;
+
     const s1File = document.getElementById('slide1-image-file') as HTMLInputElement;
     const s2File = document.getElementById('slide2-image-file') as HTMLInputElement;
     const s3File = document.getElementById('slide3-image-file') as HTMLInputElement;
+    const s4File = document.getElementById('slide4-image-file') as HTMLInputElement;
 
     const s1Preview = document.getElementById('slide1-image-preview') as HTMLImageElement;
     const s2Preview = document.getElementById('slide2-image-preview') as HTMLImageElement;
     const s3Preview = document.getElementById('slide3-image-preview') as HTMLImageElement;
+    const s4Preview = document.getElementById('slide4-image-preview') as HTMLImageElement;
 
     const s1PreviewContainer = document.getElementById('slide1-image-preview-container');
     const s2PreviewContainer = document.getElementById('slide2-image-preview-container');
     const s3PreviewContainer = document.getElementById('slide3-image-preview-container');
+    const s4PreviewContainer = document.getElementById('slide4-image-preview-container');
 
     // Active state helpers
     let currentArtworks: Artwork[] = [];
@@ -1337,6 +1372,16 @@ import Layout from '../layouts/Layout.astro';
               s3PreviewContainer.classList.remove('hidden');
             }
           }
+          if (slides[3]) {
+            s4Img.value = slides[3].image || '';
+            s4Title.value = slides[3].title || '';
+            s4Sub.value = slides[3].subtitle || '';
+            s4Link.value = slides[3].link || '/exhibitions';
+            if (slides[3].image && s4Preview && s4PreviewContainer) {
+              s4Preview.src = slides[3].image;
+              s4PreviewContainer.classList.remove('hidden');
+            }
+          }
         }
       } catch (err) {
         console.error("Load Homepage Settings Error:", err);
@@ -1473,6 +1518,18 @@ import Layout from '../layouts/Layout.astro';
         reader.onload = (e) => {
           s3Preview.src = e.target?.result as string;
           s3PreviewContainer.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    s4File?.addEventListener('change', () => {
+      const file = s4File.files?.[0];
+      if (file && s4Preview && s4PreviewContainer) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          s4Preview.src = e.target?.result as string;
+          s4PreviewContainer.classList.remove('hidden');
         };
         reader.readAsDataURL(file);
       }
@@ -1705,6 +1762,7 @@ import Layout from '../layouts/Layout.astro';
         let s1Url = s1Img.value;
         let s2Url = s2Img.value;
         let s3Url = s3Img.value;
+        let s4Url = s4Img.value;
 
         const file1 = s1File?.files?.[0];
         if (file1) {
@@ -1730,6 +1788,14 @@ import Layout from '../layouts/Layout.astro';
           s3Url = await getDownloadURL(snapshot.ref);
         }
 
+        const file4 = s4File?.files?.[0];
+        if (file4) {
+          const filename = `${Date.now()}_hero4_${file4.name}`;
+          const storageRef = ref(storage, `artwork/${filename}`);
+          const snapshot = await uploadBytes(storageRef, file4);
+          s4Url = await getDownloadURL(snapshot.ref);
+        }
+
         if (!s1Url) {
           throw new Error('Please upload an image for Slide 1.');
         }
@@ -1739,12 +1805,16 @@ import Layout from '../layouts/Layout.astro';
         if (!s3Url) {
           throw new Error('Please upload an image for Slide 3.');
         }
+        if (!s4Url) {
+          throw new Error('Please upload an image for Slide 4.');
+        }
 
         const homepageData = {
           heroSlides: [
             { image: s1Url, title: s1Title.value, subtitle: s1Sub.value, link: s1Link.value },
             { image: s2Url, title: s2Title.value, subtitle: s2Sub.value, link: s2Link.value },
-            { image: s3Url, title: s3Title.value, subtitle: s3Sub.value, link: s3Link.value }
+            { image: s3Url, title: s3Title.value, subtitle: s3Sub.value, link: s3Link.value },
+            { image: s4Url, title: s4Title.value, subtitle: s4Sub.value, link: s4Link.value }
           ]
         };
 
