@@ -77,8 +77,8 @@ import Layout from '../layouts/Layout.astro';
                       <th>Image</th>
                       <th>Title</th>
                       <th>Type</th>
-                      <th>Availability</th>
-                      <th>Price</th>
+                      <th>Status</th>
+                      <th>Prints</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -123,8 +123,8 @@ import Layout from '../layouts/Layout.astro';
 
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="art-show" class="form-label">Exhibition / Show</label>
-                    <input type="text" id="art-show" class="form-input" placeholder="Splashed Pools or Independent" value="Independent" />
+                    <label for="art-show" class="form-label">Exhibition / Show (Optional)</label>
+                    <input type="text" id="art-show" class="form-input" placeholder="e.g. Library Show" />
                   </div>
                   <div class="form-group">
                     <label for="art-avail" class="form-label">Status (Optional)</label>
@@ -137,17 +137,30 @@ import Layout from '../layouts/Layout.astro';
                 </div>
 
                 <div class="form-row">
-                  <div class="form-group">
-                    <label for="art-subject" class="form-label">Subject</label>
-                    <select id="art-subject" required class="form-select">
-                      <option value="garden">Garden</option>
-                      <option value="ocean">Ocean</option>
-                      <option value="boat">Boat</option>
-                      <option value="people">People</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <span class="form-label">&nbsp;</span>
+                  <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">Subject (Optional)</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; margin-top: 0.35rem; padding: 0.5rem 0.75rem; border-bottom: 1.5px solid var(--color-border); background-color: #fafafa;">
+                      <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <input type="checkbox" name="subject" value="gardens" id="subj-gardens" style="width: auto; cursor: pointer; height: 16px; width: 16px;" />
+                        <label for="subj-gardens" style="cursor: pointer; text-transform: none; font-size: 0.85rem; font-weight: 500; margin: 0; color: var(--color-text);">Gardens</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <input type="checkbox" name="subject" value="water" id="subj-water" style="width: auto; cursor: pointer; height: 16px; width: 16px;" />
+                        <label for="subj-water" style="cursor: pointer; text-transform: none; font-size: 0.85rem; font-weight: 500; margin: 0; color: var(--color-text);">Water</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <input type="checkbox" name="subject" value="boats" id="subj-boats" style="width: auto; cursor: pointer; height: 16px; width: 16px;" />
+                        <label for="subj-boats" style="cursor: pointer; text-transform: none; font-size: 0.85rem; font-weight: 500; margin: 0; color: var(--color-text);">Boats</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <input type="checkbox" name="subject" value="people" id="subj-people" style="width: auto; cursor: pointer; height: 16px; width: 16px;" />
+                        <label for="subj-people" style="cursor: pointer; text-transform: none; font-size: 0.85rem; font-weight: 500; margin: 0; color: var(--color-text);">People</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <input type="checkbox" name="subject" value="beach" id="subj-beach" style="width: auto; cursor: pointer; height: 16px; width: 16px;" />
+                        <label for="subj-beach" style="cursor: pointer; text-transform: none; font-size: 0.85rem; font-weight: 500; margin: 0; color: var(--color-text);">Beach</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -981,7 +994,7 @@ import Layout from '../layouts/Layout.astro';
     const artInputType = document.getElementById('art-type') as HTMLSelectElement;
     const artInputShow = document.getElementById('art-show') as HTMLInputElement;
     const artInputAvail = document.getElementById('art-avail') as HTMLSelectElement;
-    const artInputSubject = document.getElementById('art-subject') as HTMLSelectElement;
+    const artSubjectCheckboxes = document.querySelectorAll('input[name="subject"]') as NodeListOf<HTMLInputElement>;
     const artInputWidth = document.getElementById('art-width') as HTMLInputElement;
     const artInputHeight = document.getElementById('art-height') as HTMLInputElement;
     const artInputUnit = document.getElementById('art-unit') as HTMLSelectElement;
@@ -1138,6 +1151,18 @@ import Layout from '../layouts/Layout.astro';
 
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
+          
+          let subjects: string[] = [];
+          if (Array.isArray(data.subject)) {
+            subjects = data.subject;
+          } else if (typeof data.subject === 'string' && data.subject) {
+            let s = data.subject.toLowerCase();
+            if (s === 'boat') s = 'boats';
+            if (s === 'ocean') s = 'water';
+            if (s === 'garden') s = 'gardens';
+            subjects = [s];
+          }
+
           const artwork: Artwork = {
             id: docSnap.id,
             title: data.title,
@@ -1145,12 +1170,14 @@ import Layout from '../layouts/Layout.astro';
             typeOfWork: data.typeOfWork,
             show: data.show,
             availability: data.availability || '',
-            subject: data.subject || 'garden',
+            subject: subjects,
             imageUrl: data.imageUrl,
             dimensions: data.dimensions,
             medium: data.medium,
             price: data.price,
-            order: data.order ?? 999 // Default high number for existing works
+            order: data.order ?? 999, // Default high number for existing works
+            isPrint: data.isPrint || false,
+            printLink: data.printLink || ''
           };
           currentArtworks.push(artwork);
         });
@@ -1168,8 +1195,8 @@ import Layout from '../layouts/Layout.astro';
             <td><img src="${artwork.imageUrl}" class="table-thumb" alt="thumb"/></td>
             <td><strong>${artwork.title}</strong></td>
             <td>${artwork.typeOfWork}</td>
-            <td><span style="font-size:0.75rem; font-weight:600;">${artwork.availability}</span></td>
-            <td>${artwork.price ? `$${artwork.price}` : '—'}</td>
+            <td>${artwork.availability || '—'}</td>
+            <td>${artwork.isPrint ? 'Yes' : 'No'}</td>
             <td>
               <div class="btn-row">
                 <button class="sm-btn move-up-btn" title="Move Up" ${index === 0 ? 'disabled' : ''}>↑</button>
@@ -1338,6 +1365,7 @@ import Layout from '../layouts/Layout.astro';
       artPrintLinkGroup?.classList.add('hidden');
       artPrintLink.required = false;
       artPrintLink.value = '';
+      artSubjectCheckboxes.forEach(cb => { cb.checked = false; });
       artworkFormPanel?.classList.remove('hidden');
     };
 
@@ -1358,9 +1386,12 @@ import Layout from '../layouts/Layout.astro';
       artInputTitle.value = art.title;
       artInputYear.value = art.year.toString();
       artInputType.value = art.typeOfWork;
-      artInputShow.value = art.show;
+      artInputShow.value = art.show || '';
       artInputAvail.value = art.availability;
-      artInputSubject.value = art.subject || 'garden';
+      const artworkSubjects = art.subject || [];
+      artSubjectCheckboxes.forEach(cb => {
+        cb.checked = artworkSubjects.includes(cb.value);
+      });
       artInputWidth.value = art.dimensions.width.toString();
       artInputHeight.value = art.dimensions.height.toString();
       artInputUnit.value = art.dimensions.unit;
@@ -1536,13 +1567,15 @@ import Layout from '../layouts/Layout.astro';
           throw new Error('An artwork image or URL is required.');
         }
 
+        const selectedSubjects = Array.from(artSubjectCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+
         const artworkData: any = {
           title: artInputTitle.value,
           year: parseInt(artInputYear.value),
           typeOfWork: artInputType.value,
-          show: artInputShow.value || 'Independent',
+          show: artInputShow.value || '',
           availability: artInputAvail.value,
-          subject: artInputSubject.value,
+          subject: selectedSubjects,
           imageUrl: imageUrl,
           dimensions: {
             width: parseFloat(artInputWidth.value),

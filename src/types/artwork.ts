@@ -14,9 +14,9 @@ export interface Artwork {
   title: string;
   year: number;
   typeOfWork: TypeOfWork;
-  show: string; // The exhibition where it was shown, or 'Independent'
+  show?: string; // The exhibition where it was shown (optional)
   availability: Availability;
-  subject?: string; // e.g., 'boat', 'ocean', 'garden', 'people'
+  subject?: string[]; // e.g., ['boats', 'water']
   imageUrl: string;
   dimensions: Dimensions;
   medium: string;
