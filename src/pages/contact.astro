@@ -233,6 +233,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
   import { db } from '../lib/firebase';
   import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+  import { validateEmail, shouldBlockSubmit } from '../lib/utils';
 
   function initContactForm() {
     const form = document.getElementById('contact-form') as HTMLFormElement;
@@ -267,7 +268,21 @@ import Layout from '../layouts/Layout.astro';
         const messageVal = messageInput?.value || '';
         const honeyVal = honeyInput?.value || '';
 
-        // 1. Submit backup to Firestore database
+        // Standard validation check
+        if (emailInput && (!emailInput.checkValidity() || !validateEmail(emailVal))) {
+          emailInput.reportValidity();
+          return;
+        }
+
+        // 1. Spam prevention (Honeypot)
+        if (shouldBlockSubmit(honeyVal)) {
+          // Silently drop spam submission and simulate success to satisfy bots
+          statusSuccess?.classList.remove('hidden');
+          form.reset();
+          return;
+        }
+
+        // 2. Submit backup to Firestore database
         await addDoc(collection(db, 'messages'), {
           name: nameVal,
           email: emailVal,

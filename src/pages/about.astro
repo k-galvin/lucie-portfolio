@@ -46,6 +46,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
   import { db } from '../lib/firebase';
   import { doc, getDoc } from 'firebase/firestore';
+  import { splitBioParagraphs } from '../lib/utils';
 
   async function loadLiveBiography() {
     const container = document.getElementById('bio-text-container');
@@ -60,8 +61,7 @@ import Layout from '../layouts/Layout.astro';
         const bioText = data.text || '';
 
         if (bioText) {
-          // Split by two or more newlines to identify true paragraphs
-          const paragraphs = bioText.split(/\n\s*\n/).map((p: string) => p.trim()).filter((p: string) => p.length > 0);
+          const paragraphs = splitBioParagraphs(bioText);
           
           if (paragraphs.length > 0) {
             // Replace the spinner with actual content

@@ -501,6 +501,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
   import { db } from '../lib/firebase';
   import { collection, getDocs } from 'firebase/firestore';
+  import { normalizeSubjects, formatStatus, formatDimensions, filterArtworks } from '../lib/utils';
 
   function initArtworkGallery() {
     const grid = document.getElementById('artworks-grid');
@@ -517,21 +518,27 @@ import Layout from '../layouts/Layout.astro';
       const yearVal = selectYear?.value || 'all';
       const showVal = selectShow?.value || 'all';
       const subjectVal = selectSubject?.value || 'all';
-      const searchVal = inputSearch?.value.toLowerCase().trim() || '';
+      const searchVal = inputSearch?.value || '';
 
       let visibleCount = 0;
 
       cards.forEach((card) => {
-        const matchesYear = yearVal === 'all' || card.dataset.year === yearVal;
-        const matchesShow = showVal === 'all' || card.dataset.show === showVal;
-        const cardSubjects = card.dataset.subject ? card.dataset.subject.split(',') : [];
-        const matchesSubject = subjectVal === 'all' || cardSubjects.includes(subjectVal);
-        
-        // Search matches title in overlay or data attribute (we'll look at the title text specifically)
-        const titleText = card.querySelector('.overlay-title')?.textContent?.toLowerCase() || '';
-        const matchesSearch = searchVal === '' || titleText.includes(searchVal);
+        const matches = filterArtworks(
+          {
+            year: card.dataset.year || '',
+            show: card.dataset.show || '',
+            subjects: card.dataset.subject ? card.dataset.subject.split(',') : [],
+            title: card.querySelector('.overlay-title')?.textContent || ''
+          },
+          {
+            yearVal,
+            showVal,
+            subjectVal,
+            searchVal
+          }
+        );
 
-        if (matchesYear && matchesShow && matchesSubject && matchesSearch) {
+        if (matches) {
           card.classList.remove('filtered-out');
           visibleCount++;
         } else {
@@ -625,14 +632,7 @@ import Layout from '../layouts/Layout.astro';
             const id = data.id;
             const title = data.title || '';
             const medium = data.medium || '';
-            const rawAvailability = data.availability || '';
-            let availability = '';
-            const lowerAvail = rawAvailability.trim().toLowerCase();
-            if (lowerAvail === 'private collection' || lowerAvail === 'in private collection') {
-              availability = 'In private collection';
-            } else if (lowerAvail === 'on exhibition') {
-              availability = 'On exhibition';
-            }
+            const status = formatStatus(data.status);
             const year = data.year || 2026;
             const show = data.show || '';
             
@@ -640,24 +640,13 @@ import Layout from '../layouts/Layout.astro';
             if (show) liveShows.add(show);
 
             const type = data.typeOfWork || 'Paper Picture';
-            
-            // Normalize subject to string[]
-            let subjects: string[] = [];
-            if (Array.isArray(data.subject)) {
-              subjects = data.subject;
-            } else if (typeof data.subject === 'string' && data.subject) {
-              let s = data.subject.toLowerCase();
-              if (s === 'boat') s = 'boats';
-              if (s === 'ocean') s = 'water';
-              if (s === 'garden') s = 'gardens';
-              subjects = [s];
-            }
-
+            const subjects = normalizeSubjects(data.subject);
             const imageUrl = data.imageUrl || '';
             const price = data.price;
             const width = data.dimensions?.width || '';
             const height = data.dimensions?.height || '';
             const unit = data.dimensions?.unit || 'in';
+            const dimString = formatDimensions(width, height, unit);
 
             const card = document.createElement('div');
             card.className = 'artwork-card fade-in';
@@ -666,7 +655,7 @@ import Layout from '../layouts/Layout.astro';
             card.dataset.type = type;
             card.dataset.show = show;
             card.dataset.subject = subjects.join(',');
-            card.dataset.availability = availability;
+            card.dataset.status = status;
 
             card.innerHTML = `
               <div class="artwork-image-container" style="${width && height ? `aspect-ratio: ${width} / ${height};` : ''}">
@@ -675,12 +664,10 @@ import Layout from '../layouts/Layout.astro';
                   <div class="overlay-details">
                     <h3 class="overlay-title">${title}</h3>
                     <p class="overlay-meta">${medium}</p>
-                    <p class="overlay-meta">
-                      ${width} × ${height} ${unit}
-                    </p>
+                    ${dimString ? `<p class="overlay-meta">${dimString}</p>` : ''}
                     <p class="overlay-meta">${year}</p>
                     <div class="overlay-footer">
-                      ${availability ? `<span class="status-badge">${availability}</span>` : '<span></span>'}
+                      ${status ? `<span class="status-badge">${status}</span>` : '<span></span>'}
                       ${price ? `<span class="overlay-price">$${price}</span>` : ''}
                     </div>
                     ${data.isPrint && data.printLink ? `

@@ -66,11 +66,6 @@ import Layout from '../layouts/Layout.astro';
     object-fit: cover;
     object-position: center;
     filter: brightness(0.85);
-    transition: transform 8s ease;
-  }
-
-  .slide.active .slide-image {
-    transform: scale(1.05);
   }
 
   .slide-overlay {
@@ -247,11 +242,12 @@ import Layout from '../layouts/Layout.astro';
     }
   }
 
+  let activeSlideInterval: number | undefined;
+
   function startSliderLogic() {
     const slides = document.querySelectorAll('.slide');
     const dots = document.querySelectorAll('.dot');
     let currentSlide = 0;
-    let slideInterval: number;
 
     const showSlide = (index: number) => {
       slides.forEach((slide) => slide.classList.remove('active'));
@@ -272,8 +268,8 @@ import Layout from '../layouts/Layout.astro';
     };
 
     const startAutoplay = () => {
-      if (slideInterval) clearInterval(slideInterval);
-      slideInterval = window.setInterval(nextSlide, 6000);
+      if (activeSlideInterval) clearInterval(activeSlideInterval);
+      activeSlideInterval = window.setInterval(nextSlide, 6000);
     };
 
     dots.forEach((dot) => {
@@ -289,4 +285,11 @@ import Layout from '../layouts/Layout.astro';
 
   // Hook into lifecycle
   document.addEventListener('astro:page-load', initHeroSlider);
+
+  document.addEventListener('astro:before-swap', () => {
+    if (activeSlideInterval) {
+      clearInterval(activeSlideInterval);
+      activeSlideInterval = undefined;
+    }
+  });
 </script>

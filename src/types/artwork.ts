@@ -1,6 +1,6 @@
 export type TypeOfWork = 'Paper Picture' | 'Drawing' | 'Photograph' | 'Painting' | 'Print' | string;
 
-export type Availability = 'Available' | 'Sold' | 'Private Collection' | 'On Exhibition' | '';
+export type ArtworkStatus = 'Private Collection' | 'On Exhibition' | '';
 
 export interface Dimensions {
   width: number;
@@ -15,7 +15,7 @@ export interface Artwork {
   year: number;
   typeOfWork: TypeOfWork;
   show?: string; // The exhibition where it was shown (optional)
-  availability: Availability;
+  status?: ArtworkStatus;
   subject?: string[]; // e.g., ['boats', 'water']
   imageUrl: string;
   dimensions: Dimensions;

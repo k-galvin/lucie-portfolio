@@ -938,6 +938,7 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
   import { auth, db, storage } from '../lib/firebase';
+  import { normalizeSubjects, checkPrintLinkRequired } from '../lib/utils';
   import { 
     onAuthStateChanged, 
     signInWithEmailAndPassword, 
@@ -1151,26 +1152,14 @@ import Layout from '../layouts/Layout.astro';
 
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
-          
-          let subjects: string[] = [];
-          if (Array.isArray(data.subject)) {
-            subjects = data.subject;
-          } else if (typeof data.subject === 'string' && data.subject) {
-            let s = data.subject.toLowerCase();
-            if (s === 'boat') s = 'boats';
-            if (s === 'ocean') s = 'water';
-            if (s === 'garden') s = 'gardens';
-            subjects = [s];
-          }
-
           const artwork: Artwork = {
             id: docSnap.id,
             title: data.title,
             year: data.year,
             typeOfWork: data.typeOfWork,
             show: data.show,
-            availability: data.availability || '',
-            subject: subjects,
+            status: data.status || '',
+            subject: normalizeSubjects(data.subject),
             imageUrl: data.imageUrl,
             dimensions: data.dimensions,
             medium: data.medium,
@@ -1195,7 +1184,7 @@ import Layout from '../layouts/Layout.astro';
             <td><img src="${artwork.imageUrl}" class="table-thumb" alt="thumb"/></td>
             <td><strong>${artwork.title}</strong></td>
             <td>${artwork.typeOfWork}</td>
-            <td>${artwork.availability || '—'}</td>
+            <td>${artwork.status || '—'}</td>
             <td>${artwork.isPrint ? 'Yes' : 'No'}</td>
             <td>
               <div class="btn-row">
@@ -1387,7 +1376,7 @@ import Layout from '../layouts/Layout.astro';
       artInputYear.value = art.year.toString();
       artInputType.value = art.typeOfWork;
       artInputShow.value = art.show || '';
-      artInputAvail.value = art.availability;
+      artInputAvail.value = art.status || '';
       const artworkSubjects = art.subject || [];
       artSubjectCheckboxes.forEach(cb => {
         cb.checked = artworkSubjects.includes(cb.value);
@@ -1540,6 +1529,10 @@ import Layout from '../layouts/Layout.astro';
       if (submitBtn) submitBtn.disabled = true;
 
       try {
+        if (!checkPrintLinkRequired(artIsPrint.checked, artPrintLink.value)) {
+          throw new Error('A valid print link is required when available as print.');
+        }
+
         const id = artInputId.value;
         const file = artInputImage.files?.[0];
         let imageUrl = '';
@@ -1569,24 +1562,27 @@ import Layout from '../layouts/Layout.astro';
 
         const selectedSubjects = Array.from(artSubjectCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
 
-        const artworkData: any = {
+        const artworkData: Omit<Artwork, 'id' | 'order'> & { order?: number; price?: number } = {
           title: artInputTitle.value,
           year: parseInt(artInputYear.value),
           typeOfWork: artInputType.value,
           show: artInputShow.value || '',
-          availability: artInputAvail.value,
+          status: artInputAvail.value as any,
           subject: selectedSubjects,
           imageUrl: imageUrl,
           dimensions: {
             width: parseFloat(artInputWidth.value),
             height: parseFloat(artInputHeight.value),
-            unit: artInputUnit.value
+            unit: artInputUnit.value as any
           },
           medium: artInputMedium.value,
-          price: artInputPrice.value ? parseFloat(artInputPrice.value) : null,
           isPrint: artIsPrint.checked,
           printLink: artIsPrint.checked ? artPrintLink.value : ''
         };
+
+        if (artInputPrice.value) {
+          artworkData.price = parseFloat(artInputPrice.value);
+        }
 
         if (id) {
           // Edit existing document

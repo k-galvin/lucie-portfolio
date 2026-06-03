@@ -54,6 +54,15 @@ import Layout from '../layouts/Layout.astro';
   import { db } from '../lib/firebase';
   import { doc, getDoc } from 'firebase/firestore';
 
+  interface Exhibition {
+    title?: string;
+    dates?: string;
+    venue?: string;
+    city?: string;
+    description?: string;
+    image?: string;
+  }
+
   let loaded = false;
 
   async function loadLiveExhibition() {
@@ -80,7 +89,7 @@ import Layout from '../layouts/Layout.astro';
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        const data = docSnap.data();
+        const data = docSnap.data() as Exhibition;
 
         // 1. Image
         if (imgElem) {
@@ -118,6 +127,10 @@ import Layout from '../layouts/Layout.astro';
       }
     } catch (err) {
       console.warn('Exhibition client loading failed.', err);
+      if (titleContainer) titleContainer.textContent = 'Unable to Load Exhibition';
+      if (essayContainer) {
+        essayContainer.innerHTML = '<p style="color: var(--color-hockney-pink); font-weight: 600;">Unable to connect to the database. Please check your internet connection and try again.</p>';
+      }
       loadingPanel?.classList.add('hidden');
       pageContainer?.classList.remove('hidden');
     }
@@ -127,5 +140,4 @@ import Layout from '../layouts/Layout.astro';
   loadLiveExhibition();
 
   // Listen for subsequent transitions
-  document.addEventListener('astro:page-load', loadLiveExhibition);
-</script>
+  document.addEventListener('astro:page-load', loadLiveExhibition);</script>
