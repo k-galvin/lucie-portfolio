@@ -102,7 +102,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
   import { db } from '../lib/firebase';
   import { doc, getDoc } from 'firebase/firestore';
-  import { splitBioParagraphs } from '../lib/utils';
+  import { splitBioParagraphs, parseMarkdownLinks } from '../lib/utils';
 
   async function loadLiveBiography() {
     const container = document.getElementById('bio-text-container');
@@ -122,7 +122,7 @@ import Layout from '../layouts/Layout.astro';
           if (paragraphs.length > 0) {
             // Replace the spinner with actual content
             container.innerHTML = paragraphs
-              .map((pText: string) => `<p>${pText}</p>`)
+              .map((pText: string) => `<p>${parseMarkdownLinks(pText)}</p>`)
               .join('');
           }
         }

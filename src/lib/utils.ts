@@ -62,6 +62,17 @@ export function splitBioParagraphs(bioText: string): string[] {
 }
 
 /**
+ * Parses markdown links [Text](URL) in a string and converts them into HTML anchor tags.
+ */
+export function parseMarkdownLinks(text: string): string {
+  if (!text) return '';
+  return text.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
+}
+
+/**
  * Filters artworks based on criteria.
  */
 export interface FilterCriteria {

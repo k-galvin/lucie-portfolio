@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeSubjects, formatStatus, formatDimensions, splitBioParagraphs } from '../lib/utils';
+import { normalizeSubjects, formatStatus, formatDimensions, splitBioParagraphs, parseMarkdownLinks } from '../lib/utils';
 
 describe('normalizeSubjects', () => {
   it('should handle empty or undefined inputs', () => {
@@ -84,5 +84,32 @@ describe('splitBioParagraphs', () => {
       'Line one.\nLine two.',
       'Paragraph two.'
     ]);
+  });
+});
+
+describe('parseMarkdownLinks', () => {
+  it('should return empty string for empty inputs', () => {
+    expect(parseMarkdownLinks('')).toBe('');
+    expect(parseMarkdownLinks(null as any)).toBe('');
+  });
+
+  it('should parse simple markdown links into HTML anchors', () => {
+    const input = 'Check out [Saatchi Art](https://saatchi.com/123) for details.';
+    expect(parseMarkdownLinks(input)).toBe(
+      'Check out <a href="https://saatchi.com/123" target="_blank" rel="noopener noreferrer">Saatchi Art</a> for details.'
+    );
+  });
+
+  it('should parse multiple markdown links in one text block', () => {
+    const input = 'Read [Bio](https://bio.com) or [Store](https://store.com).';
+    expect(parseMarkdownLinks(input)).toBe(
+      'Read <a href="https://bio.com" target="_blank" rel="noopener noreferrer">Bio</a> or <a href="https://store.com" target="_blank" rel="noopener noreferrer">Store</a>.'
+    );
+  });
+
+  it('should leave normal text unchanged', () => {
+    expect(parseMarkdownLinks('Normal biography text with no links.')).toBe(
+      'Normal biography text with no links.'
+    );
   });
 });
