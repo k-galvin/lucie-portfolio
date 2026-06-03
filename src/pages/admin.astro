@@ -1199,7 +1199,7 @@ import Layout from '../layouts/Layout.astro';
             dimensions: data.dimensions,
             medium: data.medium,
             price: data.price,
-            order: data.order ?? 999, // Default high number for existing works
+            order: data.order ?? 0, // Default to 0 so new works sort to the bottom
             isPrint: data.isPrint || false,
             printLink: data.printLink || ''
           };
