@@ -230,7 +230,12 @@ import Layout from '../layouts/Layout.astro';
     height: auto;
     display: block;
     object-fit: contain;
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .artwork-image.loaded {
+    opacity: 1;
   }
 
   /* Overlay details panel */
@@ -326,6 +331,49 @@ import Layout from '../layouts/Layout.astro';
 
   .empty-state.hidden {
     display: none !important;
+  }
+
+  /* Prettier Loading State */
+  .loading-state {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    z-index: 100;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f0f0f0;
+    border-radius: 50%;
+    border-top-color: var(--color-hockney-blue);
+    animation: rotate-loader 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  .loading-text {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    animation: pulse-text 1.5s ease-in-out infinite;
+    margin: 0;
+  }
+
+  @keyframes rotate-loader {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse-text {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
   }
 
   /* Pagination Bar */
@@ -424,6 +472,7 @@ import Layout from '../layouts/Layout.astro';
     const emptyState = document.getElementById('empty-state');
     
     let cards: HTMLDivElement[] = [];
+    let isLoading = true;
 
     const applyFilters = () => {
       const yearVal = selectYear?.value || 'all';
@@ -451,7 +500,7 @@ import Layout from '../layouts/Layout.astro';
       });
 
       // Toggle Empty State Visibility
-      if (visibleCount === 0) {
+      if (!isLoading && visibleCount === 0) {
         emptyState?.classList.remove('hidden');
       } else {
         emptyState?.classList.add('hidden');
@@ -468,8 +517,29 @@ import Layout from '../layouts/Layout.astro';
 
     // Load live content from Firestore database
     async function loadLiveArtworks() {
+      const wrapper = grid?.parentElement;
+
       if (grid) {
-        grid.insertAdjacentHTML('afterbegin', '<div id="loading-state" class="empty-state">Loading gallery...</div>');
+        // Clear previous cards except the empty-state block
+        Array.from(grid.children).forEach(child => {
+          if (child.id !== 'empty-state') {
+            child.remove();
+          }
+        });
+      }
+
+      // Clear any pre-existing loading state
+      const oldLoader = document.getElementById('loading-state');
+      if (oldLoader) oldLoader.remove();
+
+      // Insert single spinner inside wrapper to center it and avoid column splitting
+      if (wrapper && !document.getElementById('loading-state')) {
+        wrapper.insertAdjacentHTML('afterbegin', `
+          <div id="loading-state" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading Gallery</p>
+          </div>
+        `);
       }
 
       try {
@@ -534,8 +604,8 @@ import Layout from '../layouts/Layout.astro';
             card.dataset.availability = availability;
 
             card.innerHTML = `
-              <div class="artwork-image-container">
-                <img src="${imageUrl}" alt="${title}" class="artwork-image" loading="lazy" />
+              <div class="artwork-image-container" style="${width && height ? `aspect-ratio: ${width} / ${height};` : ''}">
+                <img src="${imageUrl}" alt="${title}" class="artwork-image" loading="lazy" onload="this.classList.add('loaded')" />
                 <div class="artwork-overlay">
                   <div class="overlay-details">
                     <h3 class="overlay-title">${title}</h3>
@@ -566,6 +636,12 @@ import Layout from '../layouts/Layout.astro';
               } else {
                 grid.appendChild(card);
               }
+            }
+
+            // Fallback check in case the image loaded instantly from cache before onload registers
+            const img = card.querySelector('.artwork-image') as HTMLImageElement;
+            if (img && img.complete) {
+              img.classList.add('loaded');
             }
           });
 
@@ -598,6 +674,9 @@ import Layout from '../layouts/Layout.astro';
       } catch (err) {
         console.warn('Live artworks client loading failed.', err);
         emptyState?.classList.remove('hidden');
+      } finally {
+        isLoading = false;
+        applyFilters();
       }
     }
 
