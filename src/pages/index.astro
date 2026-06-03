@@ -55,6 +55,10 @@ import Layout from '../layouts/Layout.astro';
     align-items: flex-end;
   }
 
+  .hero-slideshow.instant-transition .slide {
+    transition: none !important;
+  }
+
   .slide.active {
     opacity: 1;
     z-index: 2;
@@ -250,7 +254,7 @@ import Layout from '../layouts/Layout.astro';
         </div>
       `;
 
-      startSliderLogic();
+      startSliderLogic(slideshow);
 
     } catch (err) {
       console.error("Hero slider load failed:", err);
@@ -259,7 +263,7 @@ import Layout from '../layouts/Layout.astro';
 
   let activeSlideInterval: number | undefined;
 
-  function startSliderLogic() {
+  function startSliderLogic(slideshow: HTMLElement) {
     const slides = document.querySelectorAll('.slide');
     const dots = document.querySelectorAll('.dot');
     let currentSlide = 0;
@@ -290,9 +294,40 @@ import Layout from '../layouts/Layout.astro';
     dots.forEach((dot) => {
       dot.addEventListener('click', (e) => {
         const index = parseInt((e.currentTarget as HTMLButtonElement).dataset.index || '0');
+        
+        slideshow.classList.add('instant-transition');
         showSlide(index);
         startAutoplay(); 
+
+        setTimeout(() => {
+          slideshow.classList.remove('instant-transition');
+        }, 50);
       });
+    });
+
+    // Tap/Click to navigate to the next slide instantly
+    slideshow.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      
+      // Ignore click if user clicked dots, CTA buttons or links
+      if (
+        target.closest('.dot') ||
+        target.closest('.slide-cta') ||
+        target.tagName === 'A' ||
+        target.tagName === 'BUTTON'
+      ) {
+        return;
+      }
+
+      const nextIndex = (currentSlide + 1) % slides.length;
+
+      slideshow.classList.add('instant-transition');
+      showSlide(nextIndex);
+      startAutoplay();
+
+      setTimeout(() => {
+        slideshow.classList.remove('instant-transition');
+      }, 50);
     });
 
     startAutoplay();
