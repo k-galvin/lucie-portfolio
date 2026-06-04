@@ -187,54 +187,121 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
   import { db } from '../lib/firebase';
-  import { doc, getDoc } from 'firebase/firestore';
+  import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
+  import { normalizeSubjects, sortArtworks } from '../lib/utils';
 
   async function initHeroSlider() {
     const slideshow = document.getElementById('hero-slideshow');
     if (!slideshow) return;
 
     try {
+      // 1. Fetch slide configuration from Firestore
       const docRef = doc(db, 'settings', 'homepage');
       const docSnap = await getDoc(docRef);
       
-      let slidesData = [];
-      
+      let heroSlidesConfig = [];
       if (docSnap.exists()) {
         const data = docSnap.data();
-        slidesData = data.heroSlides || [];
+        heroSlidesConfig = data.heroSlides || [];
+      }
+
+      let slidesData = [];
+
+      if (heroSlidesConfig.length > 0) {
+        // 2. Fetch all artworks
+        const querySnapshot = await getDocs(collection(db, 'artworks'));
+        const artworksList: any[] = [];
+        
+        querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          artworksList.push({
+            ...data,
+            id: docSnap.id,
+            order: data.order ?? 0,
+            createdAt: data.createdAt || ''
+          });
+        });
+
+        // 3. Fetch sorting settings
+        let sortBy = 'custom';
+        try {
+          const settingsSnap = await getDoc(doc(db, 'settings', 'artworks'));
+          if (settingsSnap.exists()) {
+            sortBy = settingsSnap.data().sortBy || 'custom';
+          }
+        } catch (e) {
+          console.warn('Failed to load gallery sorting settings.', e);
+        }
+
+        // 4. Sort the artworks list to get correct order for pagination
+        sortArtworks(artworksList, sortBy);
+
+        // 5. Build slide details based on Artwork vs. Custom mode
+        heroSlidesConfig.forEach((slide: any) => {
+          if (slide.mode === 'artwork') {
+            const artId = slide.artworkId;
+            const artIndex = artworksList.findIndex(a => a.id === artId);
+            if (artIndex !== -1) {
+              const artwork = artworksList[artIndex];
+              const pageNum = artIndex + 1;
+              slidesData.push({
+                image: artwork.imageUrl,
+                title: artwork.title,
+                subtitle: `${artwork.year}`,
+                link: `/artworks?page=${pageNum}`,
+                ctaText: 'Explore Paper Pictures'
+              });
+            }
+          } else {
+            // Custom mode (or legacy slide without mode)
+            if (slide.image) {
+              slidesData.push({
+                image: slide.image,
+                title: slide.title || '',
+                subtitle: slide.subtitle || '',
+                link: slide.link || '/artworks',
+                ctaText: slide.ctaText || 'Explore Paper Pictures'
+              });
+            }
+          }
+        });
       }
 
       if (slidesData.length === 0) {
-        // Fallback if no settings yet (4 default slides)
+        // Fallback if no settings yet or resolution failed
         slidesData = [
           {
             image: '/images/lucie_portrait.png',
             title: 'Lucie Galvin',
             subtitle: 'Paper Pictures, Drawing & Printmaking',
-            link: '/artworks'
+            link: '/artworks',
+            ctaText: 'Explore Paper Pictures'
           },
           {
             image: '/images/lucie_studio.png',
             title: 'In the Studio',
             subtitle: 'Traditional Drawing & Fine Art Printmaking',
-            link: '/about'
+            link: '/about',
+            ctaText: 'Explore Paper Pictures'
           },
           {
             image: '/images/lucie_landscape.png',
             title: 'Landscape Series',
             subtitle: 'Original Paper Pictures & Collages',
-            link: '/artworks'
+            link: '/artworks',
+            ctaText: 'Explore Paper Pictures'
           },
           {
             image: '/images/lucie_portrait.png',
             title: 'Fine Art Prints',
             subtitle: 'Explore Available Prints & Artwork Collections',
-            link: '/artworks'
+            link: '/artworks',
+            ctaText: 'Explore Paper Pictures'
           }
         ];
       }
 
-      // Build Slides
+      // Build Slides HTML
       slideshow.innerHTML = slidesData.map((slide: any, index: number) => `
         <div class="slide ${index === 0 ? 'active' : ''}" data-index="${index}">
           <img 
@@ -249,8 +316,8 @@ import Layout from '../layouts/Layout.astro';
             <div class="slide-content">
               <h2 class="slide-title">${slide.title}</h2>
               <p class="slide-subtitle">${slide.subtitle}</p>
-              <a href="${slide.link || '/artworks'}" class="slide-cta">
-                <span>Explore Paper Pictures</span>
+              <a href="${slide.link}" class="slide-cta">
+                <span>${slide.ctaText}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cta-arrow">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>

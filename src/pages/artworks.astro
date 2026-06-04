@@ -580,6 +580,20 @@ import Layout from '../layouts/Layout.astro';
     let filteredArtworks: any[] = [];
     let currentPage = 1;
     let isLoading = true;
+    let isInitialLoad = true;
+
+    // Parse starting page parameter from URL query params
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlPage = parseInt(urlParams.get('page') || '');
+    if (!isNaN(urlPage) && urlPage > 0) {
+      currentPage = urlPage;
+    }
+
+    function updateUrlPageParam() {
+      const url = new URL(window.location.href);
+      url.searchParams.set('page', currentPage.toString());
+      window.history.replaceState({}, '', url.pathname + url.search);
+    }
 
     function createCardElement(data: any) {
       const id = data.id;
@@ -697,6 +711,7 @@ import Layout from '../layouts/Layout.astro';
             firstBtn.textContent = '1';
             firstBtn.addEventListener('click', () => {
               currentPage = 1;
+              updateUrlPageParam();
               renderGallery();
             });
             pageNumbersContainer.appendChild(firstBtn);
@@ -715,6 +730,7 @@ import Layout from '../layouts/Layout.astro';
             numBtn.textContent = i.toString();
             numBtn.addEventListener('click', () => {
               currentPage = i;
+              updateUrlPageParam();
               renderGallery();
             });
             pageNumbersContainer.appendChild(numBtn);
@@ -733,6 +749,7 @@ import Layout from '../layouts/Layout.astro';
             lastBtn.textContent = totalPages.toString();
             lastBtn.addEventListener('click', () => {
               currentPage = totalPages;
+              updateUrlPageParam();
               renderGallery();
             });
             pageNumbersContainer.appendChild(lastBtn);
@@ -773,8 +790,18 @@ import Layout from '../layouts/Layout.astro';
         );
       });
 
-      // Reset to first page when filters change
-      currentPage = 1;
+      // Reset to first page when filters change, except on initial load
+      if (!isInitialLoad) {
+        currentPage = 1;
+        updateUrlPageParam();
+      } else {
+        isInitialLoad = false;
+        // Clamp URL-provided page parameter to valid bounds
+        if (currentPage < 1 || currentPage > filteredArtworks.length) {
+          currentPage = 1;
+          updateUrlPageParam();
+        }
+      }
       renderGallery();
     };
 
@@ -804,6 +831,7 @@ import Layout from '../layouts/Layout.astro';
       prevBtn.addEventListener('click', () => {
         if (currentPage > 1) {
           currentPage--;
+          updateUrlPageParam();
           renderGallery();
         }
       });
@@ -813,6 +841,7 @@ import Layout from '../layouts/Layout.astro';
       nextBtn.addEventListener('click', () => {
         if (currentPage < filteredArtworks.length) {
           currentPage++;
+          updateUrlPageParam();
           renderGallery();
         }
       });
@@ -900,7 +929,6 @@ import Layout from '../layouts/Layout.astro';
             });
           }
 
-          applyFilters();
         } else {
           emptyState?.classList.remove('hidden');
         }
@@ -914,7 +942,6 @@ import Layout from '../layouts/Layout.astro';
     }
 
     // Initialize
-    applyFilters();
     loadLiveArtworks();
   }
 

@@ -254,110 +254,279 @@ import Layout from '../layouts/Layout.astro';
             <!-- Slide 1 -->
             <div class="form-slide-editor">
               <h3 class="slide-header">Slide 1</h3>
+              
               <div class="form-group">
-                <label for="slide1-image-file" class="form-label">Upload Image</label>
-                <input type="file" id="slide1-image-file" class="form-input-file" accept="image/*" />
-              </div>
-              <input type="hidden" id="slide1-image" />
-              <div id="slide1-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
-                <img id="slide1-image-preview" src="" alt="Slide 1 Preview" style="width: 100%; height: 100%; object-fit: cover;" />
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="slide1-title" class="form-label">Title</label>
-                  <input type="text" id="slide1-title" required class="form-input" />
-                </div>
-                <div class="form-group">
-                  <label for="slide1-subtitle" class="form-label">Subtitle</label>
-                  <input type="text" id="slide1-subtitle" required class="form-input" />
+                <label class="form-label">Slide Mode</label>
+                <div class="mode-select-row" style="display: flex; gap: 1.5rem; margin-top: 0.25rem; margin-bottom: 0.75rem;">
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;">
+                    <input type="radio" name="slide1-mode" value="artwork" checked />
+                    Link to Artwork
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;">
+                    <input type="radio" name="slide1-mode" value="custom" />
+                    Custom Content
+                  </label>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="slide1-link" class="form-label">Action Link (e.g. /artworks or /contact)</label>
-                <input type="text" id="slide1-link" required class="form-input" value="/artworks" />
+
+              <!-- Artwork Fields Wrapper -->
+              <div id="slide1-artwork-fields" class="slide-fields-wrapper">
+                <div class="form-group">
+                  <label for="slide1-artwork-select" class="form-label">Select Artwork</label>
+                  <select id="slide1-artwork-select" class="form-input">
+                    <option value="">-- Select an Artwork --</option>
+                  </select>
+                </div>
+                
+                <div id="slide1-artwork-preview" class="image-preview-container hidden" style="margin-top: 0.5rem; display: flex; gap: 1rem; align-items: center; padding: 0.75rem; border: 1px dashed var(--color-border); background-color: #fafafa;">
+                  <img id="slide1-preview-img" src="" alt="Selected Art Preview" style="width: 80px; height: 80px; object-fit: contain; background: #fff; border: 1px solid var(--color-border);" />
+                  <div style="flex: 1; min-width: 0;">
+                    <h4 id="slide1-preview-title" style="margin: 0; font-size: 0.9rem; font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"></h4>
+                    <p id="slide1-preview-year" style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: var(--color-text-muted);"></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Custom Fields Wrapper -->
+              <div id="slide1-custom-fields" class="slide-fields-wrapper hidden">
+                <div class="form-group">
+                  <label for="slide1-image-file" class="form-label">Upload Custom Image</label>
+                  <input type="file" id="slide1-image-file" class="form-input-file" accept="image/*" />
+                </div>
+                <input type="hidden" id="slide1-image" />
+                <div id="slide1-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
+                  <img id="slide1-image-preview" src="" alt="Slide 1 Custom Preview" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="slide1-title" class="form-label">Custom Title</label>
+                    <input type="text" id="slide1-title" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label for="slide1-subtitle" class="form-label">Custom Subtitle</label>
+                    <input type="text" id="slide1-subtitle" class="form-input" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="slide1-link" class="form-label">Action Link (e.g. /about or /contact)</label>
+                    <input type="text" id="slide1-link" class="form-input" value="/artworks" />
+                  </div>
+                  <div class="form-group">
+                    <label for="slide1-cta" class="form-label">Button Text (CTA)</label>
+                    <input type="text" id="slide1-cta" class="form-input" value="Explore Paper Pictures" />
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- Slide 2 -->
             <div class="form-slide-editor" style="margin-top: 2rem;">
               <h3 class="slide-header">Slide 2</h3>
+              
               <div class="form-group">
-                <label for="slide2-image-file" class="form-label">Upload Image</label>
-                <input type="file" id="slide2-image-file" class="form-input-file" accept="image/*" />
-              </div>
-              <input type="hidden" id="slide2-image" />
-              <div id="slide2-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
-                <img id="slide2-image-preview" src="" alt="Slide 2 Preview" style="width: 100%; height: 100%; object-fit: cover;" />
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="slide2-title" class="form-label">Title</label>
-                  <input type="text" id="slide2-title" required class="form-input" />
-                </div>
-                <div class="form-group">
-                  <label for="slide2-subtitle" class="form-label">Subtitle</label>
-                  <input type="text" id="slide2-subtitle" required class="form-input" />
+                <label class="form-label">Slide Mode</label>
+                <div class="mode-select-row" style="display: flex; gap: 1.5rem; margin-top: 0.25rem; margin-bottom: 0.75rem;">
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;">
+                    <input type="radio" name="slide2-mode" value="artwork" checked />
+                    Link to Artwork
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;">
+                    <input type="radio" name="slide2-mode" value="custom" />
+                    Custom Content
+                  </label>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="slide2-link" class="form-label">Action Link</label>
-                <input type="text" id="slide2-link" required class="form-input" value="/artworks" />
+
+              <!-- Artwork Fields Wrapper -->
+              <div id="slide2-artwork-fields" class="slide-fields-wrapper">
+                <div class="form-group">
+                  <label for="slide2-artwork-select" class="form-label">Select Artwork</label>
+                  <select id="slide2-artwork-select" class="form-input">
+                    <option value="">-- Select an Artwork --</option>
+                  </select>
+                </div>
+                
+                <div id="slide2-artwork-preview" class="image-preview-container hidden" style="margin-top: 0.5rem; display: flex; gap: 1rem; align-items: center; padding: 0.75rem; border: 1px dashed var(--color-border); background-color: #fafafa;">
+                  <img id="slide2-preview-img" src="" alt="Selected Art Preview" style="width: 80px; height: 80px; object-fit: contain; background: #fff; border: 1px solid var(--color-border);" />
+                  <div style="flex: 1; min-width: 0;">
+                    <h4 id="slide2-preview-title" style="margin: 0; font-size: 0.9rem; font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"></h4>
+                    <p id="slide2-preview-year" style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: var(--color-text-muted);"></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Custom Fields Wrapper -->
+              <div id="slide2-custom-fields" class="slide-fields-wrapper hidden">
+                <div class="form-group">
+                  <label for="slide2-image-file" class="form-label">Upload Custom Image</label>
+                  <input type="file" id="slide2-image-file" class="form-input-file" accept="image/*" />
+                </div>
+                <input type="hidden" id="slide2-image" />
+                <div id="slide2-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
+                  <img id="slide2-image-preview" src="" alt="Slide 2 Custom Preview" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="slide2-title" class="form-label">Custom Title</label>
+                    <input type="text" id="slide2-title" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label for="slide2-subtitle" class="form-label">Custom Subtitle</label>
+                    <input type="text" id="slide2-subtitle" class="form-input" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="slide2-link" class="form-label">Action Link</label>
+                    <input type="text" id="slide2-link" class="form-input" value="/artworks" />
+                  </div>
+                  <div class="form-group">
+                    <label for="slide2-cta" class="form-label">Button Text (CTA)</label>
+                    <input type="text" id="slide2-cta" class="form-input" value="Explore Paper Pictures" />
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- Slide 3 -->
             <div class="form-slide-editor" style="margin-top: 2rem;">
               <h3 class="slide-header">Slide 3</h3>
+              
               <div class="form-group">
-                <label for="slide3-image-file" class="form-label">Upload Image</label>
-                <input type="file" id="slide3-image-file" class="form-input-file" accept="image/*" />
-              </div>
-              <input type="hidden" id="slide3-image" />
-              <div id="slide3-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
-                <img id="slide3-image-preview" src="" alt="Slide 3 Preview" style="width: 100%; height: 100%; object-fit: cover;" />
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="slide3-title" class="form-label">Title</label>
-                  <input type="text" id="slide3-title" required class="form-input" />
-                </div>
-                <div class="form-group">
-                  <label for="slide3-subtitle" class="form-label">Subtitle</label>
-                  <input type="text" id="slide3-subtitle" required class="form-input" />
+                <label class="form-label">Slide Mode</label>
+                <div class="mode-select-row" style="display: flex; gap: 1.5rem; margin-top: 0.25rem; margin-bottom: 0.75rem;">
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;">
+                    <input type="radio" name="slide3-mode" value="artwork" checked />
+                    Link to Artwork
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;">
+                    <input type="radio" name="slide3-mode" value="custom" />
+                    Custom Content
+                  </label>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="slide3-link" class="form-label">Action Link</label>
-                <input type="text" id="slide3-link" required class="form-input" value="/contact" />
+
+              <!-- Artwork Fields Wrapper -->
+              <div id="slide3-artwork-fields" class="slide-fields-wrapper">
+                <div class="form-group">
+                  <label for="slide3-artwork-select" class="form-label">Select Artwork</label>
+                  <select id="slide3-artwork-select" class="form-input">
+                    <option value="">-- Select an Artwork --</option>
+                  </select>
+                </div>
+                
+                <div id="slide3-artwork-preview" class="image-preview-container hidden" style="margin-top: 0.5rem; display: flex; gap: 1rem; align-items: center; padding: 0.75rem; border: 1px dashed var(--color-border); background-color: #fafafa;">
+                  <img id="slide3-preview-img" src="" alt="Selected Art Preview" style="width: 80px; height: 80px; object-fit: contain; background: #fff; border: 1px solid var(--color-border);" />
+                  <div style="flex: 1; min-width: 0;">
+                    <h4 id="slide3-preview-title" style="margin: 0; font-size: 0.9rem; font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"></h4>
+                    <p id="slide3-preview-year" style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: var(--color-text-muted);"></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Custom Fields Wrapper -->
+              <div id="slide3-custom-fields" class="slide-fields-wrapper hidden">
+                <div class="form-group">
+                  <label for="slide3-image-file" class="form-label">Upload Custom Image</label>
+                  <input type="file" id="slide3-image-file" class="form-input-file" accept="image/*" />
+                </div>
+                <input type="hidden" id="slide3-image" />
+                <div id="slide3-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
+                  <img id="slide3-image-preview" src="" alt="Slide 3 Custom Preview" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="slide3-title" class="form-label">Custom Title</label>
+                    <input type="text" id="slide3-title" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label for="slide3-subtitle" class="form-label">Custom Subtitle</label>
+                    <input type="text" id="slide3-subtitle" class="form-input" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="slide3-link" class="form-label">Action Link</label>
+                    <input type="text" id="slide3-link" class="form-input" value="/contact" />
+                  </div>
+                  <div class="form-group">
+                    <label for="slide3-cta" class="form-label">Button Text (CTA)</label>
+                    <input type="text" id="slide3-cta" class="form-input" value="Explore Paper Pictures" />
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- Slide 4 -->
             <div class="form-slide-editor" style="margin-top: 2rem; border-bottom: none;">
               <h3 class="slide-header">Slide 4</h3>
+              
               <div class="form-group">
-                <label for="slide4-image-file" class="form-label">Upload Image</label>
-                <input type="file" id="slide4-image-file" class="form-input-file" accept="image/*" />
-              </div>
-              <input type="hidden" id="slide4-image" />
-              <div id="slide4-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
-                <img id="slide4-image-preview" src="" alt="Slide 4 Preview" style="width: 100%; height: 100%; object-fit: cover;" />
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="slide4-title" class="form-label">Title</label>
-                  <input type="text" id="slide4-title" required class="form-input" />
-                </div>
-                <div class="form-group">
-                  <label for="slide4-subtitle" class="form-label">Subtitle</label>
-                  <input type="text" id="slide4-subtitle" required class="form-input" />
+                <label class="form-label">Slide Mode</label>
+                <div class="mode-select-row" style="display: flex; gap: 1.5rem; margin-top: 0.25rem; margin-bottom: 0.75rem;">
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;">
+                    <input type="radio" name="slide4-mode" value="artwork" checked />
+                    Link to Artwork
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;">
+                    <input type="radio" name="slide4-mode" value="custom" />
+                    Custom Content
+                  </label>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="slide4-link" class="form-label">Action Link</label>
-                <input type="text" id="slide4-link" required class="form-input" value="/exhibitions" />
+
+              <!-- Artwork Fields Wrapper -->
+              <div id="slide4-artwork-fields" class="slide-fields-wrapper">
+                <div class="form-group">
+                  <label for="slide4-artwork-select" class="form-label">Select Artwork</label>
+                  <select id="slide4-artwork-select" class="form-input">
+                    <option value="">-- Select an Artwork --</option>
+                  </select>
+                </div>
+                
+                <div id="slide4-artwork-preview" class="image-preview-container hidden" style="margin-top: 0.5rem; display: flex; gap: 1rem; align-items: center; padding: 0.75rem; border: 1px dashed var(--color-border); background-color: #fafafa;">
+                  <img id="slide4-preview-img" src="" alt="Selected Art Preview" style="width: 80px; height: 80px; object-fit: contain; background: #fff; border: 1px solid var(--color-border);" />
+                  <div style="flex: 1; min-width: 0;">
+                    <h4 id="slide4-preview-title" style="margin: 0; font-size: 0.9rem; font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"></h4>
+                    <p id="slide4-preview-year" style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: var(--color-text-muted);"></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Custom Fields Wrapper -->
+              <div id="slide4-custom-fields" class="slide-fields-wrapper hidden">
+                <div class="form-group">
+                  <label for="slide4-image-file" class="form-label">Upload Custom Image</label>
+                  <input type="file" id="slide4-image-file" class="form-input-file" accept="image/*" />
+                </div>
+                <input type="hidden" id="slide4-image" />
+                <div id="slide4-image-preview-container" class="image-preview-container hidden" style="margin-top: 0.5rem; max-width: 240px; max-height: 135px; width: 100%; height: auto; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
+                  <img id="slide4-image-preview" src="" alt="Slide 4 Custom Preview" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="slide4-title" class="form-label">Custom Title</label>
+                    <input type="text" id="slide4-title" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label for="slide4-subtitle" class="form-label">Custom Subtitle</label>
+                    <input type="text" id="slide4-subtitle" class="form-input" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="slide4-link" class="form-label">Action Link</label>
+                    <input type="text" id="slide4-link" class="form-input" value="/exhibitions" />
+                  </div>
+                  <div class="form-group">
+                    <label for="slide4-cta" class="form-label">Button Text (CTA)</label>
+                    <input type="text" id="slide4-cta" class="form-input" value="Explore Paper Pictures" />
+                  </div>
+                </div>
               </div>
             </div>
+
 
             <button type="submit" id="home-form-submit" class="admin-btn primary-btn" style="margin-top: 1rem;">
               <span class="btn-text">Save Homepage Content</span>
@@ -1189,25 +1358,36 @@ import Layout from '../layouts/Layout.astro';
 
     // Homepage Hero Form
     const homepageForm = document.getElementById('homepage-form') as HTMLFormElement;
+    
+    // Selects and Previews
+    const s1Select = document.getElementById('slide1-artwork-select') as HTMLSelectElement;
+    const s2Select = document.getElementById('slide2-artwork-select') as HTMLSelectElement;
+    const s3Select = document.getElementById('slide3-artwork-select') as HTMLSelectElement;
+    const s4Select = document.getElementById('slide4-artwork-select') as HTMLSelectElement;
+
     const s1Img = document.getElementById('slide1-image') as HTMLInputElement;
     const s1Title = document.getElementById('slide1-title') as HTMLInputElement;
     const s1Sub = document.getElementById('slide1-subtitle') as HTMLInputElement;
     const s1Link = document.getElementById('slide1-link') as HTMLInputElement;
+    const s1Cta = document.getElementById('slide1-cta') as HTMLInputElement;
     
     const s2Img = document.getElementById('slide2-image') as HTMLInputElement;
     const s2Title = document.getElementById('slide2-title') as HTMLInputElement;
     const s2Sub = document.getElementById('slide2-subtitle') as HTMLInputElement;
     const s2Link = document.getElementById('slide2-link') as HTMLInputElement;
+    const s2Cta = document.getElementById('slide2-cta') as HTMLInputElement;
     
-     const s3Img = document.getElementById('slide3-image') as HTMLInputElement;
+    const s3Img = document.getElementById('slide3-image') as HTMLInputElement;
     const s3Title = document.getElementById('slide3-title') as HTMLInputElement;
     const s3Sub = document.getElementById('slide3-subtitle') as HTMLInputElement;
     const s3Link = document.getElementById('slide3-link') as HTMLInputElement;
+    const s3Cta = document.getElementById('slide3-cta') as HTMLInputElement;
 
     const s4Img = document.getElementById('slide4-image') as HTMLInputElement;
     const s4Title = document.getElementById('slide4-title') as HTMLInputElement;
     const s4Sub = document.getElementById('slide4-subtitle') as HTMLInputElement;
     const s4Link = document.getElementById('slide4-link') as HTMLInputElement;
+    const s4Cta = document.getElementById('slide4-cta') as HTMLInputElement;
 
     const s1File = document.getElementById('slide1-image-file') as HTMLInputElement;
     const s2File = document.getElementById('slide2-image-file') as HTMLInputElement;
@@ -1351,8 +1531,8 @@ import Layout from '../layouts/Layout.astro';
     // --- DATA LOADING ---
     async function loadAllData() {
       await loadArtworksSortingSettings();
+      await loadArtworks(); // Load artworks first to populate select options
       await Promise.all([
-        loadArtworks(),
         loadHomepageSettings(),
         loadExhibitions(),
         loadBiography()
@@ -1398,6 +1578,7 @@ import Layout from '../layouts/Layout.astro';
         // Sort by selected order
         sortArtworks(currentArtworks, currentSortBy);
 
+        populateArtworkSelects();
         renderArtworks();
       } catch (err) {
         console.error("Load Artworks Error:", err);
@@ -1679,44 +1860,60 @@ import Layout from '../layouts/Layout.astro';
           const data = docSnap.data();
           const slides = data.heroSlides || [];
           
-          if (slides[0]) {
-            s1Img.value = slides[0].image || '';
-            s1Title.value = slides[0].title || '';
-            s1Sub.value = slides[0].subtitle || '';
-            s1Link.value = slides[0].link || '/artworks';
-            if (slides[0].image && s1Preview && s1PreviewContainer) {
-              s1Preview.src = slides[0].image;
-              s1PreviewContainer.classList.remove('hidden');
-            }
-          }
-          if (slides[1]) {
-            s2Img.value = slides[1].image || '';
-            s2Title.value = slides[1].title || '';
-            s2Sub.value = slides[1].subtitle || '';
-            s2Link.value = slides[1].link || '/artworks';
-            if (slides[1].image && s2Preview && s2PreviewContainer) {
-              s2Preview.src = slides[1].image;
-              s2PreviewContainer.classList.remove('hidden');
-            }
-          }
-          if (slides[2]) {
-            s3Img.value = slides[2].image || '';
-            s3Title.value = slides[2].title || '';
-            s3Sub.value = slides[2].subtitle || '';
-            s3Link.value = slides[2].link || '/contact';
-            if (slides[2].image && s3Preview && s3PreviewContainer) {
-              s3Preview.src = slides[2].image;
-              s3PreviewContainer.classList.remove('hidden');
-            }
-          }
-          if (slides[3]) {
-            s4Img.value = slides[3].image || '';
-            s4Title.value = slides[3].title || '';
-            s4Sub.value = slides[3].subtitle || '';
-            s4Link.value = slides[3].link || '/exhibitions';
-            if (slides[3].image && s4Preview && s4PreviewContainer) {
-              s4Preview.src = slides[3].image;
-              s4PreviewContainer.classList.remove('hidden');
+          for (let i = 0; i < 4; i++) {
+            const slideIdx = i + 1;
+            const slide = slides[i];
+            
+            const radioArtwork = document.querySelector(`input[name="slide${slideIdx}-mode"][value="artwork"]`) as HTMLInputElement;
+            const radioCustom = document.querySelector(`input[name="slide${slideIdx}-mode"][value="custom"]`) as HTMLInputElement;
+            const artFields = document.getElementById(`slide${slideIdx}-artwork-fields`);
+            const customFields = document.getElementById(`slide${slideIdx}-custom-fields`);
+            
+            const select = document.getElementById(`slide${slideIdx}-artwork-select`) as HTMLSelectElement;
+            const imgInput = document.getElementById(`slide${slideIdx}-image`) as HTMLInputElement;
+            const titleInput = document.getElementById(`slide${slideIdx}-title`) as HTMLInputElement;
+            const subtitleInput = document.getElementById(`slide${slideIdx}-subtitle`) as HTMLInputElement;
+            const linkInput = document.getElementById(`slide${slideIdx}-link`) as HTMLInputElement;
+            const ctaInput = document.getElementById(`slide${slideIdx}-cta`) as HTMLInputElement;
+            
+            const customPreview = document.getElementById(`slide${slideIdx}-image-preview`) as HTMLImageElement;
+            const customPreviewContainer = document.getElementById(`slide${slideIdx}-image-preview-container`);
+
+            if (slide) {
+              const mode = slide.mode || 'custom'; // Fallback to custom for legacy slides
+              
+              if (mode === 'artwork') {
+                if (radioArtwork) radioArtwork.checked = true;
+                artFields?.classList.remove('hidden');
+                customFields?.classList.add('hidden');
+                
+                if (select) {
+                  select.value = slide.artworkId || '';
+                  updateArtworkSelectPreview(slideIdx, slide.artworkId || '');
+                }
+              } else {
+                if (radioCustom) radioCustom.checked = true;
+                artFields?.classList.add('hidden');
+                customFields?.classList.remove('hidden');
+                
+                if (imgInput) imgInput.value = slide.image || '';
+                if (titleInput) titleInput.value = slide.title || '';
+                if (subtitleInput) subtitleInput.value = slide.subtitle || '';
+                if (linkInput) linkInput.value = slide.link || '';
+                if (ctaInput) ctaInput.value = slide.ctaText || '';
+                
+                if (slide.image && customPreview && customPreviewContainer) {
+                  customPreview.src = slide.image;
+                  customPreviewContainer.classList.remove('hidden');
+                } else if (customPreviewContainer) {
+                  customPreviewContainer.classList.add('hidden');
+                }
+              }
+            } else {
+              // Default state
+              if (radioArtwork) radioArtwork.checked = true;
+              artFields?.classList.remove('hidden');
+              customFields?.classList.add('hidden');
             }
           }
         }
@@ -1823,54 +2020,7 @@ import Layout from '../layouts/Layout.astro';
       }
     });
 
-    // Hero Slides Image Upload Preview Bindings
-    s1File?.addEventListener('change', () => {
-      const file = s1File.files?.[0];
-      if (file && s1Preview && s1PreviewContainer) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          s1Preview.src = e.target?.result as string;
-          s1PreviewContainer.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-      }
-    });
 
-    s2File?.addEventListener('change', () => {
-      const file = s2File.files?.[0];
-      if (file && s2Preview && s2PreviewContainer) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          s2Preview.src = e.target?.result as string;
-          s2PreviewContainer.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    s3File?.addEventListener('change', () => {
-      const file = s3File.files?.[0];
-      if (file && s3Preview && s3PreviewContainer) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          s3Preview.src = e.target?.result as string;
-          s3PreviewContainer.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    s4File?.addEventListener('change', () => {
-      const file = s4File.files?.[0];
-      if (file && s4Preview && s4PreviewContainer) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          s4Preview.src = e.target?.result as string;
-          s4PreviewContainer.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-      }
-    });
 
     // Form Image Preview Binding
     artInputImage?.addEventListener('change', () => {
@@ -2120,68 +2270,58 @@ import Layout from '../layouts/Layout.astro';
       if (submitBtn) submitBtn.disabled = true;
 
       try {
-        let s1Url = s1Img.value;
-        let s2Url = s2Img.value;
-        let s3Url = s3Img.value;
-        let s4Url = s4Img.value;
+        const heroSlides = [];
 
-        const file1 = s1File?.files?.[0];
-        if (file1) {
-          const compressedBlob = await compressImage(file1);
-          const filename = `${Date.now()}_hero1_${file1.name.substring(0, file1.name.lastIndexOf('.')) || file1.name}.webp`;
-          const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, compressedBlob);
-          s1Url = await getDownloadURL(snapshot.ref);
-        }
+        for (let i = 1; i <= 4; i++) {
+          const modeRadio = document.querySelector(`input[name="slide${i}-mode"]:checked`) as HTMLInputElement;
+          const mode = modeRadio ? modeRadio.value : 'artwork';
+          
+          if (mode === 'artwork') {
+            const select = document.getElementById(`slide${i}-artwork-select`) as HTMLSelectElement;
+            const artworkId = select ? select.value : '';
+            if (!artworkId) {
+              throw new Error(`Please select an artwork for Slide ${i}.`);
+            }
+            heroSlides.push({
+              mode: 'artwork',
+              artworkId: artworkId
+            });
+          } else {
+            // Custom mode
+            const imgInput = document.getElementById(`slide${i}-image`) as HTMLInputElement;
+            const fileInput = document.getElementById(`slide${i}-image-file`) as HTMLInputElement;
+            const titleInput = document.getElementById(`slide${i}-title`) as HTMLInputElement;
+            const subtitleInput = document.getElementById(`slide${i}-subtitle`) as HTMLInputElement;
+            const linkInput = document.getElementById(`slide${i}-link`) as HTMLInputElement;
+            const ctaInput = document.getElementById(`slide${i}-cta`) as HTMLInputElement;
 
-        const file2 = s2File?.files?.[0];
-        if (file2) {
-          const compressedBlob = await compressImage(file2);
-          const filename = `${Date.now()}_hero2_${file2.name.substring(0, file2.name.lastIndexOf('.')) || file2.name}.webp`;
-          const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, compressedBlob);
-          s2Url = await getDownloadURL(snapshot.ref);
-        }
+            let imageUrl = imgInput ? imgInput.value : '';
+            const file = fileInput?.files?.[0];
 
-        const file3 = s3File?.files?.[0];
-        if (file3) {
-          const compressedBlob = await compressImage(file3);
-          const filename = `${Date.now()}_hero3_${file3.name.substring(0, file3.name.lastIndexOf('.')) || file3.name}.webp`;
-          const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, compressedBlob);
-          s3Url = await getDownloadURL(snapshot.ref);
-        }
+            if (file) {
+              const compressedBlob = await compressImage(file);
+              const filename = `${Date.now()}_hero${i}_${file.name.substring(0, file.name.lastIndexOf('.')) || file.name}.webp`;
+              const storageRef = ref(storage, `artwork/${filename}`);
+              const snapshot = await uploadBytes(storageRef, compressedBlob);
+              imageUrl = await getDownloadURL(snapshot.ref);
+            }
 
-        const file4 = s4File?.files?.[0];
-        if (file4) {
-          const compressedBlob = await compressImage(file4);
-          const filename = `${Date.now()}_hero4_${file4.name.substring(0, file4.name.lastIndexOf('.')) || file4.name}.webp`;
-          const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, compressedBlob);
-          s4Url = await getDownloadURL(snapshot.ref);
-        }
+            if (!imageUrl) {
+              throw new Error(`Please upload a custom image for Slide ${i}.`);
+            }
 
-        if (!s1Url) {
-          throw new Error('Please upload an image for Slide 1.');
-        }
-        if (!s2Url) {
-          throw new Error('Please upload an image for Slide 2.');
-        }
-        if (!s3Url) {
-          throw new Error('Please upload an image for Slide 3.');
-        }
-        if (!s4Url) {
-          throw new Error('Please upload an image for Slide 4.');
+            heroSlides.push({
+              mode: 'custom',
+              image: imageUrl,
+              title: titleInput ? titleInput.value.trim() : '',
+              subtitle: subtitleInput ? subtitleInput.value.trim() : '',
+              link: linkInput ? linkInput.value.trim() : '/artworks',
+              ctaText: ctaInput ? ctaInput.value.trim() : 'Explore Paper Pictures'
+            });
+          }
         }
 
-        const homepageData = {
-          heroSlides: [
-            { image: s1Url, title: s1Title.value, subtitle: s1Sub.value, link: s1Link.value },
-            { image: s2Url, title: s2Title.value, subtitle: s2Sub.value, link: s2Link.value },
-            { image: s3Url, title: s3Title.value, subtitle: s3Sub.value, link: s3Link.value },
-            { image: s4Url, title: s4Title.value, subtitle: s4Sub.value, link: s4Link.value }
-          ]
-        };
+        const homepageData = { heroSlides };
 
         await setDoc(doc(db, 'settings', 'homepage'), homepageData);
         showToast('Homepage hero content saved successfully');
@@ -2199,6 +2339,109 @@ import Layout from '../layouts/Layout.astro';
       } finally {
         if (submitBtn) submitBtn.disabled = false;
       }
+    });
+
+    // Populate dropdowns with loaded artworks
+    function populateArtworkSelects() {
+      const selects = [s1Select, s2Select, s3Select, s4Select];
+      
+      // Sort a copy of currentArtworks alphabetically by title
+      const sortedArtworks = [...currentArtworks].sort((a, b) => {
+        const titleA = (a.title || '').trim().toLowerCase();
+        const titleB = (b.title || '').trim().toLowerCase();
+        return titleA.localeCompare(titleB);
+      });
+
+      selects.forEach(select => {
+        if (!select) return;
+        select.innerHTML = '<option value="">-- Select an Artwork --</option>';
+        sortedArtworks.forEach(art => {
+          const option = document.createElement('option');
+          option.value = art.id;
+          option.textContent = `${art.title} (${art.year})`;
+          select.appendChild(option);
+        });
+      });
+    }
+
+    // Update the live preview for a selected artwork
+    function updateArtworkSelectPreview(slideIndex: number, artworkId: string) {
+      const previewContainer = document.getElementById(`slide${slideIndex}-artwork-preview`);
+      const previewImg = document.getElementById(`slide${slideIndex}-preview-img`) as HTMLImageElement;
+      const previewTitle = document.getElementById(`slide${slideIndex}-preview-title`);
+      const previewYear = document.getElementById(`slide${slideIndex}-preview-year`);
+
+      if (!previewContainer || !previewImg || !previewTitle || !previewYear) return;
+
+      const artwork = currentArtworks.find(a => a.id === artworkId);
+      if (artwork) {
+        previewImg.src = artwork.imageUrl;
+        previewTitle.textContent = artwork.title;
+        previewYear.textContent = `${artwork.typeOfWork || 'Artwork'} | ${artwork.year}`;
+        previewContainer.classList.remove('hidden');
+      } else {
+        previewContainer.classList.add('hidden');
+        previewImg.src = '';
+        previewTitle.textContent = '';
+        previewYear.textContent = '';
+      }
+    }
+
+    // Slide Mode Toggling Setup
+    function setupSlideModeToggles() {
+      for (let i = 1; i <= 4; i++) {
+        const radios = document.querySelectorAll(`input[name="slide${i}-mode"]`);
+        const artFields = document.getElementById(`slide${i}-artwork-fields`);
+        const customFields = document.getElementById(`slide${i}-custom-fields`);
+
+        const toggleFields = (mode: string) => {
+          if (mode === 'artwork') {
+            artFields?.classList.remove('hidden');
+            customFields?.classList.add('hidden');
+          } else {
+            artFields?.classList.add('hidden');
+            customFields?.classList.remove('hidden');
+          }
+        };
+
+        radios.forEach(radio => {
+          radio.addEventListener('change', (e) => {
+            const val = (e.currentTarget as HTMLInputElement).value;
+            toggleFields(val);
+          });
+        });
+      }
+    }
+
+    // Initialize toggles
+    setupSlideModeToggles();
+
+    // Bind dropdown change listeners for previews
+    [s1Select, s2Select, s3Select, s4Select].forEach((select, idx) => {
+      select?.addEventListener('change', () => {
+        updateArtworkSelectPreview(idx + 1, select.value);
+      });
+    });
+
+    // Custom image upload preview binding helpers for custom mode
+    [s1File, s2File, s3File, s4File].forEach((fileInput, idx) => {
+      const slideIdx = idx + 1;
+      const preview = document.getElementById(`slide${slideIdx}-image-preview`) as HTMLImageElement;
+      const previewContainer = document.getElementById(`slide${slideIdx}-image-preview-container`);
+      const imgInput = document.getElementById(`slide${slideIdx}-image`) as HTMLInputElement;
+
+      fileInput?.addEventListener('change', () => {
+        const file = fileInput.files?.[0];
+        if (file && preview && previewContainer) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            preview.src = e.target?.result as string;
+            previewContainer.classList.remove('hidden');
+          };
+          reader.readAsDataURL(file);
+          if (imgInput) imgInput.value = ''; // Clear existing URL if file is selected
+        }
+      });
     });
 
   }
