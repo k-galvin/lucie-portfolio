@@ -633,7 +633,7 @@ import Layout from '../layouts/Layout.astro';
 
       card.innerHTML = `
         <div class="artwork-image-container" style="${width && height ? `aspect-ratio: ${width} / ${height};` : 'background-color: var(--color-border);'}">
-          <img src="${imageUrl}" alt="${title}" class="artwork-image" loading="lazy" onload="this.classList.add('loaded')" />
+          <img alt="${title}" class="artwork-image" />
           <div class="artwork-overlay">
             <div class="overlay-details">
               <h3 class="overlay-title">${title}</h3>
@@ -655,8 +655,14 @@ import Layout from '../layouts/Layout.astro';
       `;
 
       const img = card.querySelector('.artwork-image') as HTMLImageElement;
-      if (img && img.complete) {
-        img.classList.add('loaded');
+      if (img) {
+        img.addEventListener('load', () => {
+          img.classList.add('loaded');
+        });
+        img.src = imageUrl;
+        if (img.complete) {
+          img.classList.add('loaded');
+        }
       }
 
       return card;

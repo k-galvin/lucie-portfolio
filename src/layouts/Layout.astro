@@ -612,4 +612,48 @@ const {
     }
   }
 
+  /* Unlocks window/body scrolling for non-slideshow pages on tablet/mobile screens */
+  /* to allow native iOS/system tap-status-bar-to-scroll-to-top behavior */
+  @media (max-width: 1024px) {
+    html:not(:has(#hero-slideshow)),
+    html:not(:has(#hero-slideshow)) body {
+      height: auto !important;
+      min-height: 100% !important;
+      max-height: none !important;
+      overflow-y: auto !important;
+    }
+    
+    html:not(:has(#hero-slideshow)) .app-container {
+      height: auto !important;
+      min-height: 100dvh !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    
+    html:not(:has(#hero-slideshow)) main {
+      height: auto !important;
+      min-height: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
+      flex: none !important;
+      display: block !important;
+    }
+
+    /* Override page wrapper heights and scrolls to let the page contents stretch naturally */
+    html:not(:has(#hero-slideshow)) .artworks-container,
+    html:not(:has(#hero-slideshow)) .about-container,
+    html:not(:has(#hero-slideshow)) .exhibition-page-container,
+    html:not(:has(#hero-slideshow)) .contact-container {
+      height: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+
+    html:not(:has(#hero-slideshow)) .grid-wrapper,
+    html:not(:has(#hero-slideshow)) .bio-text {
+      height: auto !important;
+      max-height: none !important;
+      overflow-y: visible !important;
+    }
+  }
 </style>
