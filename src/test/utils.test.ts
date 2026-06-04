@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeSubjects, formatStatus, formatDimensions, splitBioParagraphs, parseMarkdownLinks } from '../lib/utils';
+import { normalizeSubjects, formatStatus, formatDimensions, splitBioParagraphs, parseMarkdownLinks, sortArtworks, type SortableArtwork } from '../lib/utils';
 
 describe('normalizeSubjects', () => {
   it('should handle empty or undefined inputs', () => {
@@ -113,3 +113,51 @@ describe('parseMarkdownLinks', () => {
     );
   });
 });
+
+describe('sortArtworks', () => {
+  const mockArtworks: SortableArtwork[] = [
+    { title: 'Zebra', year: 2024, order: 20, createdAt: '2026-06-01T12:00:00Z' },
+    { title: 'Apple', year: 2023, order: 10, createdAt: '2026-06-03T12:00:00Z' },
+    { title: 'Banana', year: 2025, order: 30, createdAt: '2026-06-02T12:00:00Z' }
+  ];
+
+  it('should sort by title alphabetically (title-asc)', () => {
+    const items = [...mockArtworks];
+    sortArtworks(items, 'title-asc');
+    expect(items.map(i => i.title)).toEqual(['Apple', 'Banana', 'Zebra']);
+  });
+
+  it('should sort by added oldest to newest (oldest)', () => {
+    const items = [...mockArtworks];
+    sortArtworks(items, 'oldest');
+    expect(items.map(i => i.title)).toEqual(['Zebra', 'Banana', 'Apple']);
+  });
+
+  it('should sort by added newest to oldest (newest)', () => {
+    const items = [...mockArtworks];
+    sortArtworks(items, 'newest');
+    expect(items.map(i => i.title)).toEqual(['Apple', 'Banana', 'Zebra']);
+  });
+
+  it('should sort by custom order (custom / default)', () => {
+    const items = [...mockArtworks];
+    sortArtworks(items, 'custom');
+    expect(items.map(i => i.title)).toEqual(['Apple', 'Zebra', 'Banana']);
+  });
+
+  it('should fall back to order when createdAt is missing for oldest/newest', () => {
+    const legacyArtworks: SortableArtwork[] = [
+      { title: 'Old Legacy', year: 2022, order: 5 },
+      { title: 'New Legacy', year: 2022, order: 15 }
+    ];
+
+    const oldestItems = [...legacyArtworks];
+    sortArtworks(oldestItems, 'oldest');
+    expect(oldestItems.map(i => i.title)).toEqual(['Old Legacy', 'New Legacy']);
+
+    const newestItems = [...legacyArtworks];
+    sortArtworks(newestItems, 'newest');
+    expect(newestItems.map(i => i.title)).toEqual(['New Legacy', 'Old Legacy']);
+  });
+});
+

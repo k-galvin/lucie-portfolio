@@ -64,6 +64,15 @@ import Layout from '../layouts/Layout.astro';
         <section id="tab-artworks" class="tab-pane active" aria-labelledby="Artworks Manager">
           <div class="tab-pane-header">
             <h2 class="pane-title">Manage Artworks Gallery</h2>
+            <div class="sort-select-wrapper">
+              <label for="art-sort-select" class="sort-select-label">Sort By:</label>
+              <select id="art-sort-select" class="sort-select-input">
+                <option value="custom">Custom Order</option>
+                <option value="title-asc">Title (A-Z)</option>
+                <option value="oldest">Added: Oldest to Newest</option>
+                <option value="newest">Added: Newest to Oldest</option>
+              </select>
+            </div>
             <button id="btn-add-artwork" class="admin-btn action-btn">+ Add Artwork</button>
           </div>
 
@@ -76,7 +85,7 @@ import Layout from '../layouts/Layout.astro';
                     <tr>
                       <th>Image</th>
                       <th>Title</th>
-                      <th>Type</th>
+                      <th>Year</th>
                       <th>Status</th>
                       <th>Prints</th>
                       <th>Actions</th>
@@ -652,6 +661,41 @@ import Layout from '../layouts/Layout.astro';
     letter-spacing: 0.02em;
   }
 
+  .sort-select-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    margin-right: 1.5rem;
+  }
+
+  .sort-select-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .sort-select-input {
+    padding: 0.4rem 2rem 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    font-family: var(--font-sans);
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    background-color: var(--color-bg);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    min-width: 180px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .sort-select-input:hover, .sort-select-input:focus {
+    border-color: var(--color-hockney-blue);
+  }
+
   /* Form Elements */
   .admin-form, .panel-form, .admin-full-form {
     display: flex;
@@ -1003,7 +1047,8 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
   import { auth, db, storage } from '../lib/firebase';
-  import { normalizeSubjects, checkPrintLinkRequired } from '../lib/utils';
+  import { normalizeSubjects, checkPrintLinkRequired, sortArtworks } from '../lib/utils';
+  import { compressImage } from '../lib/image';
   import { 
     onAuthStateChanged, 
     signInWithEmailAndPassword, 
@@ -1148,6 +1193,7 @@ import Layout from '../layouts/Layout.astro';
     // Active state helpers
     let currentArtworks: Artwork[] = [];
     let currentExhibitions: Exhibition[] = [];
+    let currentSortBy = 'custom';
 
     // Show Notification Toast
     const showToast = (message: string, isError = false) => {
@@ -1190,6 +1236,20 @@ import Layout from '../layouts/Layout.astro';
       }
     });
 
+    // Artworks Sorting Change Event Listener
+    const artSortSelect = document.getElementById('art-sort-select') as HTMLSelectElement;
+    artSortSelect?.addEventListener('change', async () => {
+      currentSortBy = artSortSelect.value;
+      try {
+        await setDoc(doc(db, 'settings', 'artworks'), { sortBy: currentSortBy });
+        showToast('Sorting order updated');
+        await loadArtworks();
+      } catch (err) {
+        console.error("Save Artworks Sorting Error:", err);
+        showToast('Failed to save sorting setting', true);
+      }
+    });
+
     // Logout Action
     btnLogout?.addEventListener('click', async () => {
       try {
@@ -1216,8 +1276,28 @@ import Layout from '../layouts/Layout.astro';
       });
     });
 
+    // Load Artworks Sorting Settings
+    async function loadArtworksSortingSettings() {
+      try {
+        const docSnap = await getDoc(doc(db, 'settings', 'artworks'));
+        if (docSnap.exists()) {
+          currentSortBy = docSnap.data().sortBy || 'custom';
+        } else {
+          currentSortBy = 'custom';
+        }
+        
+        const sortSelect = document.getElementById('art-sort-select') as HTMLSelectElement;
+        if (sortSelect) {
+          sortSelect.value = currentSortBy;
+        }
+      } catch (err) {
+        console.error("Load Artworks Settings Error:", err);
+      }
+    }
+
     // --- DATA LOADING ---
     async function loadAllData() {
+      await loadArtworksSortingSettings();
       await Promise.all([
         loadArtworks(),
         loadHomepageSettings(),
@@ -1257,16 +1337,14 @@ import Layout from '../layouts/Layout.astro';
             price: data.price,
             order: data.order ?? 0, // Default to 0 so new works sort to the bottom
             isPrint: data.isPrint || false,
-            printLink: data.printLink || ''
+            printLink: data.printLink || '',
+            createdAt: data.createdAt || ''
           };
           currentArtworks.push(artwork);
         });
 
-        // Sort by order asc, then by year desc
-        currentArtworks.sort((a, b) => {
-          if (a.order !== b.order) return a.order - b.order;
-          return b.year - a.year;
-        });
+        // Sort by selected order
+        sortArtworks(currentArtworks, currentSortBy);
 
         currentArtworks.forEach((artwork, index) => {
           // Render Row
@@ -1274,13 +1352,13 @@ import Layout from '../layouts/Layout.astro';
           tr.innerHTML = `
             <td><img src="${artwork.imageUrl}" class="table-thumb" alt="thumb"/></td>
             <td><strong>${artwork.title}</strong></td>
-            <td>${artwork.typeOfWork}</td>
+            <td>${artwork.year}</td>
             <td>${artwork.status || '—'}</td>
             <td>${artwork.isPrint ? 'Yes' : 'No'}</td>
             <td>
               <div class="btn-row">
-                <button class="sm-btn move-up-btn" title="Move Up" ${index === 0 ? 'disabled' : ''}>↑</button>
-                <button class="sm-btn move-down-btn" title="Move Down" ${index === currentArtworks.length - 1 ? 'disabled' : ''}>↓</button>
+                <button class="sm-btn move-up-btn" title="Move Up" ${currentSortBy !== 'custom' || index === 0 ? 'disabled' : ''}>↑</button>
+                <button class="sm-btn move-down-btn" title="Move Down" ${currentSortBy !== 'custom' || index === currentArtworks.length - 1 ? 'disabled' : ''}>↓</button>
                 <button class="sm-btn edit-btn">Edit</button>
                 <button class="sm-btn delete-btn">Delete</button>
               </div>
@@ -1785,9 +1863,10 @@ import Layout from '../layouts/Layout.astro';
 
         // Upload new image if file selected (takes priority if selected)
         if (file) {
-          const filename = `${Date.now()}_${file.name}`;
+          const compressedBlob = await compressImage(file);
+          const filename = `${Date.now()}_${file.name.substring(0, file.name.lastIndexOf('.')) || file.name}.webp`;
           const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, file);
+          const snapshot = await uploadBytes(storageRef, compressedBlob);
           imageUrl = await getDownloadURL(snapshot.ref);
         }
 
@@ -1797,7 +1876,8 @@ import Layout from '../layouts/Layout.astro';
 
         const selectedSubjects = Array.from(artSubjectCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
 
-        const artworkData: Omit<Artwork, 'id' | 'order'> & { order?: number; price?: number } = {
+        const existingArtwork = id ? currentArtworks.find(a => a.id === id) : null;
+        const artworkData: Omit<Artwork, 'id' | 'order'> & { order?: number; price?: number; createdAt?: string } = {
           title: artInputTitle.value,
           year: parseInt(artInputYear.value),
           typeOfWork: artInputType.value,
@@ -1812,7 +1892,8 @@ import Layout from '../layouts/Layout.astro';
           },
           medium: artInputMedium.value,
           isPrint: artIsPrint.checked,
-          printLink: artIsPrint.checked ? artPrintLink.value : ''
+          printLink: artIsPrint.checked ? artPrintLink.value : '',
+          createdAt: existingArtwork?.createdAt || new Date().toISOString()
         };
 
         if (artInputPrice.value) {
@@ -1874,9 +1955,10 @@ import Layout from '../layouts/Layout.astro';
         }
 
         if (file) {
-          const filename = `exhibition_${Date.now()}_${file.name}`;
+          const compressedBlob = await compressImage(file);
+          const filename = `exhibition_${Date.now()}_${file.name.substring(0, file.name.lastIndexOf('.')) || file.name}.webp`;
           const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, file);
+          const snapshot = await uploadBytes(storageRef, compressedBlob);
           imageUrl = await getDownloadURL(snapshot.ref);
         }
 
@@ -1964,33 +2046,37 @@ import Layout from '../layouts/Layout.astro';
 
         const file1 = s1File?.files?.[0];
         if (file1) {
-          const filename = `${Date.now()}_hero1_${file1.name}`;
+          const compressedBlob = await compressImage(file1);
+          const filename = `${Date.now()}_hero1_${file1.name.substring(0, file1.name.lastIndexOf('.')) || file1.name}.webp`;
           const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, file1);
+          const snapshot = await uploadBytes(storageRef, compressedBlob);
           s1Url = await getDownloadURL(snapshot.ref);
         }
 
         const file2 = s2File?.files?.[0];
         if (file2) {
-          const filename = `${Date.now()}_hero2_${file2.name}`;
+          const compressedBlob = await compressImage(file2);
+          const filename = `${Date.now()}_hero2_${file2.name.substring(0, file2.name.lastIndexOf('.')) || file2.name}.webp`;
           const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, file2);
+          const snapshot = await uploadBytes(storageRef, compressedBlob);
           s2Url = await getDownloadURL(snapshot.ref);
         }
 
         const file3 = s3File?.files?.[0];
         if (file3) {
-          const filename = `${Date.now()}_hero3_${file3.name}`;
+          const compressedBlob = await compressImage(file3);
+          const filename = `${Date.now()}_hero3_${file3.name.substring(0, file3.name.lastIndexOf('.')) || file3.name}.webp`;
           const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, file3);
+          const snapshot = await uploadBytes(storageRef, compressedBlob);
           s3Url = await getDownloadURL(snapshot.ref);
         }
 
         const file4 = s4File?.files?.[0];
         if (file4) {
-          const filename = `${Date.now()}_hero4_${file4.name}`;
+          const compressedBlob = await compressImage(file4);
+          const filename = `${Date.now()}_hero4_${file4.name.substring(0, file4.name.lastIndexOf('.')) || file4.name}.webp`;
           const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, file4);
+          const snapshot = await uploadBytes(storageRef, compressedBlob);
           s4Url = await getDownloadURL(snapshot.ref);
         }
 

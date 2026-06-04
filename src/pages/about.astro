@@ -25,7 +25,7 @@ import Layout from '../layouts/Layout.astro';
       <!-- Large Landscape Artist Portrait -->
       <section class="about-portrait-column" aria-label="Artist portrait">
         <div class="artist-portrait-frame fade-in">
-          <img src="/images/lucie_about_artist.jpeg" alt="Lucie Galvin in her art studio" class="artist-portrait-image" />
+          <img src="/images/lucie_about_artist.jpeg" alt="Lucie Galvin in her art studio" class="artist-portrait-image" loading="eager" fetchpriority="high" onload="this.classList.add('loaded')" />
         </div>
       </section>
 
@@ -40,7 +40,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="process-card">
           <span class="step-badge">01</span>
           <div class="process-img-container">
-            <img src="/images/process_1.jpeg" alt="Stage 1: Conceptual sketching and composition planning" class="process-image" />
+            <img src="/images/process_1.jpeg" alt="Stage 1: Conceptual sketching and composition planning" class="process-image" loading="lazy" onload="this.classList.add('loaded')" />
           </div>
           <div class="process-info">
             <h4 class="process-step-title">1. Sketching</h4>
@@ -51,7 +51,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="process-card">
           <span class="step-badge">02</span>
           <div class="process-img-container">
-            <img src="/images/process_2.jpeg" alt="Stage 2: Painting custom sheets of paper with textured colors" class="process-image" />
+            <img src="/images/process_2.jpeg" alt="Stage 2: Painting custom sheets of paper with textured colors" class="process-image" loading="lazy" onload="this.classList.add('loaded')" />
           </div>
           <div class="process-info">
             <h4 class="process-step-title">2. Piecing</h4>
@@ -62,7 +62,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="process-card">
           <span class="step-badge">03</span>
           <div class="process-img-container">
-            <img src="/images/process_3.jpeg" alt="Stage 3: Cutting and fitting base collage blocks" class="process-image" />
+            <img src="/images/process_3.jpeg" alt="Stage 3: Cutting and fitting base collage blocks" class="process-image" loading="lazy" onload="this.classList.add('loaded')" />
           </div>
           <div class="process-info">
             <h4 class="process-step-title">3. Blocking</h4>
@@ -73,7 +73,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="process-card">
           <span class="step-badge">04</span>
           <div class="process-img-container">
-            <img src="/images/process_4.jpeg" alt="Stage 4: Adding detail layering and shadows" class="process-image" />
+            <img src="/images/process_4.jpeg" alt="Stage 4: Adding detail layering and shadows" class="process-image" loading="lazy" onload="this.classList.add('loaded')" />
           </div>
           <div class="process-info">
             <h4 class="process-step-title">4. Detail</h4>
@@ -84,7 +84,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="process-card">
           <span class="step-badge">05</span>
           <div class="process-img-container">
-            <img src="/images/process_5.jpeg" alt="Stage 5: The completed artwork framed and mounted" class="process-image" />
+            <img src="/images/process_5.jpeg" alt="Stage 5: The completed artwork framed and mounted" class="process-image" loading="lazy" onload="this.classList.add('loaded')" />
           </div>
           <div class="process-info">
             <h4 class="process-step-title">5. Installation</h4>
@@ -137,6 +137,12 @@ import Layout from '../layouts/Layout.astro';
 
   function initAboutPage() {
     loadLiveBiography();
+    const images = document.querySelectorAll('.artist-portrait-image, .process-image');
+    images.forEach(img => {
+      if ((img as HTMLImageElement).complete) {
+        img.classList.add('loaded');
+      }
+    });
   }
 
   document.addEventListener('astro:page-load', initAboutPage);

@@ -45,10 +45,19 @@ import Layout from '../layouts/Layout.astro';
     <!-- Artworks Grid -->
     <div class="grid-wrapper">
       <div id="artworks-grid" class="artworks-grid">
-        <!-- Empty State Container -->
-        <div id="empty-state" class="empty-state hidden">
-          <p>No artworks found matching the selected filters.</p>
-        </div>
+        <!-- Dynamically loaded columns and items go here -->
+      </div>
+      <!-- Scroll Sentinel for Infinite Scroll -->
+      <div id="scroll-sentinel" class="scroll-sentinel hidden">
+        <div class="sentinel-spinner"></div>
+      </div>
+      <!-- Fallback / Accessibility Load More Button -->
+      <div class="load-more-container">
+        <button id="load-more-btn" class="load-more-btn hidden">Load More</button>
+      </div>
+      <!-- Empty State Container -->
+      <div id="empty-state" class="empty-state hidden">
+        <p>No artworks found matching the selected filters.</p>
       </div>
     </div>
   </div>
@@ -223,38 +232,46 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .artworks-grid {
-    column-count: 3;
+    display: flex;
+    flex-direction: row;
     column-gap: 2.5rem;
     width: 100%;
     padding-bottom: 2rem;
   }
 
-  @media (max-width: 1024px) {
-    .artworks-grid {
-      column-count: 2;
-      column-gap: 2rem;
-    }
+  .artworks-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    min-width: 0;
   }
 
-  @media (max-width: 650px) {
+  @media (max-width: 1024px) {
     .artworks-grid {
-      column-count: 1;
+      column-gap: 2rem;
+    }
+    .artworks-column {
+      gap: 2rem;
     }
   }
 
   .artwork-card {
-    break-inside: avoid;
-    margin-bottom: 2.5rem;
     position: relative;
     border: 1px solid var(--color-border);
     overflow: hidden;
     background-color: #fafafa;
     width: 100%;
-    display: inline-block;
   }
 
   .artwork-card.filtered-out {
     display: none !important;
+  }
+
+  @keyframes skeleton-pulse {
+    0% { background-color: #f5f5f5; }
+    50% { background-color: #ededed; }
+    100% { background-color: #f5f5f5; }
   }
 
   .artwork-image-container {
@@ -262,7 +279,13 @@ import Layout from '../layouts/Layout.astro';
     height: auto;
     position: relative;
     display: block;
-    background-color: #f9f9f9;
+    background-color: #f5f5f5;
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+  }
+
+  .artwork-image-container:has(.artwork-image.loaded) {
+    animation: none;
+    background-color: transparent;
   }
 
   .artwork-image {
@@ -497,12 +520,65 @@ import Layout from '../layouts/Layout.astro';
       padding: 0.3rem 1.5rem 0.3rem 0.5rem;
     }
   }
+
+  /* Scroll Sentinel & Spinner */
+  .scroll-sentinel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+    width: 100%;
+  }
+
+  .scroll-sentinel.hidden {
+    display: none !important;
+  }
+
+  .sentinel-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color-border);
+    border-radius: 50%;
+    border-top-color: var(--color-text);
+    animation: rotate-loader 0.8s linear infinite;
+  }
+
+  /* Load More Button fallback */
+  .load-more-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0 3rem 0;
+    width: 100%;
+  }
+
+  .load-more-btn {
+    padding: 0.75rem 2rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-text);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .load-more-btn:hover {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .load-more-btn.hidden {
+    display: none !important;
+  }
 </style>
 
 <script>
   import { db } from '../lib/firebase';
-  import { collection, getDocs } from 'firebase/firestore';
-  import { normalizeSubjects, formatStatus, formatDimensions, filterArtworks } from '../lib/utils';
+  import { collection, getDocs, getDoc, doc } from 'firebase/firestore';
+  import { normalizeSubjects, formatStatus, formatDimensions, filterArtworks, sortArtworks } from '../lib/utils';
 
   function initArtworkGallery() {
     const grid = document.getElementById('artworks-grid');
@@ -511,9 +587,138 @@ import Layout from '../layouts/Layout.astro';
     const selectSubject = document.getElementById('filter-subject') as HTMLSelectElement;
     const inputSearch = document.getElementById('filter-search') as HTMLInputElement;
     const emptyState = document.getElementById('empty-state');
+    const loadMoreBtn = document.getElementById('load-more-btn') as HTMLButtonElement;
+    const scrollSentinel = document.getElementById('scroll-sentinel');
     
-    let cards: HTMLDivElement[] = [];
+    let allArtworks: any[] = [];
+    let filteredArtworks: any[] = [];
+    let renderedCount = 12;
     let isLoading = true;
+    let observer: IntersectionObserver | null = null;
+
+    // Determine how many columns we need based on viewport width
+    function getColumnCount() {
+      const width = window.innerWidth;
+      if (width <= 650) return 1;
+      if (width <= 1024) return 2;
+      return 3;
+    }
+
+    let currentColumnCount = getColumnCount();
+
+    function createCardElement(data: any) {
+      const id = data.id;
+      const title = data.title || '';
+      const medium = data.medium || '';
+      const status = formatStatus(data.status);
+      const year = data.year || 2026;
+      const show = data.show || '';
+      const type = data.typeOfWork || 'Paper Picture';
+      const subjects = normalizeSubjects(data.subject);
+      const imageUrl = data.imageUrl || '';
+      const price = data.price;
+      const width = data.dimensions?.width || '';
+      const height = data.dimensions?.height || '';
+      const unit = data.dimensions?.unit || 'in';
+      const dimString = formatDimensions(width, height, unit);
+
+      const card = document.createElement('div');
+      card.className = 'artwork-card fade-in';
+      card.dataset.id = id;
+      card.dataset.year = year.toString();
+      card.dataset.type = type;
+      card.dataset.show = show;
+      card.dataset.subject = subjects.join(',');
+      card.dataset.status = status;
+
+      card.innerHTML = `
+        <div class="artwork-image-container" style="${width && height ? `aspect-ratio: ${width} / ${height};` : 'background-color: var(--color-border);'}">
+          <img src="${imageUrl}" alt="${title}" class="artwork-image" loading="lazy" onload="this.classList.add('loaded')" />
+          <div class="artwork-overlay">
+            <div class="overlay-details">
+              <h3 class="overlay-title">${title}</h3>
+              <p class="overlay-meta">${medium}</p>
+              ${dimString ? `<p class="overlay-meta">${dimString}</p>` : ''}
+              <p class="overlay-meta">${year}</p>
+              <div class="overlay-footer">
+                ${status ? `<span class="status-badge">${status}</span>` : '<span></span>'}
+                ${price ? `<span class="overlay-price">$${price}</span>` : ''}
+              </div>
+              ${data.isPrint && data.printLink ? `
+                <a href="${data.printLink}" target="_blank" rel="noopener noreferrer" class="print-available-link">
+                  Prints available
+                </a>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+
+      const img = card.querySelector('.artwork-image') as HTMLImageElement;
+      if (img && img.complete) {
+        img.classList.add('loaded');
+      }
+
+      return card;
+    }
+
+    function renderGallery(rebuild = true) {
+      if (!grid) return;
+      
+      const colsCount = getColumnCount();
+      let colDivs: HTMLDivElement[] = [];
+
+      if (rebuild) {
+        grid.innerHTML = '';
+        for (let i = 0; i < colsCount; i++) {
+          const col = document.createElement('div');
+          col.className = 'artworks-column';
+          grid.appendChild(col);
+          colDivs.push(col);
+        }
+      } else {
+        colDivs = Array.from(grid.querySelectorAll('.artworks-column')) as HTMLDivElement[];
+      }
+
+      const activeSlice = filteredArtworks.slice(0, renderedCount);
+
+      if (rebuild) {
+        activeSlice.forEach((artwork, idx) => {
+          const card = createCardElement(artwork);
+          colDivs[idx % colsCount].appendChild(card);
+        });
+      } else {
+        const currentCount = grid.querySelectorAll('.artwork-card').length;
+        const newItems = activeSlice.slice(currentCount);
+        newItems.forEach((artwork, idx) => {
+          const card = createCardElement(artwork);
+          const globalIdx = currentCount + idx;
+          colDivs[globalIdx % colsCount].appendChild(card);
+        });
+      }
+
+      // Show/hide "Load More" controls
+      if (renderedCount < filteredArtworks.length) {
+        loadMoreBtn?.classList.remove('hidden');
+        scrollSentinel?.classList.remove('hidden');
+        if (observer && scrollSentinel) {
+          observer.observe(scrollSentinel);
+        }
+      } else {
+        loadMoreBtn?.classList.add('hidden');
+        scrollSentinel?.classList.add('hidden');
+        if (observer) {
+          observer.disconnect();
+        }
+      }
+
+      // Toggle Empty State Visibility
+      if (!isLoading && filteredArtworks.length === 0) {
+        emptyState?.classList.remove('hidden');
+      } else {
+        emptyState?.classList.add('hidden');
+      }
+    }
 
     const applyFilters = () => {
       const yearVal = selectYear?.value || 'all';
@@ -521,15 +726,13 @@ import Layout from '../layouts/Layout.astro';
       const subjectVal = selectSubject?.value || 'all';
       const searchVal = inputSearch?.value || '';
 
-      let visibleCount = 0;
-
-      cards.forEach((card) => {
-        const matches = filterArtworks(
+      filteredArtworks = allArtworks.filter((artwork) => {
+        return filterArtworks(
           {
-            year: card.dataset.year || '',
-            show: card.dataset.show || '',
-            subjects: card.dataset.subject ? card.dataset.subject.split(',') : [],
-            title: card.querySelector('.overlay-title')?.textContent || ''
+            year: artwork.year?.toString() || '',
+            show: artwork.show || '',
+            subjects: normalizeSubjects(artwork.subject),
+            title: artwork.title || ''
           },
           {
             yearVal,
@@ -538,21 +741,11 @@ import Layout from '../layouts/Layout.astro';
             searchVal
           }
         );
-
-        if (matches) {
-          card.classList.remove('filtered-out');
-          visibleCount++;
-        } else {
-          card.classList.add('filtered-out');
-        }
       });
 
-      // Toggle Empty State Visibility
-      if (!isLoading && visibleCount === 0) {
-        emptyState?.classList.remove('hidden');
-      } else {
-        emptyState?.classList.add('hidden');
-      }
+      // Reset rendered count when filters change
+      renderedCount = 12;
+      renderGallery(true);
     };
 
     // Filter Listeners
@@ -576,24 +769,64 @@ import Layout from '../layouts/Layout.astro';
       inputSearch?.focus();
     });
 
+    // Dynamic resize distribution handler
+    let resizeTimer: any;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const newCols = getColumnCount();
+        if (newCols !== currentColumnCount) {
+          currentColumnCount = newCols;
+          renderGallery(true);
+        }
+      }, 100);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Observer initialization
+    if ('IntersectionObserver' in window && scrollSentinel) {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isLoading && renderedCount < filteredArtworks.length) {
+            renderedCount += 12;
+            renderGallery(false);
+          }
+        });
+      }, {
+        rootMargin: '200px'
+      });
+    }
+
+    // Fallback load more button listener
+    loadMoreBtn?.addEventListener('click', () => {
+      if (renderedCount < filteredArtworks.length) {
+        renderedCount += 12;
+        renderGallery(false);
+      }
+    });
+
+    // Clean up event listener when dynamic router transitions happen
+    document.addEventListener('astro:before-swap', () => {
+      window.removeEventListener('resize', handleResize);
+      if (observer) {
+        observer.disconnect();
+      }
+    }, { once: true });
+
     // Load live content from Firestore database
     async function loadLiveArtworks() {
       const wrapper = grid?.parentElement;
 
       if (grid) {
-        // Clear previous cards except the empty-state block
-        Array.from(grid.children).forEach(child => {
-          if (child.id !== 'empty-state') {
-            child.remove();
-          }
-        });
+        grid.innerHTML = '';
       }
 
       // Clear any pre-existing loading state
       const oldLoader = document.getElementById('loading-state');
       if (oldLoader) oldLoader.remove();
 
-      // Insert single spinner inside wrapper to center it and avoid column splitting
+      // Insert single spinner inside wrapper to center it
       if (wrapper && !document.getElementById('loading-state')) {
         wrapper.insertAdjacentHTML('afterbegin', `
           <div id="loading-state" class="loading-state">
@@ -604,6 +837,16 @@ import Layout from '../layouts/Layout.astro';
       }
 
       try {
+        let sortBy = 'custom';
+        try {
+          const settingsSnap = await getDoc(doc(db, 'settings', 'artworks'));
+          if (settingsSnap.exists()) {
+            sortBy = settingsSnap.data().sortBy || 'custom';
+          }
+        } catch (e) {
+          console.warn('Failed to load gallery sorting settings.', e);
+        }
+
         const querySnapshot = await getDocs(collection(db, 'artworks'));
         
         // Remove loading state
@@ -612,94 +855,30 @@ import Layout from '../layouts/Layout.astro';
         if (!querySnapshot.empty) {
           const liveYears = new Set<string>();
           const liveShows = new Set<string>();
-          const allArtworks: any[] = [];
+          const tempArtworks: any[] = [];
 
           querySnapshot.forEach((docSnap) => {
             const data = docSnap.data();
-            allArtworks.push({
-              ...data,
-              id: docSnap.id,
-              order: data.order ?? 0
-            });
-          });
-
-          // Sort in-memory: order asc, then year desc
-          allArtworks.sort((a, b) => {
-            if (a.order !== b.order) return a.order - b.order;
-            return (b.year || 0) - (a.year || 0);
-          });
-
-          allArtworks.forEach((data) => {
-            const id = data.id;
-            const title = data.title || '';
-            const medium = data.medium || '';
-            const status = formatStatus(data.status);
             const year = data.year || 2026;
             const show = data.show || '';
-            
             liveYears.add(year.toString());
             if (show) liveShows.add(show);
 
-            const type = data.typeOfWork || 'Paper Picture';
-            const subjects = normalizeSubjects(data.subject);
-            const imageUrl = data.imageUrl || '';
-            const price = data.price;
-            const width = data.dimensions?.width || '';
-            const height = data.dimensions?.height || '';
-            const unit = data.dimensions?.unit || 'in';
-            const dimString = formatDimensions(width, height, unit);
-
-            const card = document.createElement('div');
-            card.className = 'artwork-card fade-in';
-            card.dataset.id = id;
-            card.dataset.year = year.toString();
-            card.dataset.type = type;
-            card.dataset.show = show;
-            card.dataset.subject = subjects.join(',');
-            card.dataset.status = status;
-
-            card.innerHTML = `
-              <div class="artwork-image-container" style="${width && height ? `aspect-ratio: ${width} / ${height};` : ''}">
-                <img src="${imageUrl}" alt="${title}" class="artwork-image" loading="lazy" onload="this.classList.add('loaded')" />
-                <div class="artwork-overlay">
-                  <div class="overlay-details">
-                    <h3 class="overlay-title">${title}</h3>
-                    <p class="overlay-meta">${medium}</p>
-                    ${dimString ? `<p class="overlay-meta">${dimString}</p>` : ''}
-                    <p class="overlay-meta">${year}</p>
-                    <div class="overlay-footer">
-                      ${status ? `<span class="status-badge">${status}</span>` : '<span></span>'}
-                      ${price ? `<span class="overlay-price">$${price}</span>` : ''}
-                    </div>
-                    ${data.isPrint && data.printLink ? `
-                      <a href="${data.printLink}" target="_blank" rel="noopener noreferrer" class="print-available-link">
-                        Prints available
-                      </a>
-                    ` : ''}
-                  </div>
-                </div>
-              </div>
-            `;
-            
-            // Insert before empty state
-            const emptyStateNode = document.getElementById('empty-state');
-            if (grid) {
-              if (emptyStateNode) {
-                grid.insertBefore(card, emptyStateNode);
-              } else {
-                grid.appendChild(card);
-              }
-            }
-
-            // Fallback check in case the image loaded instantly from cache before onload registers
-            const img = card.querySelector('.artwork-image') as HTMLImageElement;
-            if (img && img.complete) {
-              img.classList.add('loaded');
-            }
+            tempArtworks.push({
+              ...data,
+              id: docSnap.id,
+              order: data.order ?? 0,
+              createdAt: data.createdAt || ''
+            });
           });
 
-          // Populate filters dynamically
+          // Sort in-memory based on stored sortBy preference
+          sortArtworks(tempArtworks, sortBy);
+          allArtworks = tempArtworks;
+
+          // Populate filters dynamically and clear previous options to avoid duplicates on router transition
           if (selectYear) {
+            selectYear.innerHTML = '<option value="all">All</option>';
             Array.from(liveYears).sort((a, b) => parseInt(b) - parseInt(a)).forEach(y => {
               const opt = document.createElement('option');
               opt.value = y;
@@ -708,6 +887,7 @@ import Layout from '../layouts/Layout.astro';
             });
           }
           if (selectShow) {
+            selectShow.innerHTML = '<option value="all">All</option>';
             Array.from(liveShows).sort().forEach(s => {
               const opt = document.createElement('option');
               opt.value = s;
@@ -716,10 +896,6 @@ import Layout from '../layouts/Layout.astro';
             });
           }
 
-          // Re-evaluate query cards array to feed pagination & filter routines
-          if (grid) {
-            cards = Array.from(grid.querySelectorAll('.artwork-card')) as HTMLDivElement[];
-          }
           applyFilters();
         } else {
           emptyState?.classList.remove('hidden');

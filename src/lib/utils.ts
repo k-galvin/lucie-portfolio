@@ -127,3 +127,42 @@ export function shouldBlockSubmit(honeyVal: string): boolean {
   return typeof honeyVal === 'string' && honeyVal.trim().length > 0;
 }
 
+/**
+ * Interface representing sorting fields required for artworks
+ */
+export interface SortableArtwork {
+  title: string;
+  year: number;
+  order: number;
+  createdAt?: string;
+}
+
+/**
+ * Sorts artworks array in-place based on the sortBy preference.
+ */
+export function sortArtworks<T extends SortableArtwork>(
+  artworks: T[],
+  sortBy: string
+): T[] {
+  return artworks.sort((a, b) => {
+    if (sortBy === 'title-asc') {
+      return a.title.localeCompare(b.title);
+    } else if (sortBy === 'oldest') {
+      const timeA = a.createdAt ? new Date(a.createdAt).getTime() : (a.order ?? 0);
+      const timeB = b.createdAt ? new Date(b.createdAt).getTime() : (b.order ?? 0);
+      if (timeA !== timeB) return timeA - timeB;
+      return (a.order ?? 0) - (b.order ?? 0);
+    } else if (sortBy === 'newest') {
+      const timeA = a.createdAt ? new Date(a.createdAt).getTime() : (a.order ?? 0);
+      const timeB = b.createdAt ? new Date(b.createdAt).getTime() : (b.order ?? 0);
+      if (timeA !== timeB) return timeB - timeA;
+      return (b.order ?? 0) - (a.order ?? 0);
+    } else {
+      // Default / custom order
+      if (a.order !== b.order) return a.order - b.order;
+      return b.year - a.year;
+    }
+  });
+}
+
+
