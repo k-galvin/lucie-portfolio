@@ -1,0 +1,96 @@
+[debug] [2026-06-04T21:34:23.544Z] ----------------------------------------------------------------------
+[debug] [2026-06-04T21:34:23.545Z] Command:       /Users/kategalvin/.nvm/versions/node/v26.3.0/bin/node /Users/kategalvin/.nvm/versions/node/v26.3.0/bin/firebase deploy --only hosting
+[debug] [2026-06-04T21:34:23.546Z] CLI Version:   15.19.0
+[debug] [2026-06-04T21:34:23.546Z] Platform:      darwin
+[debug] [2026-06-04T21:34:23.546Z] Node Version:  v26.3.0
+[debug] [2026-06-04T21:34:23.546Z] Time:          Thu Jun 04 2026 14:34:23 GMT-0700 (Pacific Daylight Time)
+[debug] [2026-06-04T21:34:23.546Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-06-04T21:34:24.112Z] Field "/hosting/trailingSlash" in "firebase.json" is possibly invalid: must be boolean
+[debug] [2026-06-04T21:34:24.113Z] Field "/hosting" in "firebase.json" is possibly invalid: must be array
+[debug] [2026-06-04T21:34:24.113Z] Field "/hosting" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2026-06-04T21:34:24.114Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-06-04T21:34:24.114Z] > authorizing via signed-in user (katemgalvin@gmail.com)
+[debug] [2026-06-04T21:34:24.114Z] [iam] checking project lucie-portfolio-art for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-06-04T21:34:24.115Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:24.115Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:24.115Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/lucie-portfolio-art:testIamPermissions [none]
+[debug] [2026-06-04T21:34:24.115Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/lucie-portfolio-art:testIamPermissions  x-goog-user-project=lucie-portfolio-art
+[debug] [2026-06-04T21:34:24.115Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/lucie-portfolio-art:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-04T21:34:24.362Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/lucie-portfolio-art:testIamPermissions 200
+[debug] [2026-06-04T21:34:24.362Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/lucie-portfolio-art:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-04T21:34:24.362Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:24.362Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:24.362Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/lucie-portfolio-art [none]
+[debug] [2026-06-04T21:34:24.688Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/lucie-portfolio-art 200
+[debug] [2026-06-04T21:34:24.689Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/lucie-portfolio-art {"projectId":"lucie-portfolio-art","projectNumber":"484173894135","displayName":"lucie-portfolio-art","name":"projects/lucie-portfolio-art","resources":{"hostingSite":"lucie-portfolio-art"},"state":"ACTIVE","etag":"1_bc59258b-b02d-4dbd-b13a-fc62ceb22528"}
+[info] 
+[info] === Deploying to 'lucie-portfolio-art'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2026-06-04T21:34:24.694Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:24.694Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:24.694Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/lucie-portfolio-art/sites/lucie-portfolio-art [none]
+[debug] [2026-06-04T21:34:25.418Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/lucie-portfolio-art/sites/lucie-portfolio-art 200
+[debug] [2026-06-04T21:34:25.419Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/lucie-portfolio-art/sites/lucie-portfolio-art {"name":"projects/lucie-portfolio-art/sites/lucie-portfolio-art","defaultUrl":"https://lucie-portfolio-art.web.app","type":"DEFAULT_SITE"}
+[debug] [2026-06-04T21:34:25.421Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:25.421Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:25.421Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lucie-portfolio-art/versions [none]
+[debug] [2026-06-04T21:34:25.421Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lucie-portfolio-art/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2026-06-04T21:34:26.338Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lucie-portfolio-art/versions 200
+[debug] [2026-06-04T21:34:26.338Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lucie-portfolio-art/versions {"name":"projects/484173894135/sites/lucie-portfolio-art/versions/5c9969793a6c7723","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[lucie-portfolio-art]: beginning deploy... 
+[info] i  hosting[lucie-portfolio-art]: found 29 files in dist 
+[debug] [2026-06-04T21:34:26.362Z] [hosting] uploading with 200 concurrency
+[debug] [2026-06-04T21:34:26.483Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:26.483Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:26.484Z] [hosting] hash cache [ZGlzdA] stored for 29 files
+[debug] [2026-06-04T21:34:26.484Z] [hosting][hash queue][FINAL] {"max":118,"min":7,"avg":25.03448275862069,"active":0,"complete":29,"success":29,"errored":0,"retried":0,"total":29,"elapsed":120}
+[debug] [2026-06-04T21:34:26.484Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/484173894135/sites/lucie-portfolio-art/versions/5c9969793a6c7723:populateFiles [none]
+[debug] [2026-06-04T21:34:26.484Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/484173894135/sites/lucie-portfolio-art/versions/5c9969793a6c7723:populateFiles {"files":{"/index.html":"4eaff278cb1ba5ed9b524d60bb6d6289fa028c66c0d59dc7e76a216bf7986085","/exhibitions/index.html":"d0008c426497d11d8167f7cdca05d97b1c593cf0a0e6b5b16b44cf54e2c5c0e6","/artworks/index.html":"1b7d184e225ba3a24822f9bbb624320ad9927eb89502d67050ee26f6db95b0d7","/contact/index.html":"7a02bd9892138ff1c425d9539ea86da9f85b335bae34b8a693ac2d4776fd5a3e","/_astro/utils.BgDHXtqz.js":"c2915b87e72351f13c7c1572749e94161db677337ae69c6232ffad12d5c745dc","/about/index.html":"b9bc7f9a90f3677a6b619f687f77bb88c250eb8843bdf849288abad78c9b7dc5","/_astro/index.astro_astro_type_script_index_0_lang.BiMUDlGM.js":"9494584cdb6f91e002106eee5fa59196cb9f3980219bd91d3d106dca34914efc","/_astro/exhibitions.astro_astro_type_script_index_0_lang.Cb1l4iMv.js":"7ebc499d2e7c99923958f5a390d19b6d2b29a8fc2ba5575f6685036325eb1080","/_astro/contact.astro_astro_type_script_index_0_lang.D8UkW1sy.js":"320a843f50141955fe2599b0ad980c062b4296a9963384377cd3b6faacf24a90","/_astro/contact.BbbARr3V.css":"1c544c87802a4f6f455183efbb2116f84218e6d6678ca5392b5c5b57b0fec2af","/admin/index.html":"d789c3f36adbd218c1fa054f379a7a94e44dfba653d1f520d9f1dcbe6a4c47ec","/_astro/artworks.astro_astro_type_script_index_0_lang.nNXuInMN.js":"da15b7b94eb0ac36e4b6a8f957ef9269df42074a3d981d8d041a87211d434554","/_astro/artworks.BEQ4uvkM.css":"e4b26e43d225dc27b6cd340794dba16df72380744bd63b5273319c88d59ec403","/_astro/admin.BoTPttHK.css":"b3413bafbb421dc5b0e1bbc03ce4bb5676641647254d97da6ca2ba8e0df1250a","/_astro/about.astro_astro_type_script_index_0_lang.BQW6eV5I.js":"e96f3d2905b59a977611233e668ef37514a4bb9778e59357dfc8b09842248ae3","/_astro/Layout.qfmIoyvH.css":"6efa2f3632c209c109d57b4e4afd8b5e2e5b1d6607058ae8d18fb3f2bdc1bc0c","/_astro/admin.astro_astro_type_script_index_0_lang.jUeY6-xl.js":"b47699c4eaee6c49d1402691d536a03f7354f21ee27e16157171505dd0b7f8ab","/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js":"f50570e2d063087ae277f67b6327a7d1377357858cd853bbce39f23f857e6dd0","/images/process_1.jpeg":"be9eff5c858007165aa16a1f252b58cacfbe4c4c4ffc5e38bdc70855fd785af7","/_astro/firebase._jPi2fRc.js":"0abbdf11c8075218e3e8d4fc6a4e5607074522ec24eb51aba61ca22d05251d01","/images/process_3.jpeg":"2afa401c37d87d689016da861158e4b77bb3f7383f8311a720a1425823af84e0","/images/process_5.jpeg":"648056f5d7e0e3dfcff8e05827601eedb7ccb22ccaaf6ab1eb41a39222aa7dab","/images/lucie_portrait.png":"5c9a7e7ae2296a97c8872f1bdd8f7b57cb01929de6ba2c98ae2e0fcfd46dd0b1","/images/lucie_studio.png":"8b06e8e0efe34f34c99038f46d9d2518cf62442d484cc94ce707d67b0390e9bc","/images/lucie_landscape.png":"c92e6af50d7f470d03214af0adeacb1ba4d861c2ecc984dcd87b62d2075d2edb","/images/lucie_about_artist.jpeg":"0d2d4bef7c5ae8063670473cd10df492fd3de85d7b95abdeaaa6a04f119b933b","/images/process_2.jpeg":"2790df7fe20b040436fbe9f10f72590a26dd822e60b54c6ddae0c3968e9eddc3","/images/process_4.jpeg":"62c362f17e1dfb36ac308ddd82212f37998dd027646f27946e4c474b3e9e1b1c","/favicon.ico":"a797eccfa4d72dfdde08f5b5f6ab1284f3946f01955e69cf39ac555c0c89898b"}}
+[debug] [2026-06-04T21:34:27.371Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/484173894135/sites/lucie-portfolio-art/versions/5c9969793a6c7723:populateFiles 200
+[debug] [2026-06-04T21:34:27.372Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/484173894135/sites/lucie-portfolio-art/versions/5c9969793a6c7723:populateFiles {"uploadRequiredHashes":["e4b26e43d225dc27b6cd340794dba16df72380744bd63b5273319c88d59ec403","1b7d184e225ba3a24822f9bbb624320ad9927eb89502d67050ee26f6db95b0d7","da15b7b94eb0ac36e4b6a8f957ef9269df42074a3d981d8d041a87211d434554"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files"}
+[debug] [2026-06-04T21:34:27.373Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:27.373Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:27.374Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:27.374Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:27.374Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:27.374Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:27.374Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/e4b26e43d225dc27b6cd340794dba16df72380744bd63b5273319c88d59ec403 [none]
+[debug] [2026-06-04T21:34:27.374Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/e4b26e43d225dc27b6cd340794dba16df72380744bd63b5273319c88d59ec403 [stream]
+[debug] [2026-06-04T21:34:27.376Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/1b7d184e225ba3a24822f9bbb624320ad9927eb89502d67050ee26f6db95b0d7 [none]
+[debug] [2026-06-04T21:34:27.376Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/1b7d184e225ba3a24822f9bbb624320ad9927eb89502d67050ee26f6db95b0d7 [stream]
+[debug] [2026-06-04T21:34:27.378Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/da15b7b94eb0ac36e4b6a8f957ef9269df42074a3d981d8d041a87211d434554 [none]
+[debug] [2026-06-04T21:34:27.378Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/da15b7b94eb0ac36e4b6a8f957ef9269df42074a3d981d8d041a87211d434554 [stream]
+[debug] [2026-06-04T21:34:27.380Z] [hosting][populate queue][FINAL] {"max":891,"min":891,"avg":891,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":897}
+[debug] [2026-06-04T21:34:27.380Z] [hosting] uploads queued: 3
+[debug] [2026-06-04T21:34:28.263Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/e4b26e43d225dc27b6cd340794dba16df72380744bd63b5273319c88d59ec403 200
+[debug] [2026-06-04T21:34:28.263Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/e4b26e43d225dc27b6cd340794dba16df72380744bd63b5273319c88d59ec403 [stream]
+[debug] [2026-06-04T21:34:28.629Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/1b7d184e225ba3a24822f9bbb624320ad9927eb89502d67050ee26f6db95b0d7 200
+[debug] [2026-06-04T21:34:28.629Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/1b7d184e225ba3a24822f9bbb624320ad9927eb89502d67050ee26f6db95b0d7 [stream]
+[debug] [2026-06-04T21:34:28.859Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/da15b7b94eb0ac36e4b6a8f957ef9269df42074a3d981d8d041a87211d434554 200
+[debug] [2026-06-04T21:34:28.859Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/lucie-portfolio-art/versions/5c9969793a6c7723/files/da15b7b94eb0ac36e4b6a8f957ef9269df42074a3d981d8d041a87211d434554 [stream]
+[debug] [2026-06-04T21:34:28.860Z] [hosting][upload queue][FINAL] {"max":1486,"min":891,"avg":1211,"active":0,"complete":3,"success":3,"errored":0,"retried":0,"total":3,"elapsed":1487}
+[info] ✔  hosting[lucie-portfolio-art]: file upload complete 
+[debug] [2026-06-04T21:34:28.861Z] [hosting] deploy completed after 2514ms
+[debug] [2026-06-04T21:34:28.862Z] [
+  {
+    "config": {
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "cleanUrls": true,
+      "trailingSlash": "never",
+      "site": "lucie-portfolio-art"
+    },
+    "version": "projects/484173894135/sites/lucie-portfolio-art/versions/5c9969793a6c7723"
+  }
+]
+[info] i  hosting[lucie-portfolio-art]: finalizing version... 
+[debug] [2026-06-04T21:34:28.864Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:28.864Z] Checked if tokens are valid: true, expires at: 1780612341976
+[debug] [2026-06-04T21:34:28.864Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lucie-portfolio-art/versions/5c9969793a6c7723 updateMask=status%2Cconfig
+[debug] [2026-06-04T21:34:28.864Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/lucie-portfolio-art/versions/5c9969793a6c7723 {"status":"FINALIZED","config":{"cleanUrls":true,"trailingSlashBehavior":"ADD"}}
