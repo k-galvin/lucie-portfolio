@@ -55,6 +55,16 @@ const {
         window.history.scrollRestoration = 'manual';
       }
 
+      // Update data-slideshow attribute on html element to handle layout differences
+      const updateSlideshowState = () => {
+        const isFullscreenApp = !!document.getElementById('hero-slideshow') || !!document.querySelector('.artworks-container');
+        if (isFullscreenApp) {
+          document.documentElement.setAttribute('data-slideshow', 'true');
+        } else {
+          document.documentElement.removeAttribute('data-slideshow');
+        }
+      };
+
       // Global scroll reset for Astro SPA transitions to prevent window scroll retention on mobile
       const resetScrolls = () => {
         window.scrollTo(0, 0);
@@ -70,8 +80,14 @@ const {
         });
       };
 
-      document.addEventListener('astro:after-swap', resetScrolls);
-      document.addEventListener('astro:page-load', resetScrolls);
+      document.addEventListener('astro:after-swap', () => {
+        resetScrolls();
+        updateSlideshowState();
+      });
+      document.addEventListener('astro:page-load', () => {
+        resetScrolls();
+        updateSlideshowState();
+      });
     </script>
   </head>
   <body>
@@ -493,47 +509,16 @@ const {
       gap: 2.5rem;
     }
     .about-split {
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
-      height: auto;
-      min-height: auto;
-      width: 100%;
-    }
-    .about-text-column {
-      height: auto;
-      min-height: auto;
-      display: block;
-      width: 100%;
-    }
-    .bio-section {
-      height: auto;
-      min-height: auto;
-      display: block;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2rem;
+      height: 52%;
+      min-height: 350px;
       width: 100%;
     }
     .bio-text {
-      height: 350px;
+      max-height: 320px;
       overflow-y: auto;
-      padding-right: 0.5rem;
-    }
-    .about-portrait-column {
-      height: auto;
-      min-height: auto;
-      display: block;
-      width: 100%;
-    }
-    .artist-portrait-frame {
-      width: 100%;
-      max-width: 100%;
-      aspect-ratio: 3/2;
-      height: auto;
-    }
-    .artist-portrait-image {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 3/2;
-      object-fit: cover;
     }
     .process-section {
       height: auto;
@@ -581,7 +566,50 @@ const {
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
+    .about-split {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      height: auto;
+      min-height: auto;
+      width: 100%;
+    }
+    .about-text-column {
+      height: auto;
+      min-height: auto;
+      display: block;
+      width: 100%;
+    }
+    .bio-section {
+      height: auto;
+      min-height: auto;
+      display: block;
+      width: 100%;
+    }
+    .bio-text {
+      max-height: 240px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+    .about-portrait-column {
+      height: auto;
+      min-height: auto;
+      display: block;
+      width: 100%;
+    }
+    .artist-portrait-frame {
+      width: 100%;
+      max-width: 100%;
+      aspect-ratio: 3/2;
+      height: auto;
+    }
+    .artist-portrait-image {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3/2;
+      object-fit: cover;
+    }
     .process-grid {
       display: flex;
       overflow-x: auto;
@@ -594,18 +622,15 @@ const {
       height: auto;
       scroll-padding: 0;
     }
-    
     .process-card {
       flex: 0 0 270px;
       scroll-snap-align: start;
       height: auto;
     }
-
     .process-img-container {
       aspect-ratio: 4/3;
       height: auto;
     }
-
     .process-info {
       height: auto;
       padding: 1rem;
@@ -614,23 +639,36 @@ const {
 
   /* Unlocks window/body scrolling for non-slideshow pages on tablet/mobile screens */
   /* to allow native iOS/system tap-status-bar-to-scroll-to-top behavior */
+  /* -------------------------------------------------------------------------- */
+  /* CRITICAL PERFORMANCE & HYDRATION DIRECTIVE:                                */
+  /* DO NOT use CSS `:has()` descendant checks on root nodes (like `html:not(:has(...))`) */
+  /* to branch layout structures. Astro's client-side Router (ClientRouter / ViewTransitions) */
+  /* swaps the `<body>` but leaves the `<html>` root untouched. Modern browsers (Chrome/Safari) */
+  /* do NOT reliably invalidate or re-evaluate CSS `:has()` matches on root nodes when elements */
+  /* are added or removed during dynamic DOM swaps. This results in visual layout regressions */
+  /* when navigating pages dynamically.                                         */
+  /*                                                                            */
+  /* INSTRUCTION: Always use layout javascript to toggle data attributes on `html` */
+  /* (e.g., `data-slideshow="true"`) on navigation lifecycle events, and style  */
+  /* accordingly using attribute selectors (e.g., `html:not([data-slideshow="true"])`). */
+  /* -------------------------------------------------------------------------- */
   @media (max-width: 1024px) {
-    html:not(:has(#hero-slideshow)),
-    html:not(:has(#hero-slideshow)) body {
+    html:not([data-slideshow="true"]),
+    html:not([data-slideshow="true"]) body {
       height: auto !important;
       min-height: 100% !important;
       max-height: none !important;
       overflow-y: auto !important;
     }
     
-    html:not(:has(#hero-slideshow)) .app-container {
+    html:not([data-slideshow="true"]) .app-container {
       height: auto !important;
       min-height: 100dvh !important;
       max-height: none !important;
       overflow: visible !important;
     }
     
-    html:not(:has(#hero-slideshow)) main {
+    html:not([data-slideshow="true"]) main {
       height: auto !important;
       min-height: auto !important;
       max-height: none !important;
@@ -640,20 +678,12 @@ const {
     }
 
     /* Override page wrapper heights and scrolls to let the page contents stretch naturally */
-    html:not(:has(#hero-slideshow)) .artworks-container,
-    html:not(:has(#hero-slideshow)) .about-container,
-    html:not(:has(#hero-slideshow)) .exhibition-page-container,
-    html:not(:has(#hero-slideshow)) .contact-container {
+    html:not([data-slideshow="true"]) .about-container,
+    html:not([data-slideshow="true"]) .exhibition-page-container,
+    html:not([data-slideshow="true"]) .contact-container {
       height: auto !important;
       max-height: none !important;
       overflow: visible !important;
-    }
-
-    html:not(:has(#hero-slideshow)) .grid-wrapper,
-    html:not(:has(#hero-slideshow)) .bio-text {
-      height: auto !important;
-      max-height: none !important;
-      overflow-y: visible !important;
     }
   }
 </style>

@@ -42,23 +42,28 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </section>
 
-    <!-- Artworks Grid -->
+    <!-- Artwork Display Area -->
     <div class="grid-wrapper">
-      <div id="artworks-grid" class="artworks-grid">
-        <!-- Dynamically loaded columns and items go here -->
-      </div>
-      <!-- Scroll Sentinel for Infinite Scroll -->
-      <div id="scroll-sentinel" class="scroll-sentinel hidden">
-        <div class="sentinel-spinner"></div>
-      </div>
-      <!-- Fallback / Accessibility Load More Button -->
-      <div class="load-more-container">
-        <button id="load-more-btn" class="load-more-btn hidden">Load More</button>
+      <div id="artwork-display-container" class="artwork-single-container">
+        <!-- Dynamically loaded single artwork goes here -->
       </div>
       <!-- Empty State Container -->
       <div id="empty-state" class="empty-state hidden">
         <p>No artworks found matching the selected filters.</p>
       </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div id="pagination-controls" class="pagination-bar hidden">
+      <button id="prev-page-btn" class="page-btn" aria-label="Previous page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div id="page-numbers" class="page-numbers-container">
+        <!-- Dynamically loaded page numbers -->
+      </div>
+      <button id="next-page-btn" class="page-btn" aria-label="Next page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
     </div>
   </div>
 </Layout>
@@ -222,46 +227,37 @@ import Layout from '../layouts/Layout.astro';
     outline: none;
   }
 
-  /* Grid Layout and Pagination Bounds logic */
+  /* Single Item Layout */
   .grid-wrapper {
     flex: 1 1 0%;
-    overflow-y: auto;
-    position: relative;
+    position: relative; /* Anchor for absolute positioning */
     min-height: 0;
-    padding-right: 0.5rem;
-  }
-
-  .artworks-grid {
-    display: flex;
-    flex-direction: row;
-    column-gap: 2.5rem;
-    width: 100%;
-    padding-bottom: 2rem;
-  }
-
-  .artworks-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
     min-width: 0;
+    overflow: hidden;
   }
 
-  @media (max-width: 1024px) {
-    .artworks-grid {
-      column-gap: 2rem;
-    }
-    .artworks-column {
-      gap: 2rem;
-    }
+  .artwork-single-container {
+    position: absolute;
+    top: 1rem;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    container-type: size;
   }
 
   .artwork-card {
     position: relative;
-    border: 1px solid var(--color-border);
+    --ratio: var(--aspect-ratio, 1);
+    width: min(100cqw, calc(100cqh * var(--ratio)));
+    height: min(100cqh, calc(100cqw / var(--ratio)));
+    background-color: transparent;
     overflow: hidden;
-    background-color: #fafafa;
-    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .artwork-card.filtered-out {
@@ -275,25 +271,21 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .artwork-image-container {
-    width: 100%;
-    height: auto;
     position: relative;
-    display: block;
-    background-color: #f5f5f5;
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
-  }
-
-  .artwork-image-container:has(.artwork-image.loaded) {
-    animation: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
     background-color: transparent;
   }
 
   .artwork-image {
     width: 100%;
-    height: auto;
-    display: block;
+    height: 100%;
     object-fit: contain;
-    transition: transform 0.4s ease, opacity 0.3s ease;
+    display: block;
+    transition: opacity 0.3s ease;
     opacity: 0;
   }
 
@@ -322,9 +314,7 @@ import Layout from '../layouts/Layout.astro';
     opacity: 1;
   }
 
-  .artwork-card:hover .artwork-image {
-    transform: scale(1.03);
-  }
+  /* zoom disabled for full screen single artwork */
 
   .overlay-title {
     font-size: 0.95rem;
@@ -500,6 +490,17 @@ import Layout from '../layouts/Layout.astro';
     font-weight: 700;
   }
 
+  :global(.page-dots) {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
   @media (max-width: 900px) {
     .filters-bar {
       gap: 1rem;
@@ -521,56 +522,8 @@ import Layout from '../layouts/Layout.astro';
     }
   }
 
-  /* Scroll Sentinel & Spinner */
-  .scroll-sentinel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0;
-    width: 100%;
-  }
-
-  .scroll-sentinel.hidden {
-    display: none !important;
-  }
-
-  .sentinel-spinner {
-    width: 24px;
-    height: 24px;
-    border: 2px solid var(--color-border);
-    border-radius: 50%;
-    border-top-color: var(--color-text);
-    animation: rotate-loader 0.8s linear infinite;
-  }
-
-  /* Load More Button fallback */
-  .load-more-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem 0 3rem 0;
-    width: 100%;
-  }
-
-  .load-more-btn {
-    padding: 0.75rem 2rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    border: 1px solid var(--color-text);
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .load-more-btn:hover {
-    background-color: var(--color-text);
-    color: var(--color-bg);
-  }
-
-  .load-more-btn.hidden {
+  /* Pagination hiding */
+  .pagination-bar.hidden {
     display: none !important;
   }
 </style>
@@ -581,30 +534,22 @@ import Layout from '../layouts/Layout.astro';
   import { normalizeSubjects, formatStatus, formatDimensions, filterArtworks, sortArtworks } from '../lib/utils';
 
   function initArtworkGallery() {
-    const grid = document.getElementById('artworks-grid');
+    const displayContainer = document.getElementById('artwork-display-container');
     const selectYear = document.getElementById('filter-year') as HTMLSelectElement;
     const selectShow = document.getElementById('filter-show') as HTMLSelectElement;
     const selectSubject = document.getElementById('filter-subject') as HTMLSelectElement;
     const inputSearch = document.getElementById('filter-search') as HTMLInputElement;
     const emptyState = document.getElementById('empty-state');
-    const loadMoreBtn = document.getElementById('load-more-btn') as HTMLButtonElement;
-    const scrollSentinel = document.getElementById('scroll-sentinel');
+    
+    const paginationControls = document.getElementById('pagination-controls');
+    const prevBtn = document.getElementById('prev-page-btn') as HTMLButtonElement;
+    const nextBtn = document.getElementById('next-page-btn') as HTMLButtonElement;
+    const pageNumbersContainer = document.getElementById('page-numbers');
     
     let allArtworks: any[] = [];
     let filteredArtworks: any[] = [];
-    let renderedCount = 12;
+    let currentPage = 1;
     let isLoading = true;
-    let observer: IntersectionObserver | null = null;
-
-    // Determine how many columns we need based on viewport width
-    function getColumnCount() {
-      const width = window.innerWidth;
-      if (width <= 650) return 1;
-      if (width <= 1024) return 2;
-      return 3;
-    }
-
-    let currentColumnCount = getColumnCount();
 
     function createCardElement(data: any) {
       const id = data.id;
@@ -631,8 +576,16 @@ import Layout from '../layouts/Layout.astro';
       card.dataset.subject = subjects.join(',');
       card.dataset.status = status;
 
+      const wNum = parseFloat(width);
+      const hNum = parseFloat(height);
+      if (!isNaN(wNum) && !isNaN(hNum) && hNum > 0) {
+        card.style.setProperty('--aspect-ratio', (wNum / hNum).toString());
+      } else {
+        card.style.setProperty('--aspect-ratio', '1');
+      }
+
       card.innerHTML = `
-        <div class="artwork-image-container" style="${width && height ? `aspect-ratio: ${width} / ${height};` : 'background-color: var(--color-border);'}">
+        <div class="artwork-image-container" style="${width && height ? '' : 'background-color: var(--color-border);'}">
           <img alt="${title}" class="artwork-image" />
           <div class="artwork-overlay">
             <div class="overlay-details">
@@ -668,54 +621,92 @@ import Layout from '../layouts/Layout.astro';
       return card;
     }
 
-    function renderGallery(rebuild = true) {
-      if (!grid) return;
+    function renderGallery() {
+      if (!displayContainer) return;
+
+      displayContainer.innerHTML = '';
       
-      const colsCount = getColumnCount();
-      let colDivs: HTMLDivElement[] = [];
-
-      if (rebuild) {
-        grid.innerHTML = '';
-        for (let i = 0; i < colsCount; i++) {
-          const col = document.createElement('div');
-          col.className = 'artworks-column';
-          grid.appendChild(col);
-          colDivs.push(col);
-        }
-      } else {
-        colDivs = Array.from(grid.querySelectorAll('.artworks-column')) as HTMLDivElement[];
+      if (filteredArtworks.length > 0) {
+        const activeArtwork = filteredArtworks[currentPage - 1];
+        const card = createCardElement(activeArtwork);
+        displayContainer.appendChild(card);
       }
 
-      const activeSlice = filteredArtworks.slice(0, renderedCount);
-
-      if (rebuild) {
-        activeSlice.forEach((artwork, idx) => {
-          const card = createCardElement(artwork);
-          colDivs[idx % colsCount].appendChild(card);
-        });
-      } else {
-        const currentCount = grid.querySelectorAll('.artwork-card').length;
-        const newItems = activeSlice.slice(currentCount);
-        newItems.forEach((artwork, idx) => {
-          const card = createCardElement(artwork);
-          const globalIdx = currentCount + idx;
-          colDivs[globalIdx % colsCount].appendChild(card);
-        });
-      }
-
-      // Show/hide "Load More" controls
-      if (renderedCount < filteredArtworks.length) {
-        loadMoreBtn?.classList.remove('hidden');
-        scrollSentinel?.classList.remove('hidden');
-        if (observer && scrollSentinel) {
-          observer.observe(scrollSentinel);
+      // Pagination setup
+      if (filteredArtworks.length > 0 && paginationControls) {
+        paginationControls.classList.remove('hidden');
+        
+        if (prevBtn) {
+          prevBtn.disabled = currentPage === 1;
         }
-      } else {
-        loadMoreBtn?.classList.add('hidden');
-        scrollSentinel?.classList.add('hidden');
-        if (observer) {
-          observer.disconnect();
+        if (nextBtn) {
+          nextBtn.disabled = currentPage === filteredArtworks.length;
         }
+
+        if (pageNumbersContainer) {
+          pageNumbersContainer.innerHTML = '';
+          const totalPages = filteredArtworks.length;
+          
+          let startPage = Math.max(1, currentPage - 2);
+          let endPage = Math.min(totalPages, currentPage + 2);
+          
+          if (currentPage <= 3) {
+            endPage = Math.min(totalPages, 5);
+          }
+          if (currentPage >= totalPages - 2) {
+            startPage = Math.max(1, totalPages - 4);
+          }
+
+          // First page and dots
+          if (startPage > 1) {
+            const firstBtn = document.createElement('button');
+            firstBtn.className = 'page-num';
+            firstBtn.textContent = '1';
+            firstBtn.addEventListener('click', () => {
+              currentPage = 1;
+              renderGallery();
+            });
+            pageNumbersContainer.appendChild(firstBtn);
+
+            if (startPage > 2) {
+              const dots = document.createElement('span');
+              dots.className = 'page-dots';
+              dots.textContent = '...';
+              pageNumbersContainer.appendChild(dots);
+            }
+          }
+
+          for (let i = startPage; i <= endPage; i++) {
+            const numBtn = document.createElement('button');
+            numBtn.className = 'page-num' + (i === currentPage ? ' active' : '');
+            numBtn.textContent = i.toString();
+            numBtn.addEventListener('click', () => {
+              currentPage = i;
+              renderGallery();
+            });
+            pageNumbersContainer.appendChild(numBtn);
+          }
+
+          // Dots and last page
+          if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+              const dots = document.createElement('span');
+              dots.className = 'page-dots';
+              dots.textContent = '...';
+              pageNumbersContainer.appendChild(dots);
+            }
+            const lastBtn = document.createElement('button');
+            lastBtn.className = 'page-num';
+            lastBtn.textContent = totalPages.toString();
+            lastBtn.addEventListener('click', () => {
+              currentPage = totalPages;
+              renderGallery();
+            });
+            pageNumbersContainer.appendChild(lastBtn);
+          }
+        }
+      } else if (paginationControls) {
+        paginationControls.classList.add('hidden');
       }
 
       // Toggle Empty State Visibility
@@ -749,9 +740,9 @@ import Layout from '../layouts/Layout.astro';
         );
       });
 
-      // Reset rendered count when filters change
-      renderedCount = 12;
-      renderGallery(true);
+      // Reset to first page when filters change
+      currentPage = 1;
+      renderGallery();
     };
 
     // Filter Listeners
@@ -775,57 +766,31 @@ import Layout from '../layouts/Layout.astro';
       inputSearch?.focus();
     });
 
-    // Dynamic resize distribution handler
-    let resizeTimer: any;
-    const handleResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        const newCols = getColumnCount();
-        if (newCols !== currentColumnCount) {
-          currentColumnCount = newCols;
-          renderGallery(true);
+    // Pagination Listeners
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderGallery();
         }
-      }, 100);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // Observer initialization
-    if ('IntersectionObserver' in window && scrollSentinel) {
-      observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isLoading && renderedCount < filteredArtworks.length) {
-            renderedCount += 12;
-            renderGallery(false);
-          }
-        });
-      }, {
-        rootMargin: '200px'
       });
     }
 
-    // Fallback load more button listener
-    loadMoreBtn?.addEventListener('click', () => {
-      if (renderedCount < filteredArtworks.length) {
-        renderedCount += 12;
-        renderGallery(false);
-      }
-    });
-
-    // Clean up event listener when dynamic router transitions happen
-    document.addEventListener('astro:before-swap', () => {
-      window.removeEventListener('resize', handleResize);
-      if (observer) {
-        observer.disconnect();
-      }
-    }, { once: true });
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        if (currentPage < filteredArtworks.length) {
+          currentPage++;
+          renderGallery();
+        }
+      });
+    }
 
     // Load live content from Firestore database
     async function loadLiveArtworks() {
-      const wrapper = grid?.parentElement;
+      const wrapper = displayContainer?.parentElement;
 
-      if (grid) {
-        grid.innerHTML = '';
+      if (displayContainer) {
+        displayContainer.innerHTML = '';
       }
 
       // Clear any pre-existing loading state
