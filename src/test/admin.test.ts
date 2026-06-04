@@ -180,4 +180,129 @@ describe('Admin Panel Dashboards and Verification logic', () => {
     expect(artPrintLink.required).toBe(true);
     expect(artPrintLink.value).toBe('https://saatchiart.com/luciegalvin/print-boats');
   });
+
+  it('should filter artworks by title in-memory and disable reorder buttons during active search', () => {
+    // 1. Prepare dummy DOM container for the table body, search input, and sort select
+    const dom = new JSDOM(`
+      <div>
+        <input type="text" id="art-search-input" value="" />
+        <select id="art-sort-select">
+          <option value="custom" selected>Custom Order</option>
+          <option value="title-asc">Title (A-Z)</option>
+        </select>
+        <table>
+          <tbody id="artwork-list-tbody"></tbody>
+        </table>
+      </div>
+    `);
+
+    const document = dom.window.document;
+    const artworkTbody = document.getElementById('artwork-list-tbody');
+
+    // 2. Mock state variables
+    let currentArtworks = [
+      { id: '1', title: 'Summer Breeze', year: 2024, status: '', isPrint: false, order: 0, imageUrl: 'thumb1.jpg' },
+      { id: '2', title: 'Winter Morning', year: 2024, status: '', isPrint: true, order: 10, imageUrl: 'thumb2.jpg' },
+      { id: '3', title: 'Summer Garden', year: 2025, status: '', isPrint: false, order: 20, imageUrl: 'thumb3.jpg' }
+    ];
+    let currentSortBy = 'custom';
+    let currentArtSearchQuery = '';
+
+    // 3. Duplicate renderArtworks function from admin.astro
+    const renderArtworks = () => {
+      if (!artworkTbody) return;
+      artworkTbody.innerHTML = '';
+
+      if (currentArtworks.length === 0) {
+        artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No artworks in database.</td></tr>';
+        return;
+      }
+
+      let displayArtworks = currentArtworks;
+      const isSearchActive = currentArtSearchQuery.trim() !== '';
+      if (isSearchActive) {
+        const query = currentArtSearchQuery.toLowerCase().trim();
+        displayArtworks = currentArtworks.filter(art => 
+          art.title && art.title.toLowerCase().includes(query)
+        );
+      }
+
+      if (displayArtworks.length === 0) {
+        artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No artworks found matching your search.</td></tr>';
+        return;
+      }
+
+      displayArtworks.forEach((artwork, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><img src="${artwork.imageUrl}" class="table-thumb" alt="thumb"/></td>
+          <td><strong>${artwork.title}</strong></td>
+          <td>${artwork.year}</td>
+          <td>${artwork.status || '—'}</td>
+          <td>${artwork.isPrint ? 'Yes' : 'No'}</td>
+          <td>
+            <div class="btn-row">
+              <button class="sm-btn move-up-btn" title="Move Up" ${currentSortBy !== 'custom' || isSearchActive || index === 0 ? 'disabled' : ''}>↑</button>
+              <button class="sm-btn move-down-btn" title="Move Down" ${currentSortBy !== 'custom' || isSearchActive || index === displayArtworks.length - 1 ? 'disabled' : ''}>↓</button>
+              <button class="sm-btn edit-btn">Edit</button>
+              <button class="sm-btn delete-btn">Delete</button>
+            </div>
+          </td>
+        `;
+        artworkTbody.appendChild(tr);
+      });
+    };
+
+    // --- Scenario A: No search active ---
+    currentArtSearchQuery = '';
+    renderArtworks();
+
+    let rows = artworkTbody?.querySelectorAll('tr') || [];
+    expect(rows.length).toBe(3);
+    
+    // First row: Up button should be disabled, Down button enabled
+    let row1Up = rows[0].querySelector('.move-up-btn') as HTMLButtonElement;
+    let row1Down = rows[0].querySelector('.move-down-btn') as HTMLButtonElement;
+    expect(row1Up.disabled).toBe(true);
+    expect(row1Down.disabled).toBe(false);
+
+    // Second row: Both enabled
+    let row2Up = rows[1].querySelector('.move-up-btn') as HTMLButtonElement;
+    let row2Down = rows[1].querySelector('.move-down-btn') as HTMLButtonElement;
+    expect(row2Up.disabled).toBe(false);
+    expect(row2Down.disabled).toBe(false);
+
+    // Third row: Up enabled, Down disabled
+    let row3Up = rows[2].querySelector('.move-up-btn') as HTMLButtonElement;
+    let row3Down = rows[2].querySelector('.move-down-btn') as HTMLButtonElement;
+    expect(row3Up.disabled).toBe(false);
+    expect(row3Down.disabled).toBe(true);
+
+
+    // --- Scenario B: Search "summer" (case-insensitive) ---
+    currentArtSearchQuery = 'summer';
+    renderArtworks();
+
+    rows = artworkTbody?.querySelectorAll('tr') || [];
+    expect(rows.length).toBe(2);
+    expect(rows[0].textContent).toContain('Summer Breeze');
+    expect(rows[1].textContent).toContain('Summer Garden');
+
+    // Reorder buttons should be disabled for all filtered rows
+    rows.forEach(row => {
+      const upBtn = row.querySelector('.move-up-btn') as HTMLButtonElement;
+      const downBtn = row.querySelector('.move-down-btn') as HTMLButtonElement;
+      expect(upBtn.disabled).toBe(true);
+      expect(downBtn.disabled).toBe(true);
+    });
+
+
+    // --- Scenario C: Search with no matches ---
+    currentArtSearchQuery = 'nonexistent';
+    renderArtworks();
+
+    rows = artworkTbody?.querySelectorAll('tr') || [];
+    expect(rows.length).toBe(1);
+    expect(rows[0].textContent).toContain('No artworks found matching your search.');
+  });
 });
