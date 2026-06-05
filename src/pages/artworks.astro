@@ -754,7 +754,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
   import { db } from '../lib/firebase';
   import { collection, getDocs, getDoc, doc } from 'firebase/firestore';
-  import { normalizeSubjects, formatStatus, formatDimensions, filterArtworks, sortArtworks } from '../lib/utils';
+  import { normalizeSubjects, formatStatus, formatDimensions, filterArtworks, sortArtworks, getOptimizedImageUrl } from '../lib/utils';
 
   function initArtworkGallery() {
     const displayContainer = document.getElementById('artwork-display-container');
@@ -823,7 +823,7 @@ import Layout from '../layouts/Layout.astro';
 
       card.innerHTML = `
         <div class="artwork-image-container image-loading">
-          <img src="${imageUrl}" alt="${title}" class="artwork-image" />
+          <img src="${getOptimizedImageUrl(imageUrl, 1000)}" alt="${title}" class="artwork-image" />
           <div class="artwork-overlay">
             <div class="overlay-details">
               <h3 class="overlay-title">${title}</h3>

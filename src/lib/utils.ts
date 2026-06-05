@@ -165,4 +165,51 @@ export function sortArtworks<T extends SortableArtwork>(
   });
 }
 
+/**
+ * Formats a Firebase Storage URL into an ImageKit CDN URL with resizing options.
+ * Falls back to the original Firebase URL if the ImageKit endpoint is not configured in .env.
+ */
+export function getOptimizedImageUrl(firebaseUrl: string, width?: number): string {
+  if (!firebaseUrl) return '';
+
+  // Return as-is if it's not a Firebase Storage URL
+  if (!firebaseUrl.includes('firebasestorage.googleapis.com')) {
+    return firebaseUrl;
+  }
+
+  const imageKitEndpoint = import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT;
+  if (!imageKitEndpoint) {
+    return firebaseUrl;
+  }
+
+  try {
+    // Extract the portion of the path after the domain
+    const urlParts = firebaseUrl.split('firebasestorage.googleapis.com');
+    if (urlParts.length < 2) return firebaseUrl;
+
+    const relativePath = urlParts[1];
+
+    // Build the ImageKit URL
+    const cleanEndpoint = imageKitEndpoint.endsWith('/') ? imageKitEndpoint.slice(0, -1) : imageKitEndpoint;
+    const cleanPath = relativePath.startsWith('/') ? relativePath : '/' + relativePath;
+
+    let optimizedUrl = cleanEndpoint + cleanPath;
+
+    // Apply transformations (e.g. format auto, custom width)
+    // Firebase URLs already contain query params (?alt=media&token=...) so we append using '&tr='
+    const transforms: string[] = ['f-auto'];
+    if (width) {
+      transforms.push(`w-${width}`);
+    }
+
+    optimizedUrl += `&tr=${transforms.join(',')}`;
+
+    return optimizedUrl;
+  } catch (e) {
+    console.warn('Failed to parse Firebase Storage URL for ImageKit optimization:', e);
+    return firebaseUrl;
+  }
+}
+
+
 

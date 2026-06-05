@@ -188,7 +188,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
   import { db } from '../lib/firebase';
   import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
-  import { normalizeSubjects, sortArtworks } from '../lib/utils';
+  import { normalizeSubjects, sortArtworks, getOptimizedImageUrl } from '../lib/utils';
 
   async function initHeroSlider() {
     const slideshow = document.getElementById('hero-slideshow');
@@ -302,10 +302,11 @@ import Layout from '../layouts/Layout.astro';
       }
 
       // Build Slides HTML
+      const heroWidth = window.innerWidth <= 768 ? 1000 : 1600;
       slideshow.innerHTML = slidesData.map((slide: any, index: number) => `
         <div class="slide ${index === 0 ? 'active' : ''}" data-index="${index}">
           <img 
-            src="${slide.image}" 
+            src="${getOptimizedImageUrl(slide.image, heroWidth)}" 
             alt="${slide.title}" 
             class="slide-image" 
             loading="${index === 0 ? 'eager' : 'lazy'}"

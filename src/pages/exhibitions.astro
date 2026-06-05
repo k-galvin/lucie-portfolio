@@ -20,6 +20,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
   import { db } from '../lib/firebase';
   import { collection, getDocs } from 'firebase/firestore';
+  import { getOptimizedImageUrl } from '../lib/utils';
 
   interface Exhibition {
     id: string;
@@ -77,7 +78,7 @@ import Layout from '../layouts/Layout.astro';
           itemDiv.className = 'exh-list-item';
 
           const defaultImg = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200&auto=format&fit=crop';
-          const imgSrc = exh.image || defaultImg;
+          const imgSrc = getOptimizedImageUrl(exh.image || defaultImg, 1000);
 
           itemDiv.innerHTML = `
             <div class="exh-item-image-wrapper">

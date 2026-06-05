@@ -390,7 +390,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
   import { db } from '../lib/firebase';
   import { collection, addDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
-  import { validateEmail, shouldBlockSubmit, formatDimensions } from '../lib/utils';
+  import { validateEmail, shouldBlockSubmit, formatDimensions, getOptimizedImageUrl } from '../lib/utils';
 
   async function loadContactArtwork() {
     try {
@@ -409,7 +409,7 @@ import Layout from '../layouts/Layout.astro';
 
         if (imgEl && data.imageUrl) {
           imgEl.classList.remove('loaded');
-          imgEl.src = data.imageUrl;
+          imgEl.src = getOptimizedImageUrl(data.imageUrl, 1000);
           imgEl.alt = data.title || 'Riprap';
         }
         if (mediumEl && data.medium) {

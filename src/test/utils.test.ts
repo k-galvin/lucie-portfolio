@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { normalizeSubjects, formatStatus, formatDimensions, splitBioParagraphs, parseMarkdownLinks, sortArtworks, type SortableArtwork } from '../lib/utils';
+import { describe, it, expect, afterEach } from 'vitest';
+import { normalizeSubjects, formatStatus, formatDimensions, splitBioParagraphs, parseMarkdownLinks, sortArtworks, type SortableArtwork, getOptimizedImageUrl } from '../lib/utils';
 
 describe('normalizeSubjects', () => {
   it('should handle empty or undefined inputs', () => {
@@ -158,6 +158,47 @@ describe('sortArtworks', () => {
     const newestItems = [...legacyArtworks];
     sortArtworks(newestItems, 'newest');
     expect(newestItems.map(i => i.title)).toEqual(['New Legacy', 'Old Legacy']);
+  });
+});
+
+describe('getOptimizedImageUrl', () => {
+  const originalEndpoint = import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT;
+
+  afterEach(() => {
+    // Restore original environment variable
+    import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT = originalEndpoint;
+  });
+
+  it('should return empty string for empty inputs', () => {
+    expect(getOptimizedImageUrl('')).toBe('');
+    expect(getOptimizedImageUrl(null as any)).toBe('');
+  });
+
+  it('should return original URL if it is not a Firebase Storage URL', () => {
+    const localPath = '/images/process_1.webp';
+    const externalUrl = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119';
+    expect(getOptimizedImageUrl(localPath)).toBe(localPath);
+    expect(getOptimizedImageUrl(externalUrl)).toBe(externalUrl);
+  });
+
+  it('should return original URL if PUBLIC_IMAGEKIT_URL_ENDPOINT is not configured', () => {
+    import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT = '';
+    const firebaseUrl = 'https://firebasestorage.googleapis.com/v0/b/bucket/o/artwork%2Fart.webp?alt=media&token=123';
+    expect(getOptimizedImageUrl(firebaseUrl)).toBe(firebaseUrl);
+  });
+
+  it('should map Firebase Storage URL to ImageKit URL and apply format auto', () => {
+    import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT = 'https://ik.imagekit.io/test-id/';
+    const firebaseUrl = 'https://firebasestorage.googleapis.com/v0/b/bucket/o/artwork%2Fart.webp?alt=media&token=123';
+    const expected = 'https://ik.imagekit.io/test-id/v0/b/bucket/o/artwork%2Fart.webp?alt=media&token=123&tr=f-auto';
+    expect(getOptimizedImageUrl(firebaseUrl)).toBe(expected);
+  });
+
+  it('should apply custom width transformation when width parameter is provided', () => {
+    import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT = 'https://ik.imagekit.io/test-id';
+    const firebaseUrl = 'https://firebasestorage.googleapis.com/v0/b/bucket/o/artwork%2Fart.webp?alt=media&token=123';
+    const expected = 'https://ik.imagekit.io/test-id/v0/b/bucket/o/artwork%2Fart.webp?alt=media&token=123&tr=f-auto,w-800';
+    expect(getOptimizedImageUrl(firebaseUrl, 800)).toBe(expected);
   });
 });
 
