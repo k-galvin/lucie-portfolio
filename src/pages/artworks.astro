@@ -6,38 +6,53 @@ import Layout from '../layouts/Layout.astro';
   <div class="artworks-container">
     <!-- Filter Controls -->
     <section class="filters-bar" aria-label="Filters">
-      <div class="filter-group">
-        <label for="filter-year" class="filter-label label-year">Year</label>
-        <select id="filter-year" class="filter-select">
-          <option value="all">All</option>
-        </select>
+      <div class="filters-mobile-header">
+        <button id="filters-toggle-btn" class="filters-toggle-btn" aria-expanded="false" aria-controls="filters-content">
+          <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+          </svg>
+          <span class="toggle-text">Filters & Search</span>
+          <span id="active-filters-badge" class="active-filters-badge hidden">0</span>
+        </button>
+        <button id="filters-clear-btn" class="filters-clear-btn hidden" aria-label="Clear all filters">
+          Clear All
+        </button>
       </div>
 
-      <div class="filter-group">
-        <label for="filter-show" class="filter-label label-exhibition">Exhibition</label>
-        <select id="filter-show" class="filter-select">
-          <option value="all">All</option>
-        </select>
-      </div>
+      <div id="filters-content" class="filters-content">
+        <div class="filter-group">
+          <label for="filter-year" class="filter-label label-year">Year</label>
+          <select id="filter-year" class="filter-select">
+            <option value="all">All</option>
+          </select>
+        </div>
 
-      <div class="filter-group">
-        <label for="filter-subject" class="filter-label label-subject">Subject</label>
-        <select id="filter-subject" class="filter-select">
-          <option value="all">All</option>
-          <option value="gardens">Gardens</option>
-          <option value="water">Water</option>
-          <option value="boats">Boats</option>
-          <option value="people">People</option>
-          <option value="beach">Beach</option>
-          <option value="animals">Animals</option>
-        </select>
-      </div>
+        <div class="filter-group">
+          <label for="filter-show" class="filter-label label-exhibition">Exhibition</label>
+          <select id="filter-show" class="filter-select">
+            <option value="all">All</option>
+          </select>
+        </div>
 
-      <div class="filter-group search-group">
-        <label for="filter-search" class="filter-label label-search">Search</label>
-        <div class="search-input-wrapper">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="text" id="filter-search" class="filter-input search-input" placeholder="Search by title..." autocomplete="off" />
+        <div class="filter-group">
+          <label for="filter-subject" class="filter-label label-subject">Subject</label>
+          <select id="filter-subject" class="filter-select">
+            <option value="all">All</option>
+            <option value="gardens">Gardens</option>
+            <option value="water">Water</option>
+            <option value="boats">Boats</option>
+            <option value="people">People</option>
+            <option value="beach">Beach</option>
+            <option value="animals">Animals</option>
+          </select>
+        </div>
+
+        <div class="filter-group search-group">
+          <label for="filter-search" class="filter-label label-search">Search</label>
+          <div class="search-input-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="filter-search" class="filter-input search-input" placeholder="Search by title..." autocomplete="off" />
+          </div>
         </div>
       </div>
     </section>
@@ -82,13 +97,22 @@ import Layout from '../layouts/Layout.astro';
 
   /* Filters Bar */
   .filters-bar {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .filters-mobile-header {
+    display: none;
+  }
+
+  .filters-content {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
     align-items: flex-end;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--color-border);
-    margin-bottom: 1rem;
+    width: 100%;
   }
 
   .filter-group {
@@ -532,23 +556,191 @@ import Layout from '../layouts/Layout.astro';
   }
 
   @media (max-width: 900px) {
-    .filters-bar {
+    .filters-content {
       gap: 1rem;
-    }
-    .filter-checkbox-container {
-      height: auto;
-      margin-top: 0.5rem;
-      width: 100%;
     }
   }
 
   @media (max-width: 768px) {
     .artworks-container {
-      padding: 1rem;
+      padding: 0.5rem 1rem 0.25rem 1rem;
     }
-    .filter-select {
+
+    .artwork-single-container {
+      top: 0.5rem;
+      bottom: 0.5rem;
+    }
+
+    .filters-bar {
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .filters-mobile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .filters-toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--color-border);
+      padding: 0.4rem 0.75rem;
       font-size: 0.75rem;
-      padding: 0.3rem 1.5rem 0.3rem 0.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text);
+      background-color: var(--color-bg);
+      transition: all 0.2s ease;
+    }
+
+    .filters-toggle-btn:hover,
+    .filters-toggle-btn:focus {
+      border-color: var(--color-hockney-blue);
+      color: var(--color-hockney-blue);
+    }
+
+    .filter-icon {
+      color: var(--color-text-muted);
+      transition: color 0.2s ease;
+    }
+
+    .filters-toggle-btn:hover .filter-icon,
+    .filters-toggle-btn:focus .filter-icon {
+      color: var(--color-hockney-blue);
+    }
+
+    .active-filters-badge {
+      background-color: var(--color-hockney-pink);
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .active-filters-badge.hidden {
+      display: none !important;
+    }
+
+    .filters-clear-btn {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-hockney-pink);
+      padding: 0.4rem 0.75rem;
+      border: 1px solid transparent;
+      background: none;
+      transition: all 0.2s ease;
+    }
+
+    .filters-clear-btn:hover,
+    .filters-clear-btn:focus {
+      text-decoration: underline;
+    }
+
+    .filters-clear-btn.hidden {
+      display: none !important;
+    }
+
+    /* Collapsible Mobile Dropdown Panel */
+    .filters-content {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--color-border);
+      border-top: none;
+      padding: 1.25rem 1rem;
+      z-index: 50;
+      
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-areas:
+        "year subject"
+        "exhibition exhibition"
+        "search search";
+      gap: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+      /* Collapsed states */
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+    }
+
+    .filters-content.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .filters-content > *:nth-child(1) { grid-area: year; }
+    .filters-content > *:nth-child(2) { grid-area: exhibition; }
+    .filters-content > *:nth-child(3) { grid-area: subject; }
+    .filters-content > *:nth-child(4) { grid-area: search; }
+
+    .filter-group {
+      width: 100%;
+    }
+
+    .filter-select {
+      width: 100%;
+      font-size: 0.85rem;
+      padding: 0.4rem 1.75rem 0.4rem 0.5rem;
+      border-radius: 0;
+    }
+
+    /* Style search-group in mobile dropdown */
+    .search-group {
+      margin-left: 0;
+      align-items: flex-start;
+    }
+
+    .search-input-wrapper {
+      width: 100% !important;
+      cursor: text;
+    }
+
+    .search-input {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      padding-left: 2.25rem !important;
+    }
+
+    /* Active Overlay on card details on tap */
+    .artwork-card.overlay-active .artwork-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .pagination-bar {
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+      padding-top: 0.25rem;
+      height: 2.5rem;
+    }
+    .page-btn, :global(.page-num), :global(.page-dots) {
+      width: 1.75rem;
+      height: 1.75rem;
+      font-size: 0.75rem;
     }
   }
 
@@ -630,7 +822,7 @@ import Layout from '../layouts/Layout.astro';
 
       card.innerHTML = `
         <div class="artwork-image-container image-loading">
-          <img alt="${title}" class="artwork-image" />
+          <img src="${imageUrl}" alt="${title}" class="artwork-image" />
           <div class="artwork-overlay">
             <div class="overlay-details">
               <h3 class="overlay-title">${title}</h3>
@@ -654,16 +846,29 @@ import Layout from '../layouts/Layout.astro';
       const img = card.querySelector('.artwork-image') as HTMLImageElement;
       const imgContainer = card.querySelector('.artwork-image-container');
       if (img) {
-        img.addEventListener('load', () => {
-          img.classList.add('loaded');
-          imgContainer?.classList.remove('image-loading');
-        });
-        img.src = imageUrl;
         if (img.complete) {
           img.classList.add('loaded');
           imgContainer?.classList.remove('image-loading');
+        } else {
+          img.addEventListener('load', () => {
+            img.classList.add('loaded');
+            imgContainer?.classList.remove('image-loading');
+          });
         }
       }
+
+      // Tap-to-toggle details overlay on mobile
+      card.addEventListener('click', (e) => {
+        // If the user tapped a link (like 'Prints available'), do not intercept
+        if ((e.target as HTMLElement).closest('a')) {
+          return;
+        }
+
+        // Only toggle on mobile/touch screens
+        if (window.innerWidth <= 768) {
+          card.classList.toggle('overlay-active');
+        }
+      });
 
       return card;
     }
@@ -767,6 +972,28 @@ import Layout from '../layouts/Layout.astro';
       }
     }
 
+    const updateActiveFilters = () => {
+      let count = 0;
+      if (selectYear && selectYear.value !== 'all') count++;
+      if (selectShow && selectShow.value !== 'all') count++;
+      if (selectSubject && selectSubject.value !== 'all') count++;
+      if (inputSearch && inputSearch.value.trim() !== '') count++;
+
+      const badge = document.getElementById('active-filters-badge');
+      const clearBtn = document.getElementById('filters-clear-btn');
+      
+      if (badge) {
+        if (count > 0) {
+          badge.textContent = count.toString();
+          badge.classList.remove('hidden');
+          clearBtn?.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+          clearBtn?.classList.add('hidden');
+        }
+      }
+    };
+
     const applyFilters = () => {
       const yearVal = selectYear?.value || 'all';
       const showVal = selectShow?.value || 'all';
@@ -802,6 +1029,7 @@ import Layout from '../layouts/Layout.astro';
           updateUrlPageParam();
         }
       }
+      updateActiveFilters();
       renderGallery();
     };
 
@@ -825,6 +1053,56 @@ import Layout from '../layouts/Layout.astro';
     searchWrapper?.addEventListener('click', () => {
       inputSearch?.focus();
     });
+
+    // Mobile Filters Toggle & Clear functionality
+    const toggleBtn = document.getElementById('filters-toggle-btn');
+    const filtersContent = document.getElementById('filters-content');
+    const filtersBar = document.querySelector('.filters-bar');
+    const clearBtn = document.getElementById('filters-clear-btn');
+
+    if (toggleBtn && filtersContent) {
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = filtersContent.classList.toggle('is-open');
+        toggleBtn.setAttribute('aria-expanded', isOpen.toString());
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (filtersContent.classList.contains('is-open') && !filtersBar?.contains(e.target as Node)) {
+          filtersContent.classList.remove('is-open');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Close dropdown on Escape key press
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && filtersContent.classList.contains('is-open')) {
+          filtersContent.classList.remove('is-open');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          (toggleBtn as HTMLElement).focus();
+        }
+      });
+    }
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (selectYear) selectYear.value = 'all';
+        if (selectShow) selectShow.value = 'all';
+        if (selectSubject) selectSubject.value = 'all';
+        if (inputSearch) {
+          inputSearch.value = '';
+          inputSearch.parentElement?.classList.remove('has-text');
+        }
+        
+        applyFilters();
+        if (filtersContent && filtersContent.classList.contains('is-open')) {
+          filtersContent.classList.remove('is-open');
+          toggleBtn?.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
 
     // Pagination Listeners
     if (prevBtn) {

@@ -82,6 +82,7 @@ import Layout from '../layouts/Layout.astro';
           itemDiv.innerHTML = `
             <div class="exh-item-image-wrapper">
               <img 
+                src="${imgSrc}"
                 alt="${exh.title || 'Exhibition'}" 
                 class="exh-item-image" 
                 loading="${index === 0 ? 'eager' : 'lazy'}"
@@ -102,12 +103,12 @@ import Layout from '../layouts/Layout.astro';
           // Programmatic load listener to prevent cached race condition
           const img = itemDiv.querySelector('.exh-item-image') as HTMLImageElement;
           if (img) {
-            img.addEventListener('load', () => {
-              img.classList.add('loaded');
-            });
-            img.src = imgSrc;
             if (img.complete) {
               img.classList.add('loaded');
+            } else {
+              img.addEventListener('load', () => {
+                img.classList.add('loaded');
+              });
             }
           }
         });
