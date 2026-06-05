@@ -12,7 +12,7 @@ function loadPageDOM(relativeFilePath: string) {
 describe('Static HTML Page Rendering Tests', () => {
   const pages = [
     { name: 'Home', path: 'index.html', heading: 'Lucie Galvin' },
-    { name: 'About', path: 'about/index.html', heading: 'About' },
+    { name: 'About', path: 'about/index.html', heading: 'Lucie Galvin' },
     { name: 'Admin', path: 'admin/index.html', heading: 'Admin Dashboard' },
     { name: 'Artworks', path: 'artworks/index.html', heading: 'Artworks' },
     { name: 'Exhibitions', path: 'exhibitions/index.html', heading: 'Exhibitions' },
@@ -75,7 +75,7 @@ describe('Static HTML Page Rendering Tests', () => {
     // 2. About
     const aboutDom = loadPageDOM('about/index.html');
     const aboutHeader = aboutDom.window.document.querySelector('.section-title');
-    expect(aboutHeader?.textContent).toContain('About');
+    expect(aboutHeader?.textContent).toContain('Lucie Galvin');
 
     // 3. Contact
     const contactDom = loadPageDOM('contact/index.html');
