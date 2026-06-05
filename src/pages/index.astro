@@ -195,23 +195,26 @@ import Layout from '../layouts/Layout.astro';
     if (!slideshow) return;
 
     try {
-      // 1. Fetch slide configuration from Firestore
-      const docRef = doc(db, 'settings', 'homepage');
-      const docSnap = await getDoc(docRef);
-      
       let heroSlidesConfig = [];
-      if (docSnap.exists()) {
-        const data = docSnap.data();
+      let artworksList: any[] = [];
+      let sortBy = 'custom';
+
+      // Load homepage slides, artworks, and sorting settings concurrently
+      const [homepageSnap, querySnapshot, settingsSnap] = await Promise.all([
+        getDoc(doc(db, 'settings', 'homepage')),
+        getDocs(collection(db, 'artworks')),
+        getDoc(doc(db, 'settings', 'artworks')).catch(e => {
+          console.warn('Failed to load gallery sorting settings.', e);
+          return null;
+        })
+      ]);
+
+      if (homepageSnap.exists()) {
+        const data = homepageSnap.data();
         heroSlidesConfig = data.heroSlides || [];
       }
 
-      let slidesData = [];
-
-      if (heroSlidesConfig.length > 0) {
-        // 2. Fetch all artworks
-        const querySnapshot = await getDocs(collection(db, 'artworks'));
-        const artworksList: any[] = [];
-        
+      if (!querySnapshot.empty) {
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
           artworksList.push({
@@ -221,20 +224,16 @@ import Layout from '../layouts/Layout.astro';
             createdAt: data.createdAt || ''
           });
         });
+      }
 
-        // 3. Fetch sorting settings
-        let sortBy = 'custom';
-        try {
-          const settingsSnap = await getDoc(doc(db, 'settings', 'artworks'));
-          if (settingsSnap.exists()) {
-            sortBy = settingsSnap.data().sortBy || 'custom';
-          }
-        } catch (e) {
-          console.warn('Failed to load gallery sorting settings.', e);
-        }
+      if (settingsSnap && settingsSnap.exists()) {
+        sortBy = settingsSnap.data().sortBy || 'custom';
+      }
 
-        // 4. Sort the artworks list to get correct order for pagination
-        sortArtworks(artworksList, sortBy);
+      // Sort the artworks list to get correct order for pagination
+      sortArtworks(artworksList, sortBy);
+
+      let slidesData = [];
 
         // 5. Build slide details based on Artwork vs. Custom mode
         heroSlidesConfig.forEach((slide: any) => {
@@ -265,7 +264,6 @@ import Layout from '../layouts/Layout.astro';
             }
           }
         });
-      }
 
       if (slidesData.length === 0) {
         // Fallback if no settings yet or resolution failed
