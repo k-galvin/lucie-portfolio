@@ -1,6 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
@@ -25,23 +25,5 @@ if (import.meta.env.DEV) {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 export const auth = getAuth(app);
-
-// Initialize Firestore with local IndexedDB cache if running in the browser
-let firestoreDb;
-try {
-  if (typeof window !== 'undefined' && typeof window.indexedDB !== 'undefined') {
-    firestoreDb = initializeFirestore(app, {
-      localCache: persistentLocalCache({
-        tabManager: persistentMultipleTabManager()
-      })
-    });
-  } else {
-    firestoreDb = getFirestore(app);
-  }
-} catch (e) {
-  console.warn('Failed to initialize Firestore with persistent local cache. Falling back to default...', e);
-  firestoreDb = getFirestore(app);
-}
-
-export const db = firestoreDb;
+export const db = getFirestore(app);
 export const storage = getStorage(app);
