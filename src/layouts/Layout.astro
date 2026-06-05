@@ -26,6 +26,26 @@ const {
     <!-- SEO Optimization -->
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, "https://luciegalvin.com").href} />
+    
+    <!-- Structured Data (Schema.org) for Lucie Galvin -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Lucie Galvin",
+        "url": "https://luciegalvin.com",
+        "image": "https://luciegalvin.com/images/lucie_about_artist.webp",
+        "jobTitle": "Artist",
+        "description": "Custom fine art portfolio of Lucie Galvin, featuring modern Paper Pictures, landscape paintings, and printmaking.",
+        "sameAs": [
+          "https://www.instagram.com/luciegalvin.art",
+          "https://www.pinterest.com/luciegalvinart/",
+          "https://www.linkedin.com/in/luciegalvin/",
+          "https://www.saatchiart.com/luciegalvin"
+        ]
+      }
+    </script>
     
     <!-- OpenGraph SEO Tags -->
     <meta property="og:title" content={title} />
@@ -223,6 +243,18 @@ const {
 
   .hidden {
     display: none !important;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   /* About Me Page Layout Styles (Global to prevent client router dynamic stylesheet injection lag) */
