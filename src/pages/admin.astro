@@ -136,7 +136,9 @@ import Layout from '../layouts/Layout.astro';
                 <div class="form-row">
                   <div class="form-group">
                     <label for="art-show" class="form-label">Exhibition / Show (Optional)</label>
-                    <input type="text" id="art-show" class="form-input" placeholder="e.g. Library Show" />
+                    <select id="art-show" class="form-input">
+                      <option value="">-- None / Select an Exhibition --</option>
+                    </select>
                   </div>
                   <div class="form-group">
                     <label for="art-avail" class="form-label">Status (Optional)</label>
@@ -579,6 +581,11 @@ import Layout from '../layouts/Layout.astro';
                 </div>
 
                 <div class="form-group">
+                  <label for="exh-short-title" class="form-label">Shortened Title (for Artwork Details)</label>
+                  <input type="text" id="exh-short-title" required class="form-input" placeholder="e.g. RA Summer 2026" />
+                </div>
+
+                <div class="form-group">
                   <label for="exh-dates" class="form-label">Dates</label>
                   <input type="text" id="exh-dates" required class="form-input" placeholder="July 15 - August 30, 2026" />
                 </div>
@@ -627,6 +634,11 @@ import Layout from '../layouts/Layout.astro';
           </div>
 
           <form id="biography-form" class="admin-full-form scrollable-form">
+            <div class="form-group">
+              <label for="bio-title-input" class="form-label">Biography Title</label>
+              <input type="text" id="bio-title-input" class="form-input" placeholder="Lucie Galvin (U.S.A., 1972)" style="margin-bottom: 1rem;" />
+            </div>
+
             <div class="form-group">
               <label for="bio-text" class="form-label">Biography Text (Use new lines for paragraphs)</label>
               <textarea id="bio-text" required rows="10" class="form-textarea"></textarea>
@@ -1317,7 +1329,7 @@ import Layout from '../layouts/Layout.astro';
     const artInputTitle = document.getElementById('art-title') as HTMLInputElement;
     const artInputYear = document.getElementById('art-year') as HTMLInputElement;
     const artInputType = document.getElementById('art-type') as HTMLSelectElement;
-    const artInputShow = document.getElementById('art-show') as HTMLInputElement;
+    const artInputShow = document.getElementById('art-show') as HTMLSelectElement;
     const artInputAvail = document.getElementById('art-avail') as HTMLSelectElement;
     const artSubjectCheckboxes = document.querySelectorAll('input[name="subject"]') as NodeListOf<HTMLInputElement>;
     const artInputWidth = document.getElementById('art-width') as HTMLInputElement;
@@ -1343,6 +1355,7 @@ import Layout from '../layouts/Layout.astro';
     const exhFormPanelTitle = document.getElementById('exh-form-panel-title');
     const exhInputId = document.getElementById('exh-id') as HTMLInputElement;
     const exhInputTitle = document.getElementById('exh-title') as HTMLInputElement;
+    const exhInputShortTitle = document.getElementById('exh-short-title') as HTMLInputElement;
     const exhInputDates = document.getElementById('exh-dates') as HTMLInputElement;
     const exhInputVenue = document.getElementById('exh-venue') as HTMLInputElement;
     const exhInputCity = document.getElementById('exh-city') as HTMLInputElement;
@@ -1355,6 +1368,7 @@ import Layout from '../layouts/Layout.astro';
     // Biography Form
     const biographyForm = document.getElementById('biography-form') as HTMLFormElement;
     const bioText = document.getElementById('bio-text') as HTMLTextAreaElement;
+    const bioTitleInput = document.getElementById('bio-title-input') as HTMLInputElement;
 
     // Homepage Hero Form
     const homepageForm = document.getElementById('homepage-form') as HTMLFormElement;
@@ -1407,6 +1421,7 @@ import Layout from '../layouts/Layout.astro';
     interface Exhibition {
       id: string;
       title: string;
+      shortTitle?: string;
       dates: string;
       venue: string;
       city: string;
@@ -1699,6 +1714,7 @@ import Layout from '../layouts/Layout.astro';
           currentExhibitions.push({
             id: docSnap.id,
             title: data.title || '',
+            shortTitle: data.shortTitle || '',
             dates: data.dates || '',
             venue: data.venue || '',
             city: data.city || '',
@@ -1737,6 +1753,19 @@ import Layout from '../layouts/Layout.astro';
 
           exhibitionTbody.appendChild(tr);
         });
+
+        // Rebuild dynamic artworks show selection options
+        if (artInputShow) {
+          const currentValue = artInputShow.value;
+          artInputShow.innerHTML = '<option value="">-- None / Select an Exhibition --</option>';
+          currentExhibitions.forEach(exh => {
+            const option = document.createElement('option');
+            option.value = exh.shortTitle || exh.title;
+            option.textContent = `${exh.title} (${exh.shortTitle || 'no short title'})`;
+            artInputShow.appendChild(option);
+          });
+          artInputShow.value = currentValue;
+        }
       } catch (err) {
         console.error("Load Exhibitions Error:", err);
         exhibitionTbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Failed to load exhibitions. Check storage rules!</td></tr>';
@@ -1800,6 +1829,7 @@ import Layout from '../layouts/Layout.astro';
       if (exhFormPanelTitle) exhFormPanelTitle.textContent = 'Edit Exhibition';
       exhInputId.value = exh.id;
       exhInputTitle.value = exh.title;
+      exhInputShortTitle.value = exh.shortTitle || '';
       exhInputDates.value = exh.dates;
       exhInputVenue.value = exh.venue;
       exhInputCity.value = exh.city;
@@ -1844,6 +1874,9 @@ import Layout from '../layouts/Layout.astro';
         if (docSnap.exists()) {
           const data = docSnap.data();
           bioText.value = data.text || '';
+          if (bioTitleInput) {
+            bioTitleInput.value = data.title || '';
+          }
         }
       } catch (err) {
         showToast('Error loading biography data', true);
@@ -2197,8 +2230,9 @@ import Layout from '../layouts/Layout.astro';
           throw new Error('An exhibition image or URL is required.');
         }
 
-        const exhibitionData: Omit<Exhibition, 'id' | 'order'> & { order?: number } = {
+        const exhibitionData: Omit<Exhibition, 'id' | 'order'> & { order?: number, shortTitle?: string } = {
           title: exhInputTitle.value,
+          shortTitle: exhInputShortTitle.value,
           dates: exhInputDates.value,
           venue: exhInputVenue.value,
           city: exhInputCity.value,
@@ -2241,7 +2275,8 @@ import Layout from '../layouts/Layout.astro';
 
       try {
         const biographyData = {
-          text: bioText.value
+          text: bioText.value,
+          title: bioTitleInput ? bioTitleInput.value : ''
         };
 
         await setDoc(doc(db, 'biography', 'main'), biographyData);
