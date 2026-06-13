@@ -169,46 +169,63 @@ export function sortArtworks<T extends SortableArtwork>(
  * Formats a Firebase Storage URL into an ImageKit CDN URL with resizing options.
  * Falls back to the original Firebase URL if the ImageKit endpoint is not configured in .env.
  */
-export function getOptimizedImageUrl(firebaseUrl: string, width?: number): string {
-  if (!firebaseUrl) return '';
+export function getOptimizedImageUrl(imageUrl: string, width?: number): string {
+  if (!imageUrl) return '';
 
-  // Return as-is if it's not a Firebase Storage URL
-  if (!firebaseUrl.includes('firebasestorage.googleapis.com')) {
-    return firebaseUrl;
+  // 1. If it's a Cloudinary URL, apply Cloudinary transformations
+  if (imageUrl.includes('res.cloudinary.com')) {
+    if (imageUrl.includes('/upload/')) {
+      const transforms = ['f_auto', 'q_auto'];
+      if (width) {
+        transforms.push(`c_limit,w_${width}`);
+      }
+      return imageUrl.replace('/upload/', `/upload/${transforms.join(',')}/`);
+    }
+    return imageUrl;
   }
 
-  const imageKitEndpoint = import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT;
-  if (!imageKitEndpoint) {
-    return firebaseUrl;
-  }
-
-  try {
-    // Extract the portion of the path after the domain
-    const urlParts = firebaseUrl.split('firebasestorage.googleapis.com');
-    if (urlParts.length < 2) return firebaseUrl;
-
-    const relativePath = urlParts[1];
-
-    // Build the ImageKit URL
-    const cleanEndpoint = imageKitEndpoint.endsWith('/') ? imageKitEndpoint.slice(0, -1) : imageKitEndpoint;
-    const cleanPath = relativePath.startsWith('/') ? relativePath : '/' + relativePath;
-
-    let optimizedUrl = cleanEndpoint + cleanPath;
-
-    // Apply transformations (e.g. format auto, custom width)
-    // Firebase URLs already contain query params (?alt=media&token=...) so we append using '&tr='
-    const transforms: string[] = ['f-auto'];
-    if (width) {
-      transforms.push(`w-${width}`);
+  // 2. Fallback for lingering Firebase Storage URLs (proxied via ImageKit)
+  if (imageUrl.includes('firebasestorage.googleapis.com')) {
+    const imageKitEndpoint = import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT;
+    if (!imageKitEndpoint) {
+      return imageUrl;
     }
 
-    optimizedUrl += `&tr=${transforms.join(',')}`;
+    try {
+      const urlParts = imageUrl.split('firebasestorage.googleapis.com');
+      if (urlParts.length < 2) return imageUrl;
 
-    return optimizedUrl;
-  } catch (e) {
-    console.warn('Failed to parse Firebase Storage URL for ImageKit optimization:', e);
-    return firebaseUrl;
+      let relativePath = urlParts[1];
+
+      // Strip token query parameter to ensure persistent CDN cache keys
+      relativePath = relativePath.replace(/&token=[^&]+/g, '');
+      relativePath = relativePath.replace(/\?token=[^&]+/g, '?');
+      relativePath = relativePath.replace(/\?&/g, '?');
+      if (relativePath.endsWith('?')) {
+        relativePath = relativePath.slice(0, -1);
+      }
+
+      const cleanEndpoint = imageKitEndpoint.endsWith('/') ? imageKitEndpoint.slice(0, -1) : imageKitEndpoint;
+      const cleanPath = relativePath.startsWith('/') ? relativePath : '/' + relativePath;
+
+      let optimizedUrl = cleanEndpoint + cleanPath;
+
+      const transforms: string[] = ['f-auto'];
+      if (width) {
+        transforms.push(`w-${width}`);
+      }
+
+      optimizedUrl += `&tr=${transforms.join(',')}`;
+
+      return optimizedUrl;
+    } catch (e) {
+      console.warn('Failed to parse Firebase Storage URL for ImageKit optimization:', e);
+      return imageUrl;
+    }
   }
+
+  // 3. Return other external/local/relative URLs as-is
+  return imageUrl;
 }
 
 

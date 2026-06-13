@@ -654,26 +654,35 @@ import Layout from '../layouts/Layout.astro';
         <!-- MAINTENANCE TAB -->
         <section id="tab-maintenance" class="tab-pane" aria-labelledby="Maintenance Manager">
           <div class="tab-pane-header">
-            <h2 class="pane-title">Database Maintenance</h2>
+            <h2 class="pane-title">Cloudinary Migration Tool</h2>
           </div>
           <div class="maintenance-container" style="max-width: 800px; padding: 2rem; background: #fff; border: 1px solid var(--color-border); margin-top: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
             <p style="margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.6; color: var(--color-text-muted);">
-              <strong>Image Loader Optimization Utility</strong><br/>
-              This utility scans all 117 artworks, detects large images (over 400 KB) or uncompressed PNG files, compresses them to WebP/JPEG, uploads them, and sets correct content-types. This runs on your browser using your authenticated session.
+              <strong>Cloudinary Database Migration</strong><br/>
+              This utility migrates all portfolio images (artworks, exhibitions, and hero settings) from Firebase Storage to Cloudinary.
+              <br/><br/>
+              <strong>Process:</strong><br/>
+              1. Triggers an automatic download of a JSON backup file containing your database records.<br/>
+              2. Downloads each image from Firebase Storage.<br/>
+              3. Compresses it client-side to WebP/JPEG using Canvas (resolves file size limits).<br/>
+              4. Uploads it directly to Cloudinary (unsigned preset).<br/>
+              5. Updates the database URLs in Firestore.<br/>
+              <br/>
+              This runs inside your browser session to securely use your administrator authenticated credentials.
             </p>
             
             <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
               <button type="button" id="btn-start-migration" class="admin-btn primary-btn" style="width: auto;">
-                Optimize Database Images
+                Start Cloudinary Migration
               </button>
               <button type="button" id="btn-cancel-migration" class="admin-btn secondary-btn" style="width: auto; display: none; background-color: #777; color: #fff;">
-                Cancel Optimization
+                Cancel Migration
               </button>
             </div>
             
             <div id="migration-progress-container" style="display: none; margin-top: 1rem;">
               <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
-                <span id="migration-status-text" style="color: var(--color-text);">Scanning database...</span>
+                <span id="migration-status-text" style="color: var(--color-text);">Initializing...</span>
                 <span id="migration-percentage-text" style="color: var(--color-hockney-blue);">0%</span>
               </div>
               <div style="width: 100%; height: 8px; background-color: #eee; position: relative; overflow: hidden; margin-bottom: 1.5rem;">
@@ -681,7 +690,7 @@ import Layout from '../layouts/Layout.astro';
               </div>
             </div>
             
-            <div id="migration-logs" style="background-color: #fcfcfc; font-family: monospace; font-size: 0.75rem; height: 350px; overflow-y: auto; padding: 1.25rem; border: 1px solid var(--color-border); border-radius: 0; white-space: pre-wrap; line-height: 1.5; color: #333;">[System ready. Click button to begin optimization]</div>
+            <div id="migration-logs" style="background-color: #fcfcfc; font-family: monospace; font-size: 0.75rem; height: 350px; overflow-y: auto; padding: 1.25rem; border: 1px solid var(--color-border); border-radius: 0; white-space: pre-wrap; line-height: 1.5; color: #333;">[System ready. Click button to begin Cloudinary migration]</div>
           </div>
         </section>
 
@@ -1307,7 +1316,7 @@ import Layout from '../layouts/Layout.astro';
 </style>
 
 <script>
-  import { auth, db, storage } from '../lib/firebase';
+  import { auth, db } from '../lib/firebase';
   import { normalizeSubjects, checkPrintLinkRequired, sortArtworks } from '../lib/utils';
   import { compressImage } from '../lib/image';
   import { 
@@ -1325,15 +1334,37 @@ import Layout from '../layouts/Layout.astro';
     getDoc, 
     setDoc
   } from 'firebase/firestore';
-  import { 
-    ref, 
-    uploadBytes, 
-    getDownloadURL,
-    deleteObject
-  } from 'firebase/storage';
   import type { Artwork } from '../types/artwork';
 
   function initAdminDashboard() {
+    const cloudName = import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME || 'dpsgtvaoc';
+    const uploadPreset = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'wpg3t9xa';
+
+    async function uploadToCloudinary(fileOrBlob: File | Blob, prefix = 'artwork') {
+      const formData = new FormData();
+      formData.append('file', fileOrBlob);
+      formData.append('upload_preset', uploadPreset);
+      formData.append('folder', 'artwork');
+      
+      let filename = 'file';
+      if (fileOrBlob instanceof File) {
+        filename = fileOrBlob.name.substring(0, fileOrBlob.name.lastIndexOf('.')) || fileOrBlob.name;
+      }
+      const sanitized = filename.replace(/[^a-zA-Z0-9-_]/g, '_');
+      formData.append('public_id', `${prefix}_${Date.now()}_${sanitized}`);
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(`Cloudinary upload failed: ${res.status} - ${err}`);
+      }
+      const data = await res.json();
+      return data.secure_url;
+    }
+
     // Panel Hooks
     const loadingPanel = document.getElementById('loading-panel');
     const loginPanel = document.getElementById('login-panel');
@@ -1877,7 +1908,7 @@ import Layout from '../layouts/Layout.astro';
           exhImagePreviewContainer.classList.remove('hidden');
         }
         if (exhInputImageUrl) {
-          if (exh.image.includes('firebasestorage.googleapis.com')) {
+          if (exh.image.includes('res.cloudinary.com') || exh.image.includes('firebasestorage.googleapis.com')) {
             exhInputImageUrl.value = '';
           } else {
             exhInputImageUrl.value = exh.image;
@@ -2052,7 +2083,7 @@ import Layout from '../layouts/Layout.astro';
           artImagePreviewContainer.classList.remove('hidden');
         }
         if (artInputImageUrl) {
-          if (art.imageUrl.includes('firebasestorage.googleapis.com')) {
+          if (art.imageUrl.includes('res.cloudinary.com') || art.imageUrl.includes('firebasestorage.googleapis.com')) {
             artInputImageUrl.value = '';
           } else {
             artInputImageUrl.value = art.imageUrl;
@@ -2164,13 +2195,7 @@ import Layout from '../layouts/Layout.astro';
         // Upload new image if file selected (takes priority if selected)
         if (file) {
           const compressedBlob = await compressImage(file);
-          const ext = compressedBlob.type === 'image/webp' ? 'webp' : (compressedBlob.type === 'image/jpeg' ? 'jpg' : 'png');
-          const filename = `${Date.now()}_${file.name.substring(0, file.name.lastIndexOf('.')) || file.name}.${ext}`;
-          const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, compressedBlob, {
-            contentType: compressedBlob.type
-          });
-          imageUrl = await getDownloadURL(snapshot.ref);
+          imageUrl = await uploadToCloudinary(compressedBlob, 'artwork');
         }
 
         if (!imageUrl) {
@@ -2259,13 +2284,7 @@ import Layout from '../layouts/Layout.astro';
 
         if (file) {
           const compressedBlob = await compressImage(file);
-          const ext = compressedBlob.type === 'image/webp' ? 'webp' : (compressedBlob.type === 'image/jpeg' ? 'jpg' : 'png');
-          const filename = `exhibition_${Date.now()}_${file.name.substring(0, file.name.lastIndexOf('.')) || file.name}.${ext}`;
-          const storageRef = ref(storage, `artwork/${filename}`);
-          const snapshot = await uploadBytes(storageRef, compressedBlob, {
-            contentType: compressedBlob.type
-          });
-          imageUrl = await getDownloadURL(snapshot.ref);
+          imageUrl = await uploadToCloudinary(compressedBlob, 'exhibition');
         }
 
         if (!imageUrl) {
@@ -2377,13 +2396,7 @@ import Layout from '../layouts/Layout.astro';
 
             if (file) {
               const compressedBlob = await compressImage(file);
-              const ext = compressedBlob.type === 'image/webp' ? 'webp' : (compressedBlob.type === 'image/jpeg' ? 'jpg' : 'png');
-              const filename = `${Date.now()}_hero${i}_${file.name.substring(0, file.name.lastIndexOf('.')) || file.name}.${ext}`;
-              const storageRef = ref(storage, `artwork/${filename}`);
-              const snapshot = await uploadBytes(storageRef, compressedBlob, {
-                contentType: compressedBlob.type
-              });
-              imageUrl = await getDownloadURL(snapshot.ref);
+              imageUrl = await uploadToCloudinary(compressedBlob, `hero_slide_${i}`);
             }
 
             if (!imageUrl) {
@@ -2545,7 +2558,7 @@ import Layout from '../layouts/Layout.astro';
 
     if (btnStartMigration) {
       btnStartMigration.addEventListener('click', async () => {
-        const confirmStart = confirm('Are you sure you want to optimize all database images? This will download, re-compress, and replace heavy images. This action cannot be undone.');
+        const confirmStart = confirm('Are you sure you want to migrate your database images to Cloudinary? This will download a JSON backup file to your computer, download all images from Firebase Storage, compress them using Canvas, upload them to Cloudinary, and rewrite your live Firestore URLs. This action cannot be undone.');
         if (!confirmStart) return;
 
         btnStartMigration.setAttribute('disabled', 'true');
@@ -2554,144 +2567,261 @@ import Layout from '../layouts/Layout.astro';
         migrationCancelled = false;
 
         if (migrationLogs) migrationLogs.textContent = '[System initializing...]';
-        if (migrationStatusText) migrationStatusText.textContent = 'Fetching artworks list...';
+        if (migrationStatusText) migrationStatusText.textContent = 'Fetching database collections...';
         if (migrationProgressBar) migrationProgressBar.style.width = '0%';
         if (migrationPercentageText) migrationPercentageText.textContent = '0%';
 
         try {
-          // 1. Fetch all artworks from Firestore
-          const querySnapshot = await getDocs(collection(db, 'artworks'));
+          // 1. Fetch all collections for backup
+          const artworksSnap = await getDocs(collection(db, 'artworks'));
           const artworks: any[] = [];
-          
-          querySnapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            artworks.push({
-              id: docSnap.id,
-              title: data.title || 'Untitled',
-              imageUrl: data.imageUrl || '',
-              ...data
-            });
+          artworksSnap.forEach((docSnap) => {
+            artworks.push({ id: docSnap.id, ...docSnap.data() });
           });
 
-          logMigration(`Found ${artworks.length} artworks in database. Starting analysis...`);
+          const exhibitionsSnap = await getDocs(collection(db, 'exhibitions'));
+          const exhibitions: any[] = [];
+          exhibitionsSnap.forEach((docSnap) => {
+            exhibitions.push({ id: docSnap.id, ...docSnap.data() });
+          });
 
-          let processedCount = 0;
-          let optimizedCount = 0;
-          let skippedCount = 0;
-          let failedCount = 0;
+          const settingsSnap = await getDoc(doc(db, 'settings', 'homepage'));
+          const homepageData = settingsSnap.exists() ? settingsSnap.data() : null;
 
-          for (let i = 0; i < artworks.length; i++) {
-            if (migrationCancelled) {
-              logMigration('\n[ABORTED] Optimization cancelled by user.');
-              break;
+          // 2. Trigger Backup JSON Download
+          const backupObj = { artworks, exhibitions, settings: { homepage: homepageData } };
+          const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj, null, 2));
+          const downloadAnchor = document.createElement('a');
+          downloadAnchor.setAttribute("href", dataStr);
+          downloadAnchor.setAttribute("download", `lucie-portfolio-backup-${Date.now()}.json`);
+          document.body.appendChild(downloadAnchor);
+          downloadAnchor.click();
+          downloadAnchor.remove();
+
+          logMigration(`[BACKUP] Saved database backup JSON file to your Downloads folder!`);
+
+          // 3. Scan items to migrate
+          const firebaseArtworks = artworks.filter(a => a.imageUrl && a.imageUrl.includes('firebasestorage.googleapis.com'));
+          const firebaseExhibitions = exhibitions.filter(e => e.image && e.image.includes('firebasestorage.googleapis.com'));
+          
+          const slides = homepageData?.heroSlides || [];
+          const firebaseSlides = slides.filter((s: any) => s.image && s.image.includes('firebasestorage.googleapis.com'));
+
+          const totalMigrate = firebaseArtworks.length + firebaseExhibitions.length + firebaseSlides.length;
+          
+          logMigration(`Found ${artworks.length} artworks (${firebaseArtworks.length} to migrate)`);
+          logMigration(`Found ${exhibitions.length} exhibitions (${firebaseExhibitions.length} to migrate)`);
+          logMigration(`Found ${slides.length} homepage slides (${firebaseSlides.length} to migrate)`);
+          logMigration(`Total items to migrate: ${totalMigrate}`);
+
+          if (totalMigrate === 0) {
+            logMigration(`\n[COMPLETE] No images remaining to migrate from Firebase Storage.`);
+            if (migrationStatusText) migrationStatusText.textContent = 'Migration Complete';
+            return;
+          }
+
+          const cloudName = import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME || 'dpsgtvaoc';
+          const uploadPreset = import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'wpg3t9xa';
+
+          function getCleanFilename(firebaseUrl: string) {
+            try {
+              const decoded = decodeURIComponent(firebaseUrl.split('%2F').pop()?.split('?')[0] || 'artwork');
+              const nameWithoutTimestamp = decoded.substring(decoded.indexOf('_') + 1);
+              return nameWithoutTimestamp.substring(0, nameWithoutTimestamp.lastIndexOf('.')) || nameWithoutTimestamp;
+            } catch (e) {
+              return `image_${Date.now()}`;
+            }
+          }
+
+          async function uploadBlobToCloudinary(blob: Blob, cleanName: string) {
+            const formData = new FormData();
+            formData.append('file', blob);
+            formData.append('upload_preset', uploadPreset);
+            formData.append('folder', 'artwork');
+            
+            const sanitized = cleanName.replace(/[^a-zA-Z0-9-_]/g, '_');
+            formData.append('public_id', `${Date.now()}_${sanitized}`);
+
+            const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+            const res = await fetch(uploadUrl, {
+              method: 'POST',
+              body: formData
+            });
+
+            if (!res.ok) {
+              const errText = await res.text();
+              throw new Error(`Cloudinary upload failed: ${res.status} ${res.statusText} - ${errText}`);
             }
 
+            const data = await res.json();
+            return data.secure_url;
+          }
+
+          let migratedCount = 0;
+          let failedCount = 0;
+          let processedCount = 0;
+
+          // Migrate Artworks
+          for (let i = 0; i < artworks.length; i++) {
+            if (migrationCancelled) break;
             const art = artworks[i];
-            const percent = Math.round(((i + 1) / artworks.length) * 100);
             
-            if (migrationStatusText) migrationStatusText.textContent = `Processing ${i + 1}/${artworks.length}: "${art.title}"`;
+            if (!art.imageUrl || !art.imageUrl.includes('firebasestorage.googleapis.com')) {
+              continue;
+            }
+
+            processedCount++;
+            const percent = Math.round((processedCount / totalMigrate) * 100);
+            if (migrationStatusText) migrationStatusText.textContent = `Artworks (${processedCount}/${totalMigrate}): "${art.title}"`;
             if (migrationProgressBar) migrationProgressBar.style.width = `${percent}%`;
             if (migrationPercentageText) migrationPercentageText.textContent = `${percent}%`;
 
-            if (!art.imageUrl) {
-              logMigration(`[SKIP] "${art.title}" has no image URL.`);
-              skippedCount++;
-              continue;
-            }
-
-            if (!art.imageUrl.includes('firebasestorage.googleapis.com')) {
-              logMigration(`[SKIP] "${art.title}" uses an external URL: ${art.imageUrl}`);
-              skippedCount++;
-              continue;
-            }
-
             try {
-              // 2. Query headers of the image to check size and content-type
-              let headRes;
-              try {
-                headRes = await fetch(art.imageUrl, { method: 'HEAD' });
-              } catch (e) {
-                // If HEAD request is blocked by CORS or fails, fall back to GET
-                headRes = await fetch(art.imageUrl);
-              }
+              const cleanName = getCleanFilename(art.imageUrl);
+              logMigration(`[Art] Downloading "${art.title}"...`);
+              
+              // Fetch via proxy
+              const imageKitEndpoint = import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/ytblv4ay6/';
+              const cleanEndpoint = imageKitEndpoint.endsWith('/') ? imageKitEndpoint.slice(0, -1) : imageKitEndpoint;
+              const cleanHost = cleanEndpoint.replace(/^https?:\/\//, '');
+              const proxyUrl = art.imageUrl.replace('firebasestorage.googleapis.com', cleanHost);
 
-              const contentType = headRes.headers.get('content-type') || '';
-              const contentLength = parseInt(headRes.headers.get('content-length') || '0');
-              const sizeInMB = (contentLength / 1024 / 1024).toFixed(2);
-
-              // 3. Determine if we need to optimize:
-              // - Is it a PNG image?
-              // - Is it larger than 400 KB?
-              const isPng = contentType.includes('png');
-              const isLarge = contentLength > 400 * 1024; // > 400KB
-
-              if (!isPng && !isLarge && contentType !== '') {
-                logMigration(`[SKIP] "${art.title}" is already optimized (${(contentLength/1024).toFixed(0)} KB, ${contentType.split('/')[1] || contentType}).`);
-                skippedCount++;
-                continue;
-              }
-
-              logMigration(`[OPTIMIZING] "${art.title}" (${sizeInMB} MB, ${contentType.split('/')[1] || 'unknown'}). Downloading...`);
-
-              // 4. Download the image file as a Blob
-              const imgRes = await fetch(art.imageUrl);
-              if (!imgRes.ok) throw new Error(`Fetch failed with status ${imgRes.status}`);
+              const imgRes = await fetch(proxyUrl);
+              if (!imgRes.ok) throw new Error(`Download failed`);
               const blob = await imgRes.blob();
 
-              // Convert Blob to File so compressImage can read it
-              const originalFilename = art.imageUrl.split('%2F').pop()?.split('?')[0] || 'artwork.png';
-              const decodedFilename = decodeURIComponent(originalFilename);
-              const cleanName = decodedFilename.substring(decodedFilename.indexOf('_') + 1);
-              const fileObj = new File([blob], cleanName, { type: blob.type });
-
-              // 5. Compress client-side using Canvas
+              // Compress via Canvas to ensure size < 300KB
+              const fileObj = new File([blob], `${cleanName}.${blob.type.split('/')[1] || 'png'}`, { type: blob.type });
               const compressedBlob = await compressImage(fileObj);
-              const newSizeInKB = (compressedBlob.size / 1024).toFixed(0);
-              const ext = compressedBlob.type === 'image/webp' ? 'webp' : (compressedBlob.type === 'image/jpeg' ? 'jpg' : 'png');
+
+              logMigration(`[Art] Uploading "${art.title}" to Cloudinary (${(compressedBlob.size/1024).toFixed(0)} KB)...`);
+              const newUrl = await uploadBlobToCloudinary(compressedBlob, cleanName);
+
+              logMigration(`[Art] Updating Firestore database...`);
+              await updateDoc(doc(db, 'artworks', art.id), { imageUrl: newUrl });
               
-              // 6. Upload new compressed image to Firebase Storage
-              const newFilename = `${Date.now()}_optimized_${cleanName.substring(0, cleanName.lastIndexOf('.')) || cleanName}.${ext}`;
-              const storageRef = ref(storage, `artwork/${newFilename}`);
-              
-              logMigration(`[UPLOADING] "${art.title}" compressed to ${newSizeInKB} KB (${compressedBlob.type.split('/')[1]}). Uploading...`);
-              
-              const snapshot = await uploadBytes(storageRef, compressedBlob, {
-                contentType: compressedBlob.type
-              });
-              const newUrl = await getDownloadURL(snapshot.ref);
-
-              // 7. Update Firestore document
-              await updateDoc(doc(db, 'artworks', art.id), {
-                imageUrl: newUrl
-              });
-
-              // 8. Delete the old image file from Firebase Storage
-              try {
-                const oldStorageRef = ref(storage, art.imageUrl);
-                await deleteObject(oldStorageRef);
-                logMigration(`[SUCCESS] Optimized "${art.title}" (${sizeInMB} MB -> ${newSizeInKB} KB) and deleted old file.`);
-              } catch (delErr) {
-                // Log but don't fail if delete fails (e.g. if file didn't exist or permissions changed)
-                logMigration(`[SUCCESS] Optimized "${art.title}" (${sizeInMB} MB -> ${newSizeInKB} KB). [Warning: Could not delete old file: ${delErr}]`);
-              }
-
-              optimizedCount++;
-
+              logMigration(`[Art SUCCESS] Migrated "${art.title}" to Cloudinary.`);
+              migratedCount++;
             } catch (err: any) {
-              logMigration(`[ERROR] Failed to optimize "${art.title}": ${err.message || err}`);
+              logMigration(`[Art ERROR] Failed to migrate "${art.title}": ${err.message || err}`);
               failedCount++;
             }
           }
 
-          logMigration(`\n[COMPLETE] Optimization finished.\n- Optimized: ${optimizedCount}\n- Skipped: ${skippedCount}\n- Failed: ${failedCount}`);
-          if (migrationStatusText) migrationStatusText.textContent = 'Optimization Complete';
+          // Migrate Exhibitions
+          for (let i = 0; i < exhibitions.length; i++) {
+            if (migrationCancelled) break;
+            const exh = exhibitions[i];
+            
+            if (!exh.image || !exh.image.includes('firebasestorage.googleapis.com')) {
+              continue;
+            }
+
+            processedCount++;
+            const percent = Math.round((processedCount / totalMigrate) * 100);
+            if (migrationStatusText) migrationStatusText.textContent = `Exhibitions (${processedCount}/${totalMigrate}): "${exh.title}"`;
+            if (migrationProgressBar) migrationProgressBar.style.width = `${percent}%`;
+            if (migrationPercentageText) migrationPercentageText.textContent = `${percent}%`;
+
+            try {
+              const cleanName = getCleanFilename(exh.image);
+              logMigration(`[Exh] Downloading "${exh.title}"...`);
+              
+              const imageKitEndpoint = import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/ytblv4ay6/';
+              const cleanEndpoint = imageKitEndpoint.endsWith('/') ? imageKitEndpoint.slice(0, -1) : imageKitEndpoint;
+              const cleanHost = cleanEndpoint.replace(/^https?:\/\//, '');
+              const proxyUrl = exh.image.replace('firebasestorage.googleapis.com', cleanHost);
+
+              const imgRes = await fetch(proxyUrl);
+              if (!imgRes.ok) throw new Error(`Download failed`);
+              const blob = await imgRes.blob();
+
+              const fileObj = new File([blob], `${cleanName}.${blob.type.split('/')[1] || 'png'}`, { type: blob.type });
+              const compressedBlob = await compressImage(fileObj);
+
+              logMigration(`[Exh] Uploading "${exh.title}" to Cloudinary (${(compressedBlob.size/1024).toFixed(0)} KB)...`);
+              const newUrl = await uploadBlobToCloudinary(compressedBlob, cleanName);
+
+              logMigration(`[Exh] Updating Firestore database...`);
+              await updateDoc(doc(db, 'exhibitions', exh.id), { image: newUrl });
+              
+              logMigration(`[Exh SUCCESS] Migrated "${exh.title}" to Cloudinary.`);
+              migratedCount++;
+            } catch (err: any) {
+              logMigration(`[Exh ERROR] Failed to migrate "${exh.title}": ${err.message || err}`);
+              failedCount++;
+            }
+          }
+
+          // Migrate Homepage Slides
+          if (homepageData && slides.length > 0 && !migrationCancelled) {
+            let slidesChanged = false;
+            for (let i = 0; i < slides.length; i++) {
+              if (migrationCancelled) break;
+              const slide = slides[i];
+              
+              if (!slide.image || !slide.image.includes('firebasestorage.googleapis.com')) {
+                continue;
+              }
+
+              processedCount++;
+              const percent = Math.round((processedCount / totalMigrate) * 100);
+              if (migrationStatusText) migrationStatusText.textContent = `Hero Slides (${processedCount}/${totalMigrate})`;
+              if (migrationProgressBar) migrationProgressBar.style.width = `${percent}%`;
+              if (migrationPercentageText) migrationPercentageText.textContent = `${percent}%`;
+
+              try {
+                const cleanName = `hero_slide_${i + 1}`;
+                logMigration(`[Slide ${i + 1}] Downloading slide...`);
+                
+                const imageKitEndpoint = import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/ytblv4ay6/';
+                const cleanEndpoint = imageKitEndpoint.endsWith('/') ? imageKitEndpoint.slice(0, -1) : imageKitEndpoint;
+                const cleanHost = cleanEndpoint.replace(/^https?:\/\//, '');
+                const proxyUrl = slide.image.replace('firebasestorage.googleapis.com', cleanHost);
+
+                const imgRes = await fetch(proxyUrl);
+                if (!imgRes.ok) throw new Error(`Download failed`);
+                const blob = await imgRes.blob();
+
+                const fileObj = new File([blob], `${cleanName}.${blob.type.split('/')[1] || 'png'}`, { type: blob.type });
+                const compressedBlob = await compressImage(fileObj);
+
+                logMigration(`[Slide ${i + 1}] Uploading to Cloudinary (${(compressedBlob.size/1024).toFixed(0)} KB)...`);
+                const newUrl = await uploadBlobToCloudinary(compressedBlob, cleanName);
+
+                slide.image = newUrl;
+                slidesChanged = true;
+                
+                logMigration(`[Slide ${i + 1} SUCCESS] Migrated to Cloudinary.`);
+                migratedCount++;
+              } catch (err: any) {
+                logMigration(`[Slide ${i + 1} ERROR] Failed to migrate: ${err.message || err}`);
+                failedCount++;
+              }
+            }
+
+            if (slidesChanged && !migrationCancelled) {
+              logMigration(`[Slides] Saving updated homepage settings in Firestore...`);
+              await updateDoc(doc(db, 'settings', 'homepage'), { heroSlides: slides });
+              logMigration(`[Slides SUCCESS] Homepage hero slides updated!`);
+            }
+          }
+
+          if (migrationCancelled) {
+            logMigration('\n[ABORTED] Cloudinary migration cancelled by user.');
+            if (migrationStatusText) migrationStatusText.textContent = 'Migration Cancelled';
+          } else {
+            logMigration(`\n[COMPLETE] Cloudinary migration finished.\n- Migrated: ${migratedCount}\n- Failed: ${failedCount}`);
+            if (migrationStatusText) migrationStatusText.textContent = 'Migration Complete';
+          }
           
-          // Reload artworks to update dashboard list
+          // Reload artworks and exhibitions lists
           loadArtworks();
+          loadExhibitions();
 
         } catch (err: any) {
           logMigration(`[FATAL ERROR] Migration failed: ${err.message || err}`);
-          if (migrationStatusText) migrationStatusText.textContent = 'Optimization Failed';
+          if (migrationStatusText) migrationStatusText.textContent = 'Migration Failed';
         } finally {
           btnStartMigration.removeAttribute('disabled');
           if (btnCancelMigration) btnCancelMigration.style.display = 'none';

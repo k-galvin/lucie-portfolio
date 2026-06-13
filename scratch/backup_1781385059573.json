@@ -1,0 +1,2725 @@
+{
+  "artworks": [
+    {
+      "id": "082r6QJpVHfL84Vd9xoz",
+      "medium": "paper and glue",
+      "show": "",
+      "status": "",
+      "printLink": "",
+      "order": 580,
+      "year": 2024,
+      "title": "Construction Fence",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "dimensions": {
+        "width": 10,
+        "unit": "in",
+        "height": 20
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685680118_Construction%20Fence%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2020x10%20in%20Large.webp?alt=media&token=f715ecdb-2b6b-4b40-90f8-bd14c6a11020",
+      "subject": [
+        "water",
+        "beach",
+        "animals"
+      ],
+      "createdAt": "2026-06-05T00:41:44.501Z"
+    },
+    {
+      "id": "0LW6aFKYblf7lV4Lnxm2",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383395209_optimized_Shed%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2075x78%20in.webp?alt=media&token=334ccde4-5fc0-4722-bcb1-4d134d445155",
+      "dimensions": {
+        "width": 76,
+        "unit": "in",
+        "height": 74
+      },
+      "createdAt": "2026-06-06T20:41:26.128Z",
+      "subject": [
+        "gardens"
+      ],
+      "order": 60,
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper and glue",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Shed",
+      "year": 2024
+    },
+    {
+      "id": "0mTmiGMXhxWE0gcFj54x",
+      "medium": "paper, cord, and glue",
+      "show": "",
+      "printLink": "https://www.saatchiart.com/print/Collage-Well-Done-Bravo-Zulu/3001685/13934109/view",
+      "status": "",
+      "order": 410,
+      "title": "Well Done (Bravo Zulu)",
+      "year": 2024,
+      "isPrint": true,
+      "typeOfWork": "Paper Picture",
+      "dimensions": {
+        "width": 24,
+        "unit": "in",
+        "height": 36
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780779844921_Well%20Done%202024%20Lucie%20Galvin%20paper%2C%20cord%2C%20and%20glue%2036x24%20in%202%20Large.webp?alt=media&token=33d5dde4-96fb-488d-a754-6284ccee2301",
+      "subject": [
+        "boats"
+      ],
+      "createdAt": "2026-06-06T21:04:06.806Z"
+    },
+    {
+      "id": "1SD3uayuJm0GSVHpi9ur",
+      "dimensions": {
+        "width": 72,
+        "unit": "in",
+        "height": 72
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685443052_Backyard%20Orange%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2072x72%20in%20Large.webp?alt=media&token=6877d955-b385-4736-8924-70042aee32d7",
+      "subject": [
+        "gardens"
+      ],
+      "createdAt": "2026-06-04T23:43:00.502Z",
+      "show": "",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "",
+      "order": 40,
+      "year": 2024,
+      "title": "Backyard Orange",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "4fxicVkPUehCppXr7AsF",
+      "createdAt": "2026-06-04T14:57:58.618Z",
+      "subject": [
+        "water",
+        "boats",
+        "animals"
+      ],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383403487_optimized_Flotsam%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2078x100%20in%20Large.webp?alt=media&token=48685a6c-9bd6-46fd-92ff-adcf960844aa",
+      "dimensions": {
+        "width": 98,
+        "unit": "in",
+        "height": 56
+      },
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Flotsam",
+      "year": 2024,
+      "order": 460,
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper, cork, and glue"
+    },
+    {
+      "id": "5JqkLXhsrZnheyGIzWCz",
+      "subject": [
+        "gardens",
+        "people"
+      ],
+      "createdAt": "2026-06-06T21:05:53.425Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780779951359_Wild%20Carrot%202023%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%20collage%2010.5x8.4%20in%20Large.webp?alt=media&token=6962266b-529f-45d5-a31b-338d1ef01120",
+      "dimensions": {
+        "width": 8.4,
+        "unit": "in",
+        "height": 10.5
+      },
+      "year": 2023,
+      "title": "Wild Carrot",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "status": "",
+      "printLink": "",
+      "medium": "paper, glue, and frame",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "order": 790
+    },
+    {
+      "id": "641FOYflrZ0IKf4OL13i",
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383410577_optimized_Threave%202021%20Lucie%20Galvin%20paper%2C%20tape%2C%20and%20glue%20collage%2024x36%20in%20Large.webp?alt=media&token=eb740578-a7f9-421e-b51c-79a13ed0ea3e",
+      "createdAt": "2026-06-06T20:54:13.784Z",
+      "subject": [
+        "gardens",
+        "animals"
+      ],
+      "order": 850,
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, tape, and glue",
+      "printLink": "",
+      "status": "",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Threave",
+      "year": 2021
+    },
+    {
+      "id": "6XpUsYfvfJESGeqlc3BH",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383416357_optimized_Xianxia%20%E4%BB%99%E4%BF%A0%202023%20Lucie%20Galvin%20paper%20and%20glue%20collage%2012x12%20in%20Large.webp?alt=media&token=146c86e3-476c-466c-ab6d-89357df5a69e",
+      "createdAt": "2026-06-06T21:08:32.254Z",
+      "subject": [
+        "gardens",
+        "water",
+        "boats",
+        "people",
+        "animals"
+      ],
+      "order": 1020,
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2022,
+      "title": "Xianxia 仙俠"
+    },
+    {
+      "id": "7I8a2OMLz8xAAQyMsdmy",
+      "dimensions": {
+        "width": 10,
+        "unit": "in",
+        "height": 8
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383422158_optimized_Choux%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%208x10%20in%20Large.webp?alt=media&token=4ea1e5a0-f779-4566-8049-d9666acfa379",
+      "subject": [
+        "gardens"
+      ],
+      "createdAt": "2026-06-05T00:37:06.898Z",
+      "medium": "paper and glue",
+      "show": "",
+      "status": "",
+      "printLink": "",
+      "order": 920,
+      "year": 2024,
+      "title": "Choux",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "7M4rITIqPzVkRA4opqji",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "One Thousand Slats 千枚格子",
+      "year": 2024,
+      "order": 1100,
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper and glue",
+      "createdAt": "2026-06-06T20:10:49.503Z",
+      "subject": [],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780776647582_One%20Thousand%20Slats%20%E5%8D%83%E6%9E%9A%E6%A0%BC%E5%AD%90%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2010.75x13.75%20in%20Large.webp?alt=media&token=24e6bab5-75ec-4f80-a38b-e278c86222f4",
+      "dimensions": {
+        "width": 14,
+        "unit": "in",
+        "height": 11
+      }
+    },
+    {
+      "id": "8fNBndSdfHb3nV6d0El3",
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383428411_optimized_Pavilion%20%E5%B9%84%E8%88%8E%202023%20Lucie%20Galvin%20paper%2C%20tape%2C%20and%20glue%20collage%2024x36%20in%20Large%202.webp?alt=media&token=b670e95d-a9e1-42aa-963e-5ec5c36ac301",
+      "subject": [
+        "gardens"
+      ],
+      "createdAt": "2026-06-06T20:14:16.665Z",
+      "show": "",
+      "medium": "paper, tape, and glue",
+      "status": "",
+      "printLink": "",
+      "order": 1150,
+      "year": 2023,
+      "title": "Pavilion 幄舎",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "9EgQAKR5k32YqWR0KI7g",
+      "order": 770,
+      "status": "",
+      "printLink": "",
+      "medium": "paper, thread, and glue",
+      "show": "",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2024,
+      "title": "Ophelia",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383433403_optimized_Ophelia%202024%20Lucie%20Galvin%20paper%2C%20thread%2C%20and%20glue%20collage%2024x36%20in%202%20Large.webp?alt=media&token=43aaf7bf-1171-4fb6-afc7-a6169fce2d89",
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 50
+      },
+      "createdAt": "2026-06-06T20:11:35.833Z",
+      "subject": [
+        "gardens",
+        "water",
+        "people"
+      ]
+    },
+    {
+      "id": "9RVeGfDznsEaFYGPC1Aw",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780777272199_Public%20Dock%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20ink%20and%20glue%20collage%2022x8.5%20in%20(2%20pieces%20together)%202.webp?alt=media&token=2f3286a6-b10a-45bf-ae84-087a3f53322b",
+      "dimensions": {
+        "width": 8.5,
+        "unit": "in",
+        "height": 22
+      },
+      "subject": [
+        "water"
+      ],
+      "createdAt": "2026-06-06T20:21:14.190Z",
+      "status": "",
+      "printLink": "",
+      "medium": "paper, mylar, ink, and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "order": 300,
+      "year": 2023,
+      "title": "Public Dock",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "9rjrZzO4Bn7J7qad3GRG",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Imps",
+      "year": 2025,
+      "order": 890,
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper, cellophane, and glue",
+      "createdAt": "2026-06-04T04:09:06.111Z",
+      "subject": [
+        "gardens",
+        "people"
+      ],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383440868_optimized_Imps%202025%20Lucie%20Galvin%20paper%20and%20glue%2020x16%20in%20Large.webp?alt=media&token=bd164ec4-18da-43bc-be5b-72e754520310",
+      "dimensions": {
+        "width": 16,
+        "unit": "in",
+        "height": 20
+      }
+    },
+    {
+      "id": "ACtdmsWNfE7IHvS3NdeP",
+      "subject": [
+        "gardens",
+        "water"
+      ],
+      "price": null,
+      "createdAt": "2026-06-06T00:28:10.615Z",
+      "dimensions": {
+        "width": 18,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383446318_optimized_Koi%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20glue%20collage%2024x18%20in.webp?alt=media&token=eeffd164-1157-4697-8221-04bbc1434a6d",
+      "year": 2023,
+      "title": "Koi",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, mylar, and glue",
+      "availability": "",
+      "status": "",
+      "printLink": "",
+      "order": 20
+    },
+    {
+      "id": "Ahfg0xDAYzfSlJLmNPYR",
+      "subject": [],
+      "createdAt": "2026-06-05T00:28:53.481Z",
+      "dimensions": {
+        "width": 4,
+        "unit": "in",
+        "height": 4
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383450740_optimized_Caltech%202023%20Lucie%20Galvin%20paper%20and%20glue%20collage%204x4%20in.webp?alt=media&token=376d2679-d9fa-4c41-92a2-a8c9a34c3d66",
+      "title": "Caltech",
+      "year": 2023,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "show": "",
+      "medium": "paper and glue",
+      "printLink": "",
+      "status": "",
+      "order": 660
+    },
+    {
+      "id": "As0yF3epwOg2s8P2e9Ev",
+      "status": "",
+      "printLink": "",
+      "medium": "paper, glue, and frame",
+      "show": "",
+      "order": 470,
+      "year": 2026,
+      "title": "Sig. Polpo",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383456354_optimized_Sig.%20Polpo%202026%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%204x6.5%20in%20Large.webp?alt=media&token=d24486f6-026e-4ac1-a032-a41c146b6ef4",
+      "dimensions": {
+        "width": 6.5,
+        "unit": "in",
+        "height": 4
+      },
+      "subject": [
+        "animals"
+      ],
+      "createdAt": "2026-06-06T20:42:35.174Z"
+    },
+    {
+      "id": "BcPuhSTFnuG2emfeJ7oF",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383461570_optimized_Fault%202023%20Lucie%20Galvin%20paper%2C%20tape%2C%20and%20glue%20collage%2024x36%20in%20Large.webp?alt=media&token=eb48de64-7311-4505-b993-a8e33c720480",
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      },
+      "createdAt": "2026-06-05T23:40:47.180Z",
+      "subject": [],
+      "order": 1130,
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper, tape, and glue",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Fault",
+      "year": 2023
+    },
+    {
+      "id": "BgPX8AabyPsXuQuhY7TM",
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper and glue",
+      "order": 510,
+      "title": "Merfolk",
+      "year": 2023,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383466421_optimized_Mermaids%202023%20Lucie%20Galvin%20paper%20and%20glue%20collage%206x4%20in%20Large.webp?alt=media&token=8a2c26bb-db83-4feb-97d3-ea2268cac95e",
+      "dimensions": {
+        "width": 4,
+        "unit": "in",
+        "height": 6
+      },
+      "subject": [
+        "water",
+        "people"
+      ],
+      "createdAt": "2026-06-06T19:44:14.864Z"
+    },
+    {
+      "id": "BrsO7CPojVRQwg7ApncF",
+      "title": "Ōi-gawa 大井川",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "show": "",
+      "medium": "paper, glue, and frame",
+      "printLink": "",
+      "status": "",
+      "order": 1040,
+      "subject": [
+        "gardens",
+        "animals"
+      ],
+      "createdAt": "2026-06-04T15:34:58.322Z",
+      "dimensions": {
+        "width": 11,
+        "unit": "in",
+        "height": 9
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383471885_optimized_O%CC%84i-gawa%20%E5%A4%A7%E4%BA%95%E5%B7%9D%202024%20Lucie%20Galvin%20paper%2C%20glue%20and%20frame%209x11%20in.webp?alt=media&token=733c29e9-d6e6-48eb-af07-ee88e87d5fc3"
+    },
+    {
+      "id": "C6CpAVs8Tgc0u8aAY5xo",
+      "medium": "paper, glue, and frame",
+      "show": "",
+      "status": "",
+      "printLink": "",
+      "order": 190,
+      "year": 2024,
+      "title": "Jury Duty",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "dimensions": {
+        "width": 9,
+        "unit": "in",
+        "height": 7.25
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780707342771_Jury%20Duty%202024%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%20collage%207.25x9.1%20in%20Large.webp?alt=media&token=58270be6-3ee1-4a4d-a755-8effd7470b74",
+      "subject": [
+        "people"
+      ],
+      "createdAt": "2026-06-06T00:55:45.408Z"
+    },
+    {
+      "id": "CfhUtMdTNwDELcOzWabh",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2024,
+      "title": "Tustin Torii",
+      "order": 640,
+      "medium": "paper and glue",
+      "show": "",
+      "status": "",
+      "printLink": "",
+      "createdAt": "2026-06-06T20:57:36.056Z",
+      "subject": [],
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383478084_optimized_Tustin%20Torii%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2012x12%20in%20Large.webp?alt=media&token=b21e8461-0740-4dbd-ac35-f05501616cd6"
+    },
+    {
+      "id": "DHvq0o71mJ3jeRuSjgBq",
+      "dimensions": {
+        "width": 16,
+        "unit": "in",
+        "height": 12
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383483121_optimized_Coastal%20Commission%202025%20Lucie%20Galvin%20paper%20and%20glue%2012x18%20in%20Large.webp?alt=media&token=853c9ccd-8629-4f5c-b96d-352f1f6916d3",
+      "subject": [
+        "water",
+        "beach"
+      ],
+      "createdAt": "2026-06-05T00:39:44.593Z",
+      "show": "",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "",
+      "order": 570,
+      "year": 2025,
+      "title": "Coastal Commission",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "DZyZAcX2hFymZcwcuivm",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2025,
+      "title": "Road Trip",
+      "order": 600,
+      "show": "",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "",
+      "createdAt": "2026-06-06T20:25:55.206Z",
+      "subject": [
+        "gardens"
+      ],
+      "dimensions": {
+        "width": 40,
+        "unit": "in",
+        "height": 13.5
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780777553659_Road%20Trip%202025%20Lucie%20Galvin%20paper%20and%20glue%20collage%2013.5x40%20in.webp?alt=media&token=b44a9efa-eaad-44df-acd3-0b1148a0c349"
+    },
+    {
+      "id": "DfRcmLIOajPKeSeDSDF9",
+      "medium": "paper, mylar, glue, and frame",
+      "show": "",
+      "printLink": "",
+      "status": "",
+      "order": 450,
+      "title": "Sand Dollar Bed",
+      "year": 2026,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 10
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780948121843_Sand%20Dollar%20Bed%202026%20Licie%20Galvin%20paper%2C%20mylar%2C%20glue%2C%20and%20frame%2010x8%20in%20Large.webp?alt=media&token=9ccb4224-8bc5-4104-8198-7f3c02d22f81",
+      "subject": [
+        "water",
+        "beach",
+        "animals"
+      ],
+      "createdAt": "2026-06-06T20:28:44.760Z"
+    },
+    {
+      "id": "DkwlUZEmHULTB6b6XcEK",
+      "status": "",
+      "printLink": "",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, mylar, and glue",
+      "order": 260,
+      "year": 2023,
+      "title": "Fog",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383490207_optimized_Fog%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20glue%20collage%2024x18%20in%20Large.webp?alt=media&token=82eb8b39-cb73-4008-90d1-6d9aaab11edd",
+      "dimensions": {
+        "width": 18,
+        "unit": "in",
+        "height": 24
+      },
+      "subject": [
+        "water"
+      ],
+      "createdAt": "2026-06-05T23:42:59.284Z"
+    },
+    {
+      "id": "EPJ4NzCzLR54bS7dwLNE",
+      "dimensions": {
+        "width": 100.5,
+        "unit": "in",
+        "height": 40
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780892841007_Rig%20and%20Furrow%202024%20Lucie%20Galvin%202.webp?alt=media&token=a419cd10-037b-4386-99ed-2e5172a968a6",
+      "subject": [
+        "gardens",
+        "water"
+      ],
+      "createdAt": "2026-06-06T20:24:20.911Z",
+      "show": "",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "",
+      "order": 730,
+      "year": 2024,
+      "title": "Rig and Furrow",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "F4giKkXhOfjP9SLY128i",
+      "year": 2022,
+      "title": "Lake County",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "status": "",
+      "printLink": "",
+      "show": "",
+      "medium": "paper, mylar, and tape",
+      "order": 680,
+      "subject": [
+        "animals"
+      ],
+      "createdAt": "2026-06-06T13:44:35.811Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780753473858_Lake%20County%202022%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20tape%20collage%2020x16%20in%20Large.webp?alt=media&token=cbb1fccb-84cc-48e0-ab78-f4d6e6746326",
+      "dimensions": {
+        "width": 16,
+        "unit": "in",
+        "height": 20
+      }
+    },
+    {
+      "id": "FDL1fMsaRX3UtS5KZjKE",
+      "dimensions": {
+        "width": 20.5,
+        "unit": "in",
+        "height": 20.5
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383498101_optimized_Stash%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2020.5x20.5%20in%20Large.webp?alt=media&token=e554be7a-27e1-4847-94f5-df568f6f81f8",
+      "createdAt": "2026-06-06T20:43:54.472Z",
+      "subject": [],
+      "order": 120,
+      "show": "",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2024,
+      "title": "Stash"
+    },
+    {
+      "id": "FeNCH9lRDuwRbTlTzMAl",
+      "subject": [],
+      "createdAt": "2026-06-04T23:58:37.293Z",
+      "dimensions": {
+        "width": 112,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780893235182_Bedstead%202025%20Lucie%20Galvin%20paper%20and%20glue%20112x24%20in%20(3%20pieces%20together).%20Separated%20%2036x24%20in%20each..webp?alt=media&token=5ea59c09-bcb9-4036-95f8-3fb7695487e1",
+      "title": "Bedstead",
+      "year": 2026,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "show": "",
+      "medium": "paper and glue",
+      "printLink": "",
+      "status": "",
+      "order": 70
+    },
+    {
+      "id": "G83CDYNvy7PkTBFdluGV",
+      "title": "Plage",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "printLink": "",
+      "status": "",
+      "medium": "paper, glue, and frame",
+      "show": "",
+      "order": 930,
+      "subject": [
+        "water",
+        "people",
+        "beach"
+      ],
+      "createdAt": "2026-06-06T20:16:43.898Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383503744_optimized_Plage%202024%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%20collage%2010x8%20in.webp?alt=media&token=1b41dd7e-d88c-49f0-b550-2206eb0a7928",
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 10
+      }
+    },
+    {
+      "id": "GbAtpR5U1OVpxl6CN8EU",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780778281240_Selfie%202026%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%20collage%2012x9.25%20in%20Large.webp?alt=media&token=b7de0fd4-e83a-43b5-9172-12093ffca8f3",
+      "dimensions": {
+        "width": 9.25,
+        "unit": "in",
+        "height": 12
+      },
+      "subject": [
+        "people"
+      ],
+      "createdAt": "2026-06-06T20:38:03.053Z",
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper, glue, and frame",
+      "order": 80,
+      "title": "Selfie",
+      "year": 2026,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture"
+    },
+    {
+      "id": "Gw6ISpFeE3dx0eT9KjhV",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Stove",
+      "year": 2025,
+      "order": 110,
+      "medium": "paper and glue",
+      "show": "",
+      "printLink": "",
+      "status": "",
+      "createdAt": "2026-06-06T20:46:22.356Z",
+      "subject": [],
+      "dimensions": {
+        "width": 24,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383509822_optimized_Stove%202025%20Lucie%20Galvin%20paper%20and%20glue%20collage%2024x24%20in%20Large.webp?alt=media&token=31197b57-35ff-474c-b5aa-73b21613b898"
+    },
+    {
+      "id": "HCYQ5C7Au07xQrwfC1fP",
+      "title": "Duckweed",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "show": "",
+      "medium": "paper and glue",
+      "printLink": "",
+      "status": "",
+      "order": 910,
+      "subject": [
+        "water",
+        "animals"
+      ],
+      "createdAt": "2026-06-05T16:43:21.807Z",
+      "dimensions": {
+        "width": 62,
+        "unit": "in",
+        "height": 50
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685780789_Duckweed%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2050x62%20in%20(4%20pieces%20together)%20Large.webp?alt=media&token=12c18073-6822-4c78-a81d-f69c3b4e375c"
+    },
+    {
+      "id": "HNwV7Y1sHO0Tbb9fVI3k",
+      "medium": "paper, tape, and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "status": "",
+      "printLink": "",
+      "order": 1140,
+      "year": 2023,
+      "title": "The Surfer",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "dimensions": {
+        "width": 112,
+        "unit": "in",
+        "height": 50
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780784040513_The%20Surfer%202023%20Lucie%20Galvin%20paper%2C%20tape%2C%20and%20glue%20collage%2052x114%20in%20(6%20pieces%20together)%203.webp?alt=media&token=aef41233-beee-4dde-bce2-998f34ea0a3d",
+      "subject": [
+        "gardens",
+        "water",
+        "people"
+      ],
+      "createdAt": "2026-06-06T20:52:59.479Z"
+    },
+    {
+      "id": "HaKcvMI8ypBpBO31mxIt",
+      "isPrint": true,
+      "typeOfWork": "Paper Picture",
+      "title": "Goldilocks",
+      "year": 2024,
+      "order": 90,
+      "show": "",
+      "medium": "paper and glue",
+      "printLink": "https://www.saatchiart.com/print/Collage-Goldilocks/3001685/13929323/view",
+      "status": "",
+      "createdAt": "2026-06-06T00:24:44.452Z",
+      "subject": [],
+      "dimensions": {
+        "width": 10,
+        "unit": "in",
+        "height": 20
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780705480454_Goldilocks%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2020x10%20in%20Large.webp?alt=media&token=98e79729-d2cf-4b36-b1ab-2ba650b1d9a9"
+    },
+    {
+      "id": "HsyxUcRlzl74EFlEwF6M",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383518693_optimized_Re%CC%82ve%202024%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20salvaged%20frame%20collage%207x8%20in.webp?alt=media&token=3a57388f-0212-4c3b-8147-6fe45a7180df",
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 7
+      },
+      "subject": [
+        "gardens",
+        "animals"
+      ],
+      "createdAt": "2026-06-06T20:27:47.501Z",
+      "printLink": "",
+      "status": "",
+      "medium": "paper, glue, and salvaged frame",
+      "show": "",
+      "order": 940,
+      "title": "Rêve",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture"
+    },
+    {
+      "id": "HyuvU8mkQuyl61G7cc2R",
+      "createdAt": "2026-06-06T20:07:19.181Z",
+      "subject": [
+        "gardens",
+        "animals"
+      ],
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383523970_optimized_NBPL%202022%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20tape%20collage%2012x12%20in%20Large%202.webp?alt=media&token=35e58554-9c18-4d3e-b329-6f8f10115a70",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "NBPL",
+      "year": 2022,
+      "order": 170,
+      "medium": "paper, mylar, and tape",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "printLink": "",
+      "status": ""
+    },
+    {
+      "id": "IAHrydDFh3uPvCdJwyKY",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383529272_optimized_Tanaka%20Farms%202023%20Lucie%20Galvin%20paper%20and%20glue%20collage%2012x12%20in%20Large.webp?alt=media&token=8d88f2c6-f6df-4e10-b893-432ecd1bd479",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "createdAt": "2026-06-06T20:49:51.952Z",
+      "subject": [
+        "gardens",
+        "people",
+        "animals"
+      ],
+      "order": 630,
+      "printLink": "",
+      "status": "",
+      "medium": "paper and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Tanaka Farms",
+      "year": 2023
+    },
+    {
+      "id": "IVfZObnMazt796MFJ8HI",
+      "createdAt": "2026-06-05T16:28:52.645Z",
+      "subject": [
+        "gardens"
+      ],
+      "dimensions": {
+        "width": 20,
+        "unit": "in",
+        "height": 16
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383533846_optimized_Edinburgh%20Hedge%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20tape%2C%20and%20glue%20collage%2016x20%20in%20Large.webp?alt=media&token=cc3b1538-da46-4402-b5de-0145988fd816",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Edinburgh Hedge",
+      "year": 2023,
+      "order": 840,
+      "medium": "paper, mylar, tape, and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "printLink": "",
+      "status": ""
+    },
+    {
+      "id": "If3BDYCQNWSPK32a8scO",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 18
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780705593839_Garage%202023%20Lucie%20Galvin%20paper%20and%20glue%20collage%2018x12%20in%20Large.webp?alt=media&token=7a55ce19-03c5-4c88-aa7f-5e91c9d71b1c",
+      "createdAt": "2026-06-06T00:22:46.508Z",
+      "subject": [
+        "beach"
+      ],
+      "order": 130,
+      "medium": "paper and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "printLink": "https://www.saatchiart.com/print/Collage-Garage/3001685/13967309/view",
+      "status": "",
+      "isPrint": true,
+      "typeOfWork": "Paper Picture",
+      "title": "Garage",
+      "year": 2023
+    },
+    {
+      "id": "Iq1C5g35nBSTAZXpeNum",
+      "subject": [
+        "animals"
+      ],
+      "createdAt": "2026-06-06T20:31:46.998Z",
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 8
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383539576_optimized_Scrappy%20Dragon%202023%20Lucie%20Galvin%20paper%20and%20glue%20collage%208x8%20in%20Large.webp?alt=media&token=3e5183f0-e606-40b8-8637-e72546c3d441",
+      "year": 2023,
+      "title": "Scrappy Dragon",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "medium": "paper and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "status": "",
+      "printLink": "",
+      "order": 1010
+    },
+    {
+      "id": "KlYoO9bwxZrIXDbmyXom",
+      "subject": [
+        "gardens",
+        "people",
+        "animals"
+      ],
+      "createdAt": "2026-06-06T00:24:15.180Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383544385_optimized_Goldenrod%20Footbridge%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20glue%2012x12%20in%203%20Large.webp?alt=media&token=ad2c5b6b-a235-4c15-8012-3c3cc5bc0e09",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "year": 2023,
+      "title": "Goldenrod Footbridge",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "status": "",
+      "printLink": "",
+      "medium": "paper, mylar, and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "order": 150
+    },
+    {
+      "id": "L4y563kKQpfSdcFOvkrs",
+      "createdAt": "2026-06-06T20:48:13.862Z",
+      "subject": [
+        "gardens",
+        "water",
+        "beach"
+      ],
+      "dimensions": {
+        "width": 76,
+        "unit": "in",
+        "height": 180
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780778892040_Tale%202025%20Lucie%20Galvin%20paper%20and%20glue%20collage%20180x76%20in.webp?alt=media&token=622d7f20-39ff-4ab4-b7c9-0fe81b5ce771",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Tale",
+      "year": 2025,
+      "order": 1030,
+      "show": "",
+      "medium": "paper and glue",
+      "printLink": "",
+      "status": ""
+    },
+    {
+      "id": "LKiX9cqFr84UccEKML7a",
+      "dimensions": {
+        "width": 5.25,
+        "unit": "in",
+        "height": 5.25
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780707237286_Jesus%2C%20Mary%20and%20Joseph%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%205.25x5.25%20in%20Large.webp?alt=media&token=9db22307-3d10-4f28-a6e8-7f6176ef6832",
+      "subject": [
+        "people"
+      ],
+      "createdAt": "2026-06-04T04:13:14.162Z",
+      "medium": "paper and glue",
+      "show": "",
+      "status": "",
+      "printLink": "",
+      "order": 200,
+      "year": 2024,
+      "title": "Jesus, Mary and Joseph",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "LnosYzWwy27FPIpRAR2s",
+      "subject": [
+        "gardens",
+        "animals"
+      ],
+      "createdAt": "2026-06-06T20:58:21.747Z",
+      "dimensions": {
+        "width": 11,
+        "unit": "in",
+        "height": 8.5
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383551369_optimized_Un%20Chat%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%208.5x11%20in%20Large.webp?alt=media&token=11355c70-e093-4358-b14c-eadf0748f148",
+      "year": 2024,
+      "title": "Un Chat",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "show": "",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "",
+      "order": 1070
+    },
+    {
+      "id": "N0ytNHqvP7O2gy4fzuyG",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780889241322_Race%20Regatta%20Luff%202025%20Lucie%20Galvin.webp?alt=media&token=918e349e-5890-4d77-b19f-2c1871c3aa5e",
+      "dimensions": {
+        "width": 40,
+        "unit": "in",
+        "height": 12
+      },
+      "subject": [
+        "water",
+        "boats"
+      ],
+      "createdAt": "2026-06-06T20:21:57.663Z",
+      "status": "",
+      "printLink": "",
+      "show": "",
+      "medium": "paper and glue",
+      "order": 380,
+      "year": 2025,
+      "title": "Race Regatta Luff",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "OfRernxyJoCdx1VuAjjA",
+      "order": 670,
+      "show": "",
+      "medium": "paper, cord, and glue",
+      "status": "",
+      "printLink": "",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2024,
+      "title": "Rooftop",
+      "dimensions": {
+        "width": 84,
+        "unit": "in",
+        "height": 84.5
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780777595411_Rooftop%202024%20Lucie%20Galvin%20paper%2C%20cord%2C%20and%20glue%20collage%2084.5x84%20in%20(8%20pieces%20together)%202%20Large.webp?alt=media&token=14543758-8f7c-4d75-8923-8ab81af0d2a9",
+      "createdAt": "2026-06-06T20:26:37.166Z",
+      "subject": []
+    },
+    {
+      "id": "P3XhC7dPGA9tzZkh9e1Q",
+      "dimensions": {
+        "width": 75.5,
+        "unit": "in",
+        "height": 40
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685892709_Dunes%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2040x71.5%20in%20Large.webp?alt=media&token=084b1f25-3e5b-4046-b934-13bce8d20af5",
+      "subject": [
+        "water",
+        "beach"
+      ],
+      "createdAt": "2026-06-05T18:58:14.346Z",
+      "show": "",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "",
+      "order": 560,
+      "year": 2024,
+      "title": "Dunes",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "PZIHXuhlM2Uz1xEwkTJg",
+      "order": 500,
+      "status": "",
+      "printLink": "",
+      "show": "",
+      "medium": "paper and glue",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2024,
+      "title": "Dive",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383559349_optimized_Dive%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2020x16%20in%20Large%20Large.webp?alt=media&token=6c239b10-ae11-462c-b01e-8d39b4cd3712",
+      "dimensions": {
+        "width": 16,
+        "unit": "in",
+        "height": 20
+      },
+      "createdAt": "2026-06-05T16:41:27.819Z",
+      "subject": [
+        "water",
+        "people"
+      ]
+    },
+    {
+      "id": "Pao5xzpzfQn9SlEZKBJl",
+      "year": 2023,
+      "title": "Bloemenroute",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "status": "",
+      "printLink": "",
+      "medium": "paper, mylar, and glue",
+      "show": "",
+      "order": 740,
+      "subject": [
+        "gardens"
+      ],
+      "createdAt": "2026-06-05T00:04:35.787Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685558745_Bloemenroute%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20glue%20collage%2012x12%20in%20Large.webp?alt=media&token=4e7d1686-a795-48f2-a6c2-a7425664717c",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      }
+    },
+    {
+      "id": "PmluVplDVB0wqyNdymCM",
+      "dimensions": {
+        "width": 60.5,
+        "unit": "in",
+        "height": 65
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383565231_optimized_Webb%202024%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frames%2065x60.5%20in%20(18%20pieces%20together)%20Large.webp?alt=media&token=f4244bf8-788f-4499-a9c3-5e64bb0cbb37",
+      "subject": [],
+      "createdAt": "2026-06-06T21:03:10.200Z",
+      "show": "",
+      "medium": "paper, glue, and frames",
+      "printLink": "",
+      "status": "",
+      "order": 1120,
+      "title": "Webb",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture"
+    },
+    {
+      "id": "PwisynA5hCP4lK0HF7zy",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2023,
+      "title": "Laguna Palette",
+      "order": 620,
+      "medium": "paper, tape, and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "status": "",
+      "printLink": "",
+      "createdAt": "2026-06-06T13:40:58.410Z",
+      "subject": [
+        "water"
+      ],
+      "dimensions": {
+        "width": 18,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780753256440_Laguna%20Palette%202023%20Lucie%20Galvin%20paper%2C%20tape%2C%20and%20glue%20collage%2024x18%20in%20Large.webp?alt=media&token=18eda21c-58c8-41af-b184-4eeab78d5219"
+    },
+    {
+      "id": "PzMPrltywoN87sGzfiW3",
+      "title": "Tokyo 下駄箱 Shoebox",
+      "year": 2023,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "printLink": "",
+      "status": "",
+      "medium": "paper, mylar, and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "order": 1090,
+      "subject": [],
+      "createdAt": "2026-06-06T20:56:40.997Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780779398978_Tokyo%20%E4%B8%8B%E9%A7%84%E7%AE%B1%20Shoebox%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20glue%20collage%2011x14%20in%20Large.webp?alt=media&token=d8090365-b3d4-4074-b933-bd42f2e40ff6",
+      "dimensions": {
+        "width": 14,
+        "unit": "in",
+        "height": 11
+      }
+    },
+    {
+      "id": "QA2ZXUm2CTzkso6YpXwX",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383572911_optimized_Oxalis%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2012x12%20in%20Large.webp?alt=media&token=2c326f9d-9e91-4bc6-8320-6c29230c74d0",
+      "subject": [
+        "gardens"
+      ],
+      "createdAt": "2026-06-06T20:12:23.402Z",
+      "medium": "paper and glue",
+      "show": "",
+      "status": "",
+      "printLink": "",
+      "order": 800,
+      "year": 2024,
+      "title": "Oxalis",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "QM4kJ2ZVYZFpPgHFpw4p",
+      "title": "Water's Flat",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "show": "",
+      "medium": "paper, tape, and glue",
+      "printLink": "",
+      "status": "",
+      "order": 280,
+      "subject": [
+        "water",
+        "boats"
+      ],
+      "createdAt": "2026-06-06T21:01:58.258Z",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 18
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780779716536_Water's%20Flat%202024%20Lucie%20Galvin%20paper%2C%20tape%2C%20and%20glue%20collage%2018x12%20in%202%20Large.webp?alt=media&token=5d9f5913-040d-4e55-8d14-31993f196ed4"
+    },
+    {
+      "id": "QqQyCtaSDIZZtv3unNZz",
+      "status": "",
+      "printLink": "",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper and tape",
+      "order": 590,
+      "year": 2022,
+      "title": "Mountain Arable Desert Saltwater",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383578991_optimized_Mountain%20Arable%20Desert%20Saltwater%202022%20Lucie%20Galvin%20paper%20and%20tape%20collage%2018x18%20in%20Large.webp?alt=media&token=5f6f83e6-2d8d-4b01-acc3-a2fa777ba481",
+      "dimensions": {
+        "width": 18,
+        "unit": "in",
+        "height": 18
+      },
+      "subject": [
+        "gardens",
+        "water",
+        "beach"
+      ],
+      "createdAt": "2026-06-06T19:47:09.664Z"
+    },
+    {
+      "id": "REEst3UYuvWdNeUofCaj",
+      "subject": [
+        "gardens"
+      ],
+      "createdAt": "2026-06-06T20:19:10.078Z",
+      "dimensions": {
+        "width": 10.5,
+        "unit": "in",
+        "height": 12.5
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383584320_optimized_Plum%20%E1%84%86%E1%85%A2%E1%84%92%E1%85%AA%202023%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%20collage%2012.5x10.5%20in%20Large.webp?alt=media&token=9bb8d2bf-3c11-4388-a9f2-6599736a055d",
+      "year": 2023,
+      "title": "Plum 매화",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "medium": "paper, glue, and frame",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "status": "",
+      "printLink": "",
+      "order": 980
+    },
+    {
+      "id": "Rtbpokk9RrNQwuuHHw9C",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383589559_optimized_Dream%20House%202022%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20tape%2012x12%20in%20Large.webp?alt=media&token=db2dfad7-4923-4ce6-a561-93b2b433b576",
+      "subject": [
+        "gardens",
+        "people"
+      ],
+      "createdAt": "2026-06-05T16:42:50.961Z",
+      "show": "",
+      "medium": "paper, mylar, and tape",
+      "status": "",
+      "printLink": "",
+      "order": 780,
+      "year": 2022,
+      "title": "Dream House",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "S8ZDt8APZVHxrNij6IV6",
+      "printLink": "",
+      "status": "",
+      "medium": "paper and glue",
+      "show": "",
+      "order": 30,
+      "title": "Mystery Neighbor",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780775289458_Mystery%20Neighbor%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2034x34%20in.webp?alt=media&token=244bc1a2-3df3-4830-aba0-e7b3f0942ee3",
+      "dimensions": {
+        "width": 34,
+        "unit": "in",
+        "height": 34
+      },
+      "subject": [
+        "gardens",
+        "animals"
+      ],
+      "createdAt": "2026-06-06T19:48:11.323Z"
+    },
+    {
+      "id": "SxWm61GhoQIyAHX3X39t",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383595005_optimized_Back%20Bay%202023%20Lucie%20Galvin%20paper%20and%20glue%20collages%2024x36%20in%20(2%20pieces%20together)%20Large.webp?alt=media&token=7a74ca2d-3804-4d60-9a1c-f6478b08c442",
+      "dimensions": {
+        "width": 38,
+        "unit": "in",
+        "height": 24
+      },
+      "createdAt": "2026-06-04T23:32:13.711Z",
+      "subject": [
+        "water",
+        "beach"
+      ],
+      "order": 250,
+      "printLink": "https://www.saatchiart.com/print/Collage-Back-Bay/3001685/13930435/view",
+      "status": "",
+      "medium": "paper and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "isPrint": true,
+      "typeOfWork": "Paper Picture",
+      "title": "Back Bay",
+      "year": 2022
+    },
+    {
+      "id": "TFZxeGFjViZl4BdZ0xhY",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383600070_optimized_Het%20Loo%202023%20Lucie%20Galvin%20paper%2C%20tape%2C%20and%20frame%20collage%204x4%20in.webp?alt=media&token=5eb7c94d-c99f-4c58-9884-24303c1c05b8",
+      "dimensions": {
+        "width": 4.75,
+        "unit": "in",
+        "height": 5.25
+      },
+      "createdAt": "2026-06-04T04:06:12.118Z",
+      "subject": [
+        "gardens"
+      ],
+      "order": 750,
+      "printLink": "",
+      "status": "",
+      "medium": "paper, glue, and frame",
+      "show": "",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Het Loo",
+      "year": 2023
+    },
+    {
+      "id": "TGGRONsZwifxxQlrhOtz",
+      "order": 390,
+      "show": "",
+      "medium": "paper, cord, and glue",
+      "printLink": "https://www.saatchiart.com/print/Collage-Red-Skies-Storm-Warning/3001685/13932821/view",
+      "status": "",
+      "isPrint": true,
+      "typeOfWork": "Paper Picture",
+      "title": "Red Skies (Storm Warning)",
+      "year": 2024,
+      "dimensions": {
+        "width": 24,
+        "unit": "in",
+        "height": 36
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383605925_optimized_Red%20Skies%202024%20Lucie%20Galvin%20paper%2C%20cord%2C%20and%20glue%2036x24%20in%202%20Large.webp?alt=media&token=d673112e-7539-4c0c-85af-c1bb7ddf4d30",
+      "createdAt": "2026-06-06T20:45:19.944Z",
+      "subject": [
+        "boats"
+      ]
+    },
+    {
+      "id": "TKmMVjhTo9duahIjQpIe",
+      "isPrint": true,
+      "typeOfWork": "Paper Picture",
+      "title": "Arlington Garden",
+      "year": 2023,
+      "order": 0,
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper and glue",
+      "printLink": "https://www.saatchiart.com/print/Collage-Arlington-Garden/3001685/13930421/view",
+      "status": "",
+      "createdAt": "2026-06-04T15:45:57.093Z",
+      "subject": [
+        "gardens",
+        "people"
+      ],
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 10
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780708722955_Arlington%20Garden%202023%20Lucie%20Galvin%20paper%20and%20glue%20collage%2010x8%20in%20Large.webp?alt=media&token=d5d2ff13-9aec-4626-9cd0-6e8562eafb1c"
+    },
+    {
+      "id": "U3q4lLc1LNMRYwglvzBE",
+      "printLink": "",
+      "status": "",
+      "medium": "paper and glue",
+      "show": "",
+      "order": 440,
+      "title": "Ensenada Start",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780699381523_Ensenada%20Start%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2024x18%20in%20Large.webp?alt=media&token=f48053df-795d-468b-85b7-daf65ca9aad9",
+      "dimensions": {
+        "width": 18,
+        "unit": "in",
+        "height": 24
+      },
+      "subject": [
+        "water",
+        "boats",
+        "beach"
+      ],
+      "createdAt": "2026-06-05T22:43:03.630Z"
+    },
+    {
+      "id": "UIqgLKNVkBELzGkf0gfE",
+      "subject": [
+        "water",
+        "boats"
+      ],
+      "createdAt": "2026-06-05T22:38:48.690Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780893800921_Empty%20Cargo%202025%20Lucie%20Galvin%20paper%20and%20glue%20collage%20(6%20pieces%20together)%202.webp?alt=media&token=bf3b18b6-0c17-47c0-a10b-bad85af39ab4",
+      "dimensions": {
+        "width": 154,
+        "unit": "in",
+        "height": 24
+      },
+      "title": "Empty Cargo",
+      "year": 2025,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "printLink": "",
+      "status": "",
+      "medium": "paper and glue",
+      "show": "",
+      "order": 490
+    },
+    {
+      "id": "UMIEdUcPfYifOg2W5t7v",
+      "year": 2023,
+      "title": "Newport Center Drive",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, cellophane, and glue",
+      "status": "",
+      "printLink": "",
+      "order": 180,
+      "subject": [],
+      "createdAt": "2026-06-06T20:08:19.799Z",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780776497975_Newport%20Center%20Drive%202023%20Lucie%20Galvin%20paper%2C%20cellophane%2C%20and%20glue%20collage%2012x12%20in%20Large.webp?alt=media&token=6cd742e2-b7ad-46af-8b97-a6ba47613239"
+    },
+    {
+      "id": "Vmzr5zFA4ec7S4ykzWIH",
+      "status": "",
+      "printLink": "",
+      "show": "",
+      "medium": "paper and glue",
+      "order": 1060,
+      "year": 2025,
+      "title": "Pine",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780776947801_Pine%202025%20Lucie%20Galvin%20paper%20and%20glue%20collage%2040x13.5%20in%20Large.webp?alt=media&token=e04d6179-7701-451b-8ee6-2bcaeda9de53",
+      "dimensions": {
+        "width": 13.5,
+        "unit": "in",
+        "height": 40
+      },
+      "subject": [
+        "gardens"
+      ],
+      "createdAt": "2026-06-06T20:15:49.191Z"
+    },
+    {
+      "id": "WPYGbpTF9TKMWbBL0Uf5",
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper, mylar, and glue",
+      "order": 1080,
+      "title": "Seven Treasures 七宝つなぎ",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383616374_optimized_Seven%20Treasures%20%E4%B8%83%E5%AE%9D%E3%81%A4%E3%81%AA%E3%81%8D%E3%82%99%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2014x11%20in%20Large%202.webp?alt=media&token=e578e96e-93b9-491c-99bf-aca04ec22f45",
+      "dimensions": {
+        "width": 11,
+        "unit": "in",
+        "height": 14
+      },
+      "subject": [],
+      "createdAt": "2026-06-06T20:39:39.729Z"
+    },
+    {
+      "id": "Wt4MS7TFWX7JbIa2F2SM",
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685527676_Between%202%20Jetties%202022%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20tape%2024x36%20in%20Large.webp?alt=media&token=d611df23-0a2b-4a06-83d9-abc59bc74edf",
+      "subject": [
+        "water",
+        "boats",
+        "beach",
+        "animals"
+      ],
+      "createdAt": "2026-06-05T00:02:05.374Z",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, mylar, tape, and glue",
+      "printLink": "https://www.saatchiart.com/print/Collage-Between-2-Jetties/3001685/13930841/view",
+      "status": "",
+      "order": 360,
+      "title": "Between 2 Jetties",
+      "year": 2022,
+      "isPrint": true,
+      "typeOfWork": "Paper Picture"
+    },
+    {
+      "id": "XQ0OiZd0UGt3i3qK6ISg",
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper and glue",
+      "order": 50,
+      "title": "Sharing Spring",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780778428690_Sharing%20Spring%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2034x34%20in%20Large%20Large.webp?alt=media&token=6c9cc758-aab0-45af-836b-f1266b3a0f37",
+      "dimensions": {
+        "width": 34,
+        "unit": "in",
+        "height": 34
+      },
+      "subject": [
+        "gardens",
+        "animals"
+      ],
+      "createdAt": "2026-06-06T20:40:30.495Z"
+    },
+    {
+      "id": "YgPGyyEGMYHACwB7v4Si",
+      "createdAt": "2026-06-06T20:17:34.874Z",
+      "subject": [
+        "people"
+      ],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780777053050_Plan%202024%20Lucie%20Galvin%20paper%2C%20ribbon%2C%20mylar%2C%20and%20glue%20collage%2012x12%20in%20Large.webp?alt=media&token=738ce5d0-d1aa-4616-acfd-b3c58ee2c1f9",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2024,
+      "title": "Plan",
+      "order": 760,
+      "status": "",
+      "printLink": "",
+      "show": "",
+      "medium": "paper, mylar, ribbon, and glue"
+    },
+    {
+      "id": "YtBgTEB8srv5LSI1vmxh",
+      "order": 420,
+      "status": "",
+      "printLink": "",
+      "medium": "paper, cord, cellophane, and glue",
+      "show": "",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2025,
+      "title": "Sea Level",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780893020911_Sea%20Level%202025%20Lucie%20Galvin.webp?alt=media&token=de261953-649a-4d6f-9a46-cad0580a9805",
+      "dimensions": {
+        "width": 128,
+        "unit": "in",
+        "height": 36
+      },
+      "createdAt": "2026-06-06T20:32:27.579Z",
+      "subject": [
+        "water",
+        "boats",
+        "people",
+        "beach",
+        "animals"
+      ]
+    },
+    {
+      "id": "ZGEIb0HB6oOD0YseulbT",
+      "order": 310,
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, mylar, and tape",
+      "printLink": "",
+      "status": "",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "The Little Island",
+      "year": 2018,
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383625406_optimized_The%20Little%20Island%202018%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20tape%20collage%2024x36%20in%202.webp?alt=media&token=1ab01747-7e07-4442-b836-59bbec351582",
+      "createdAt": "2026-06-06T20:51:54.357Z",
+      "subject": [
+        "water",
+        "boats",
+        "beach"
+      ]
+    },
+    {
+      "id": "ZfxiL4qmrrmhSR6F7nb1",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Bike Route",
+      "year": 2025,
+      "order": 140,
+      "printLink": "",
+      "status": "",
+      "medium": "paper, mylar, and glue",
+      "show": "",
+      "createdAt": "2026-06-04T14:43:44.905Z",
+      "subject": [
+        "water"
+      ],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383629762_optimized_Bike%20Route%202025%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20glue%20collage%2024x24%20in%20Large.webp?alt=media&token=774ff47f-4098-4ec3-8519-98851fb69327",
+      "dimensions": {
+        "width": 24,
+        "unit": "in",
+        "height": 24
+      }
+    },
+    {
+      "id": "ZjqeFlUgFv3LNKaoVYrJ",
+      "createdAt": "2026-06-05T00:11:01.424Z",
+      "subject": [
+        "water",
+        "boats",
+        "people",
+        "beach",
+        "animals"
+      ],
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383634398_optimized_Boat%20Parade%202022%20Lucie%20Galvin%20paper%2C%20ribbon%2C%20mylar%2C%20and%20tape%20collage%2024%C3%9736%20in%20Large.webp?alt=media&token=c2b19ee0-aaae-4bf5-bd8e-6c1b1c4b1226",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2022,
+      "title": "Boat Parade",
+      "order": 340,
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, ribbon, mylar, and tape",
+      "status": "",
+      "printLink": ""
+    },
+    {
+      "id": "aRIbIVUPMAuiWz8SYHIU",
+      "dimensions": {
+        "width": 13.5,
+        "unit": "in",
+        "height": 40
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780703126559_Fridge%202025%20Lucie%20Galvin%20paper%2C%20tape%2C%20and%20glue%20collage%2040x13.5%20in.webp?alt=media&token=6a1a2665-2700-4295-85f2-5281c4bce3c1",
+      "subject": [],
+      "createdAt": "2026-06-05T23:45:27.684Z",
+      "medium": "paper and glue",
+      "show": "",
+      "status": "",
+      "printLink": "",
+      "order": 100,
+      "year": 2023,
+      "title": "Fridge",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "atBS4qgUvCtgvfsNFCyW",
+      "year": 2025,
+      "title": "Landfall",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "show": "",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "",
+      "order": 820,
+      "subject": [
+        "water",
+        "beach"
+      ],
+      "createdAt": "2026-06-06T13:45:39.817Z",
+      "dimensions": {
+        "width": 50,
+        "unit": "in",
+        "height": 50
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383640519_optimized_Landfall%202025%20Lucie%20Galvin%20paper%20and%20glue%20collage%2050x50%20in%20Large.webp?alt=media&token=07bbf96e-b2d1-4ff6-869c-c8b7c223fc43"
+    },
+    {
+      "id": "c37nA5aP7Ov1IUg7dTdl",
+      "order": 270,
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, mylar, and glue",
+      "status": "",
+      "printLink": "https://www.saatchiart.com/print/Collage-Drain-to-Bay/3001685/13882729/view",
+      "typeOfWork": "Paper Picture",
+      "isPrint": true,
+      "year": 2023,
+      "title": "Drain to Bay",
+      "dimensions": {
+        "width": 20,
+        "unit": "in",
+        "height": 16
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685748263_Drain%20to%20Bay%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20glue%20collage%2016x20%20in%20Large.webp?alt=media&token=e9018bcb-4a97-4ca7-9735-5e635267b532",
+      "createdAt": "2026-06-05T16:42:13.996Z",
+      "subject": [
+        "water"
+      ]
+    },
+    {
+      "id": "dGfBZKo9adav8RuMsbWN",
+      "createdAt": "2026-06-06T20:47:23.149Z",
+      "subject": [
+        "water",
+        "boats",
+        "people"
+      ],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383646475_optimized_Sunshower%202025%20Lucie%20Galvin%20paper%20and%20glue%20collage%2064x142%20in%202.webp?alt=media&token=b2797803-7647-4d6d-be9b-65067a71a348",
+      "dimensions": {
+        "width": 142,
+        "unit": "in",
+        "height": 64
+      },
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2025,
+      "title": "Sunshower",
+      "order": 720,
+      "status": "",
+      "printLink": "",
+      "medium": "paper and glue",
+      "show": ""
+    },
+    {
+      "id": "dPI8gnOaEO1j0Rhtvdeg",
+      "status": "",
+      "printLink": "",
+      "show": "",
+      "medium": "paper and glue",
+      "order": 240,
+      "year": 2025,
+      "title": "Lauds",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780888141855_Lauds%202025%20Lucie%20Galvin.webp?alt=media&token=d05bd064-7737-41c1-8690-5d284279e141",
+      "dimensions": {
+        "width": 150,
+        "unit": "in",
+        "height": 76
+      },
+      "subject": [
+        "water",
+        "people"
+      ],
+      "createdAt": "2026-06-06T13:59:34.423Z"
+    },
+    {
+      "id": "eDui8x4Zu5mMMq6ZcJdN",
+      "status": "",
+      "printLink": "",
+      "show": "",
+      "medium": "paper, glue, and frame",
+      "order": 880,
+      "year": 2026,
+      "title": "Bole",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685595242_Bole%202026%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%2010x8%20in%20Large.webp?alt=media&token=3e97511d-fdba-42c0-bd74-c175c9436104",
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 10
+      },
+      "subject": [
+        "animals"
+      ],
+      "createdAt": "2026-06-05T00:15:20.888Z"
+    },
+    {
+      "id": "eOYppKDjYHbKnUUPsAxi",
+      "order": 540,
+      "show": "",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2024,
+      "title": "Rain Trail",
+      "dimensions": {
+        "width": 40,
+        "unit": "in",
+        "height": 56
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383654352_optimized_Rain%20Trail%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%203%20framed%20pieces%20together%2060.66x40%20in.webp?alt=media&token=ca15b6e4-7a35-422d-a32c-17593552ffb8",
+      "createdAt": "2026-06-06T20:22:51.160Z",
+      "subject": [
+        "gardens",
+        "beach",
+        "animals"
+      ]
+    },
+    {
+      "id": "eoGwXNDUVJ1XITczoEmk",
+      "order": 290,
+      "medium": "paper and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "status": "",
+      "availability": "",
+      "printLink": "https://www.saatchiart.com/print/Collage-Riprap/3001685/13866783/view",
+      "typeOfWork": "Paper Picture",
+      "isPrint": true,
+      "year": 2023,
+      "title": "Riprap",
+      "dimensions": {
+        "width": 14.5,
+        "unit": "in",
+        "height": 11.5
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780882942761_Riprap%202023%20Lucie%20Galvin%20paper%20and%20glue%20collage%2011.5x14.5%20in%20Large.webp?alt=media&token=41b1ab98-b05c-48cf-a2d9-66880bc9a4f3",
+      "price": null,
+      "createdAt": "2026-06-06T20:24:54.449Z",
+      "subject": [
+        "water",
+        "beach",
+        "animals"
+      ]
+    },
+    {
+      "id": "fu9ifMuLsJCA3AxGKhsA",
+      "year": 2025,
+      "title": "Yes",
+      "typeOfWork": "Paper Picture",
+      "isPrint": true,
+      "show": "",
+      "medium": "paper and glue",
+      "status": "",
+      "printLink": "https://www.saatchiart.com/print/Collage-Yes/3001685/13969873/view",
+      "order": 1160,
+      "subject": [],
+      "createdAt": "2026-06-06T21:09:09.764Z",
+      "dimensions": {
+        "width": 24,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780780147870_Yes%202025%20Lucie%20Galvin%20paper%20and%20glue%2024x24%20in%20Large.webp?alt=media&token=04d7e6d3-6bee-40b7-93c5-5ebd978bd8af"
+    },
+    {
+      "id": "gUX63bXz111C22IJ40Pp",
+      "show": "",
+      "medium": "paper, glue, and frame",
+      "status": "",
+      "printLink": "",
+      "order": 220,
+      "year": 2024,
+      "title": "Recess",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "dimensions": {
+        "width": 7,
+        "unit": "in",
+        "height": 7
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780777424065_Recess%202024%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%20collage%207x7%20in%20Large.webp?alt=media&token=5c32065d-6047-440b-a435-3fdd5499269c",
+      "subject": [
+        "people"
+      ],
+      "createdAt": "2026-06-06T20:23:45.831Z"
+    },
+    {
+      "id": "h0BziXlRH5dE4HxrVAcl",
+      "createdAt": "2026-06-06T20:20:00.437Z",
+      "subject": [
+        "gardens",
+        "water",
+        "animals"
+      ],
+      "dimensions": {
+        "width": 76,
+        "unit": "in",
+        "height": 76
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383665076_optimized_Pond%202024%20Lucie%20Galvin%20paper%2C%20mylar%2C%20thread%2C%20tape%2C%20and%20glue%20collage%2072x72%20in%20Large.webp?alt=media&token=b900a8d1-8314-425e-b4b7-93df83cc3aa4",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2024,
+      "title": "Pond",
+      "order": 1050,
+      "medium": "paper, mylar, thread, tape, and glue",
+      "show": "",
+      "status": "",
+      "printLink": ""
+    },
+    {
+      "id": "hwGXKGXHmi0gHoKkpKeb",
+      "dimensions": {
+        "width": 16,
+        "unit": "in",
+        "height": 20
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780699043009_El%20Encanto%202022%20Lucie%20Galvin%20paper%2C%20tape%2C%20and%20glue%20collage%2020x16%20in%20Large.webp?alt=media&token=ebaeac30-8cb0-464f-95c4-d789312997f3",
+      "createdAt": "2026-06-05T22:37:24.625Z",
+      "subject": [
+        "gardens",
+        "water"
+      ],
+      "order": 650,
+      "medium": "paper, tape, and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "status": "",
+      "printLink": "https://www.saatchiart.com/print/Collage-El-Encanto/3001685/13961153/view",
+      "typeOfWork": "Paper Picture",
+      "isPrint": true,
+      "year": 2022,
+      "title": "El Encanto"
+    },
+    {
+      "id": "iAXGvUrxf4QszKCiu9h2",
+      "subject": [
+        "gardens"
+      ],
+      "createdAt": "2026-06-06T21:07:09.149Z",
+      "dimensions": {
+        "width": 24,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383672702_optimized_Wreath%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2024x24%20in%202%20Large.webp?alt=media&token=d99bdb6b-2db4-459b-bfd0-883b9d643d90",
+      "title": "Wreath",
+      "year": 2024,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "show": "",
+      "medium": "paper and glue",
+      "printLink": "",
+      "status": "",
+      "order": 860
+    },
+    {
+      "id": "iD0iDtATEMLb1XbMuImC",
+      "subject": [
+        "water",
+        "beach",
+        "animals"
+      ],
+      "createdAt": "2026-06-05T00:45:31.837Z",
+      "dimensions": {
+        "width": 20,
+        "unit": "in",
+        "height": 16
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685697519_Crystal%20Cove%202023%20Lucie%20Galvin%20paper%2C%20burlap%2C%20and%20glue%20collage%20%2016x20%20in%20Large.webp?alt=media&token=54e3933e-5dc1-47d8-89c2-39a031079340",
+      "title": "Crystal Cove",
+      "year": 2023,
+      "isPrint": true,
+      "typeOfWork": "Paper Picture",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, burlap, and glue",
+      "printLink": "https://www.saatchiart.com/print/Collage-Crystal-Cove/3001685/13930313/view",
+      "status": "",
+      "order": 530
+    },
+    {
+      "id": "iDSd2eWCo3FrSttxc2aZ",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, ribbon, tape, and glue",
+      "availability": "",
+      "status": "",
+      "printLink": "https://www.saatchiart.com/print/Collage-Kindergarten/3001685/13930459/view",
+      "order": 10,
+      "year": 2023,
+      "title": "Kindergarten",
+      "typeOfWork": "Paper Picture",
+      "isPrint": true,
+      "dimensions": {
+        "width": 18,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383679080_optimized_Kindergarten%202023%20Lucie%20Galvin%20paper%2C%20ribbon%2C%20and%20glue%20collage%2024x18%20in%20Large.webp?alt=media&token=0f9d7832-3708-4706-8985-9664269bed0f",
+      "subject": [
+        "gardens",
+        "water",
+        "animals"
+      ],
+      "createdAt": "2026-06-06T01:15:06.744Z",
+      "price": null
+    },
+    {
+      "id": "iuNj6erkI8amiOC3sjkb",
+      "price": null,
+      "subject": [
+        "gardens",
+        "people"
+      ],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383687026_optimized_IMG_4812.webp?alt=media&token=244853c7-74f0-4623-aac7-9493946211dd",
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 8
+      },
+      "isPrint": true,
+      "typeOfWork": "Paper Picture",
+      "title": "Villandry",
+      "year": 2024,
+      "order": 900,
+      "printLink": "https://www.saatchiart.com/print/Collage-Villandry/3001685/13930549/view",
+      "availability": "",
+      "show": "",
+      "medium": "paper, burlap, and glue"
+    },
+    {
+      "id": "jjkOPfbM5bhUgqHHu1Zd",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Fata Morgana",
+      "year": 2025,
+      "order": 480,
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper, mylar, and glue",
+      "createdAt": "2026-06-05T23:40:07.000Z",
+      "subject": [
+        "water",
+        "boats"
+      ],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383694240_optimized_Fata%20Morgana%202025%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20glue%2078x59.25%20in%20Large.webp?alt=media&token=b979785e-8a3e-4029-bd6c-27f0fae92050",
+      "dimensions": {
+        "width": 78,
+        "unit": "in",
+        "height": 59.25
+      }
+    },
+    {
+      "id": "k98yTbXZEv4m9ZCQh7dX",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2024,
+      "title": "Nue",
+      "order": 690,
+      "status": "",
+      "printLink": "",
+      "show": "",
+      "medium": "paper and glue",
+      "createdAt": "2026-06-06T20:09:15.046Z",
+      "subject": [
+        "gardens",
+        "people"
+      ],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780776594806_Nue%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%2024x36%20in%20Large.webp?alt=media&token=b19fbb27-3da0-40ba-85b6-dd8c8a5b5425",
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      }
+    },
+    {
+      "id": "kQqgazeykcMRabQk2Cip",
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 8
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383700505_optimized_Saturday%202024%20Lucie%20Galvin%20paper%20and%20glue%20collage%208x8%20in%20Large.webp?alt=media&token=ba8d8aab-64dc-414a-a583-2c7998b58943",
+      "subject": [
+        "animals"
+      ],
+      "createdAt": "2026-06-06T20:30:43.266Z",
+      "medium": "paper and glue",
+      "show": "",
+      "status": "",
+      "printLink": "",
+      "order": 950,
+      "year": 2024,
+      "title": "Saturday",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false
+    },
+    {
+      "id": "m2TOGWv2BiXmO8cuUAGd",
+      "status": "",
+      "printLink": "",
+      "show": "",
+      "medium": "paper and glue",
+      "order": 210,
+      "year": 2025,
+      "title": "Baile",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383705490_optimized_Baile%202025%20Lucie%20Galvin%20paper%20and%20glue%20collage%2052x62%20in%20Large.webp?alt=media&token=87090bdd-5e92-4561-8f33-704889e2bd5c",
+      "dimensions": {
+        "width": 62,
+        "unit": "in",
+        "height": 50
+      },
+      "subject": [
+        "people"
+      ],
+      "createdAt": "2026-06-04T04:06:52.046Z"
+    },
+    {
+      "id": "m4wj9BpGj9RAVpKQMKhD",
+      "dimensions": {
+        "width": 14,
+        "unit": "in",
+        "height": 11
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383709978_optimized_Kyoto%20%E7%B5%84%E5%AD%90%20Kumiko%202023%20Lucie%20Galvin%20paper%20and%20glue%20collage%2011x14%20in%20Large%202.webp?alt=media&token=ea2864c5-5e2e-4c44-884c-56161af23125",
+      "createdAt": "2026-06-06T01:12:04.549Z",
+      "subject": [],
+      "order": 1110,
+      "medium": "paper and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "printLink": "",
+      "status": "",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Kyoto 組子 Kumiko",
+      "year": 2023
+    },
+    {
+      "id": "mPPK4udskgjgkDiwR0my",
+      "status": "",
+      "printLink": "",
+      "medium": "paper and tape",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "order": 830,
+      "year": 2022,
+      "title": "Loch Ewe",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383714641_optimized_Loch%20Ewe%202022%20Lucie%20Galvin%20paper%20and%20tape%20collage%2012x18%20in%20Large.webp?alt=media&token=5e7a460a-52fa-433b-9e9f-c5f2948860ac",
+      "dimensions": {
+        "width": 18,
+        "unit": "in",
+        "height": 12
+      },
+      "subject": [
+        "water",
+        "beach"
+      ],
+      "createdAt": "2026-06-06T14:00:57.140Z"
+    },
+    {
+      "id": "mfAnuJ3y7V9astMDHuvj",
+      "subject": [
+        "water",
+        "boats"
+      ],
+      "createdAt": "2026-06-07T00:04:46.988Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383719215_optimized_Fractured%20Fairytale%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20ribbon%2C%20and%20glue%20collage%2036x24%20in%20Large.webp?alt=media&token=2e441a6d-d598-4645-bd5e-9d8eb3ed454c",
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      },
+      "title": "Fractured Fairytale",
+      "year": 2023,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper, mylar, ribbon, thread, and glue",
+      "order": 350
+    },
+    {
+      "id": "nK5yBZ2yto5kU32aanu6",
+      "subject": [
+        "gardens",
+        "animals"
+      ],
+      "createdAt": "2026-06-06T20:50:45.502Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780779043773_The%20Flutter%202026%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%2010x8%20in%20Large.webp?alt=media&token=accff4e9-f8b1-4f42-9f90-b98049c3c31d",
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 10
+      },
+      "title": "The Flutter",
+      "year": 2026,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "printLink": "",
+      "status": "",
+      "medium": "paper, glue, and frame",
+      "show": "",
+      "order": 970
+    },
+    {
+      "id": "nKaDP9CrVI64yjMn2VW7",
+      "dimensions": {
+        "width": 2,
+        "unit": "in",
+        "height": 24.5
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780776905358_Peek%202025%20Lucie%20Galvin%20paper%20and%20glue%20collage%2024.5%20x%202%20in.webp?alt=media&token=e04a1cd8-083b-4ae0-afe7-b0a8f98021a7",
+      "createdAt": "2026-06-06T20:15:06.323Z",
+      "subject": [
+        "water"
+      ],
+      "order": 430,
+      "show": "",
+      "medium": "paper and glue",
+      "printLink": "",
+      "status": "",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Peek",
+      "year": 2025
+    },
+    {
+      "id": "nhksLZ1I9GgOEEQaZvrJ",
+      "subject": [
+        "water",
+        "boats"
+      ],
+      "createdAt": "2026-06-06T20:55:14.142Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780779312624_To%20Catalina%202019%20Lucie%20Galvin%20paper%20and%20tape%20collage%2016x20%20in%20Large.webp?alt=media&token=efe3c646-9604-427d-98bf-6969c093fb60",
+      "dimensions": {
+        "width": 20,
+        "unit": "in",
+        "height": 16
+      },
+      "year": 2019,
+      "title": "To Catalina",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "status": "",
+      "printLink": "",
+      "medium": "paper and tape",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "order": 320
+    },
+    {
+      "id": "pxdBH2EISmKIF8lg7TCF",
+      "year": 2023,
+      "title": "Waikiki",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "status": "",
+      "printLink": "",
+      "medium": "paper, mylar, and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "order": 710,
+      "subject": [
+        "water",
+        "boats",
+        "beach"
+      ],
+      "createdAt": "2026-06-06T21:00:56.967Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780779655305_Waikiki%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20glue%20collage%2024x36%20in%20Large.webp?alt=media&token=e59e9227-fc86-46f0-83c4-24f5c732655d",
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      }
+    },
+    {
+      "id": "q79bkbsjjqmk8rbyeVSw",
+      "order": 330,
+      "status": "",
+      "printLink": "",
+      "show": "",
+      "medium": "paper and tape",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2020,
+      "title": "White Out",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780779891969_White%20Out%202020%20Lucie%20Galvin%20paper%20and%20tape%20collage%2020%C3%9716%20in%202%20Large.webp?alt=media&token=129014fe-929b-4c28-9d07-d3b46219d79e",
+      "dimensions": {
+        "width": 16,
+        "unit": "in",
+        "height": 20
+      },
+      "createdAt": "2026-06-06T21:04:53.530Z",
+      "subject": [
+        "water",
+        "boats"
+      ]
+    },
+    {
+      "id": "qEE2ugwUcoMMZNbxoyQN",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383729171_optimized_Bayside%20Drive%202022%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20glue%20collage%2012x12%20in.webp?alt=media&token=54439505-0326-4925-a40f-9093f6bc2e67",
+      "subject": [
+        "people"
+      ],
+      "createdAt": "2026-06-04T23:54:07.663Z",
+      "medium": "paper, mylar, and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "printLink": "",
+      "status": "",
+      "order": 160,
+      "title": "Bayside Drive",
+      "year": 2022,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture"
+    },
+    {
+      "id": "qZEq2YTgedGEoKoRvXCz",
+      "subject": [
+        "boats"
+      ],
+      "createdAt": "2026-06-05T00:27:21.888Z",
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780779984017_With%20You%202024%20Lucie%20Galvin%20paper%2C%20cord%2C%20and%20glue%20collage%2024x36%20in%202%20Large.webp?alt=media&token=ea3c7a7a-a4ed-45f2-b56f-cd831123d19f",
+      "title": "With You",
+      "year": 2024,
+      "isPrint": true,
+      "typeOfWork": "Paper Picture",
+      "show": "",
+      "medium": "paper, cord, and glue",
+      "printLink": "https://www.saatchiart.com/print/Collage-By-You-Foxtrot-Oscar/3001685/13934035/view",
+      "status": "",
+      "order": 400
+    },
+    {
+      "id": "qd4fGx84ApEip5jJ5heF",
+      "title": "Goblin",
+      "year": 2023,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "printLink": "",
+      "status": "",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, mylar, and tape",
+      "order": 990,
+      "subject": [],
+      "createdAt": "2026-06-06T00:23:32.961Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383734782_optimized_Goblin%202023%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20tape%208x8%20in%20Large.webp?alt=media&token=d6b115b8-fd24-4f6e-87e3-fdbb17b17051",
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 8
+      }
+    },
+    {
+      "id": "qeD94gqsNRKGQSdaU6DI",
+      "order": 960,
+      "status": "",
+      "printLink": "",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "medium": "paper, glue, and frame",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "year": 2023,
+      "title": "Magpies",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383738994_optimized_Magpies%202023%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%20collage%2016.5x13.5%20in%20Large.webp?alt=media&token=143b26b2-2948-44b5-8699-eb21f4723468",
+      "dimensions": {
+        "width": 13.5,
+        "unit": "in",
+        "height": 16.5
+      },
+      "createdAt": "2026-06-06T15:26:14.165Z",
+      "subject": [
+        "animals"
+      ]
+    },
+    {
+      "id": "qv7MmwQ5j8Syf0OBgES6",
+      "title": "Vueling",
+      "year": 2023,
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "printLink": "",
+      "status": "",
+      "medium": "paper and glue",
+      "show": "36 Paper Pictures, Newport Beach - 2024",
+      "order": 700,
+      "subject": [],
+      "createdAt": "2026-06-06T21:00:08.147Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780779606128_Vueling%202023%20Lucie%20Galvin%20paper%20and%20glue%20collage%2010x8%20in%20Large.webp?alt=media&token=e023ba64-abc1-45c8-90a0-dc1e34aa7c99",
+      "dimensions": {
+        "width": 8,
+        "unit": "in",
+        "height": 10
+      }
+    },
+    {
+      "id": "uDGwLujm6K9kbTrEDrwr",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Lane Lines",
+      "year": 2024,
+      "order": 230,
+      "show": "Art That's Small at City Hall, Laguna Beach - 2024",
+      "medium": "paper, salvaged frame, and glue",
+      "printLink": "",
+      "status": "",
+      "createdAt": "2026-06-06T13:47:21.390Z",
+      "subject": [
+        "water",
+        "people"
+      ],
+      "dimensions": {
+        "width": 5.5,
+        "unit": "in",
+        "height": 5.5
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780753639974_Lane%20Lines%202024%20Lucie%20Galvin%20paper%2C%20salvaged%20frame%2C%20and%20glue%20collage%205.5x5.5%20in.webp?alt=media&token=1a2da7f1-c704-4572-b664-54bed23b2841"
+    },
+    {
+      "id": "uGOKPig83EqClyPUi6Zd",
+      "show": "",
+      "medium": "paper, thread, and glue",
+      "printLink": "https://www.saatchiart.com/print/Collage-Sea-Star/3001685/13882683/view",
+      "status": "",
+      "order": 550,
+      "title": "Sea Star",
+      "year": 2023,
+      "isPrint": true,
+      "typeOfWork": "Paper Picture",
+      "dimensions": {
+        "width": 12,
+        "unit": "in",
+        "height": 12
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383745816_optimized_Sea%20Star%202023%20Lucie%20Galvin%20paper%2C%20thread%2C%20and%20glue%20collage%20Large.webp?alt=media&token=6bb401c6-465c-4696-a636-f247a9a7d13b",
+      "subject": [
+        "water",
+        "beach",
+        "animals"
+      ],
+      "createdAt": "2026-06-06T20:37:16.478Z"
+    },
+    {
+      "id": "vLhHOKyLT0oGybXjxsQ9",
+      "order": 870,
+      "show": "",
+      "medium": "paper, glue, and frame",
+      "printLink": "",
+      "status": "",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Daisy Chain",
+      "year": 2025,
+      "dimensions": {
+        "width": 4.5,
+        "unit": "in",
+        "height": 4.5
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685715117_Daisy%20Chain%202025%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%20collage%204.5x4.5%20in%20Large.webp?alt=media&token=ae1fa877-2523-418d-a91d-0ccf0301703f",
+      "createdAt": "2026-06-05T16:40:54.962Z",
+      "subject": [
+        "gardens",
+        "people"
+      ]
+    },
+    {
+      "id": "wMK44PearWrkuiqzfwjj",
+      "createdAt": "2026-06-04T23:51:22.325Z",
+      "subject": [
+        "water",
+        "boats"
+      ],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383750793_optimized_Barque%202024%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%20collage%2013.5x40%20in%203.webp?alt=media&token=a8786645-3504-4584-a4d7-86db7dc6ac0a",
+      "dimensions": {
+        "width": 40,
+        "unit": "in",
+        "height": 13.5
+      },
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Barque",
+      "year": 2024,
+      "order": 520,
+      "printLink": "",
+      "status": "",
+      "medium": "paper, glue, and frame",
+      "show": ""
+    },
+    {
+      "id": "xC8Z5tHOmF0xAD3hcyFN",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Irish Rose",
+      "year": 2024,
+      "order": 810,
+      "show": "",
+      "medium": "paper, glue, and frame",
+      "printLink": "",
+      "status": "",
+      "createdAt": "2026-06-04T04:10:28.349Z",
+      "subject": [
+        "gardens",
+        "people"
+      ],
+      "dimensions": {
+        "width": 6.5,
+        "unit": "in",
+        "height": 6.5
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383755647_optimized_Irish%20Rose%202024%20Lucie%20Galvin%20paper%2C%20glue%2C%20and%20frame%20collage%206.5x6.5%20in%20Large.webp?alt=media&token=64fcdff2-566a-48b1-b62c-be1fede07136"
+    },
+    {
+      "id": "xDDu24tGOaKXQRJMSfjP",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Jeffrey is University is Eastbluff is Ford is Bonita Canyon is Culver is Orchard Hills",
+      "year": 2024,
+      "order": 610,
+      "printLink": "",
+      "status": "",
+      "show": "",
+      "medium": "paper, mylar, ribbon, and glue",
+      "createdAt": "2026-06-04T04:11:51.671Z",
+      "subject": [
+        "people"
+      ],
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383760157_optimized_Jeffrey%20is%20University%20is%20Eastbluff%20is%20Ford%20is%20Bonita%20Canyon%20is%20Culver%20is%20Orchard%20Hills%202024%20Lucie%20Galvin%20paper%2C%20mylar%2C%20ribbon%2C%20and%20glue%2020x16%20in%20Large.webp?alt=media&token=c75ab760-1d3a-46cc-8f97-34c4bafe5226",
+      "dimensions": {
+        "width": 16,
+        "unit": "in",
+        "height": 20
+      }
+    },
+    {
+      "id": "ySage66X2xbMIlXfAuuq",
+      "show": "",
+      "medium": "paper, mylar, tape, and glue",
+      "availability": "",
+      "status": "",
+      "printLink": "",
+      "order": 370,
+      "year": 2024,
+      "title": "Carbon Sails",
+      "typeOfWork": "Paper Picture",
+      "isPrint": false,
+      "dimensions": {
+        "width": 36,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780685626095_Carbon%20Sails%202024%20%20Lucie%20Galvin%20paper%2C%20mylar%2C%20and%20tape%20collage%2024x36%20in%202%20Large.webp?alt=media&token=252dd822-11f9-4c4b-bb58-a7700855bed6",
+      "subject": [
+        "water",
+        "boats",
+        "beach"
+      ],
+      "price": null,
+      "createdAt": "2026-06-05T00:32:39.992Z"
+    },
+    {
+      "id": "yx2hgwjprkJhF3OmK9fW",
+      "isPrint": false,
+      "typeOfWork": "Paper Picture",
+      "title": "Sasaengs 사생팬",
+      "year": 2025,
+      "order": 1000,
+      "medium": "paper and glue",
+      "show": "",
+      "printLink": "",
+      "status": "",
+      "createdAt": "2026-06-06T20:29:51.420Z",
+      "subject": [
+        "people"
+      ],
+      "dimensions": {
+        "width": 18,
+        "unit": "in",
+        "height": 24
+      },
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1781383765142_optimized_Sasaengs%20%E1%84%89%E1%85%A1%E1%84%89%E1%85%A2%E1%86%BC%E1%84%91%E1%85%A2%E1%86%AB%202025%20Lucie%20Galvin%20paper%20and%20glue%20collage%2024x18%20in%20Large.webp?alt=media&token=ad182604-b7b2-4ce8-8578-1f00b0b2c186"
+    }
+  ],
+  "exhibitions": [
+    {
+      "id": "DqTHcYcWUymejeSsR05E",
+      "venue": "University of California at Irvine Chao Family Comprehensive Cancer Center",
+      "title": "Permanent Installation of Public Art",
+      "dates": "July 2024",
+      "description": "' This is the nation's first all-electric, carbon-neutral hospital. Its art committee has chosen works in all media, including work celebrating the flora and fauna of our region, its marshes, chaparral, beaches, and parkland.....highlighting the diversity of Southern California, our cultural heritage, and activities promoting health and wellness. Art there will hopefully provide inspiration and comfort to patients and visitors! The medical complex overlooks the San Joaquin Marsh Reserve and features nature trails to enhance the health and well-being of patients and visitors alike.'",
+      "image": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2Fexhibition_1780527756150_IMG_2159.jpeg?alt=media&token=2b2d6ad2-96cc-4b40-8c4d-cb994792ab47",
+      "order": 2,
+      "city": "Irvine, California"
+    },
+    {
+      "id": "coL7ddMc2DJ7tkutPJI8",
+      "venue": "Coastal Corridor Alliance",
+      "dates": "August 2025",
+      "title": "Arts in California Parks",
+      "description": "Guest Artist. Communities of The Corridor Group Mosaic.",
+      "image": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2Fexhibition_1780528085994_IMG_3776.jpeg?alt=media&token=c83f1933-28fd-4f6a-8db9-c8e0b38a9c5f",
+      "order": 3,
+      "city": "Costa Mesa, California"
+    },
+    {
+      "id": "featured",
+      "title": "36 Paper Pictures: Washi, Scraps, and Souvenirs",
+      "description": "Lucie Galvin was featured by the Newport Beach Arts Commission in a solo exhibition at the Central Library gallery. The show highlighted her Paper Pictures to date -  intricate tactile collages recently informed by studying papermaking in Japan and South Korea. The exhibition showcased Lucie's unique sustainable palette of papers of organic plant fibers (such as mulberry, banana, and hemp) as well as ubiquitous cardstock, upcycled greeting cards, gift wrap, grocery bags, pizza boxes, and more. Featuring pieces deeply tied to local culture like 'Goldenrod Footbridge' the exhibition explored the interplay of texture and memory, transforming everyday scraps into sophisticated low-relief structural narratives.",
+      "image": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2Fexhibition_1780516745901_IMG_0569.jpeg?alt=media&token=76fc379c-de48-4171-8c81-b4a390766ad6",
+      "dates": "December 18 - April 6, 2024",
+      "venue": "Newport Beach Public Library",
+      "city": "Newport Beach, CA",
+      "shortTitle": "36 Paper Pictures, Newport Beach - 2024"
+    },
+    {
+      "id": "jjdt7nLkK8GpmyPu8zjs",
+      "title": "Art That's Small at City Hall",
+      "image": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2Fexhibition_1780527063277_IMG_2938.jpeg?alt=media&token=47f4308b-b9ca-45e2-809a-73b2fa42443e",
+      "description": "Group Show",
+      "dates": "March 9 - April 19, 2024",
+      "venue": "Laguna Beach City Hall",
+      "city": "Laguna Beach, California",
+      "order": 1,
+      "shortTitle": "Art That's Small at City Hall, Laguna Beach - 2024"
+    }
+  ],
+  "settings": {
+    "homepage": {
+      "heroSlides": [
+        {
+          "link": "/artworks",
+          "title": "Kindergarten",
+          "image": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780754297922_hero1_Kindergarten%202023%20Lucie%20Galvin%20paper%2C%20ribbon%2C%20and%20glue%20collage%2024x18%20in%202%20Large.webp?alt=media&token=b5876198-de14-4d57-b359-1d7bc749c322",
+          "ctaText": "Explore Paper Pictures",
+          "mode": "custom",
+          "subtitle": "2023"
+        },
+        {
+          "subtitle": "2023",
+          "mode": "custom",
+          "ctaText": "Explore Paper Pictures",
+          "image": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780505895539_hero2_IMG_1450.jpeg?alt=media&token=e27835d1-8dda-488e-86cb-8d889724ac86",
+          "title": "Sea Star",
+          "link": "/artworks"
+        },
+        {
+          "subtitle": "2024",
+          "mode": "custom",
+          "ctaText": "Explore Paper Pictures",
+          "image": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780709143894_hero3_With%20You%202024%20Lucie%20Galvin%20paper%2C%20cord%2C%20and%20glue%20collage%2024x36%20in.webp?alt=media&token=429cb9bd-be4d-427d-931f-44f5187a9e3c",
+          "link": "/artworks",
+          "title": "With You"
+        },
+        {
+          "mode": "custom",
+          "image": "https://firebasestorage.googleapis.com/v0/b/lucie-portfolio-art.firebasestorage.app/o/artwork%2F1780508077451_hero4_IMG_1815.jpeg?alt=media&token=cd179382-df4d-4edb-b2cd-21d1b16fa955",
+          "link": "/artworks",
+          "title": "Lane Lines",
+          "ctaText": "Explore Paper Pictures",
+          "subtitle": "2024"
+        }
+      ]
+    }
+  }
+}

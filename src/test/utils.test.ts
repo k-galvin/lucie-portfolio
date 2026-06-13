@@ -190,15 +190,27 @@ describe('getOptimizedImageUrl', () => {
   it('should map Firebase Storage URL to ImageKit URL and apply format auto', () => {
     import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT = 'https://ik.imagekit.io/test-id/';
     const firebaseUrl = 'https://firebasestorage.googleapis.com/v0/b/bucket/o/artwork%2Fart.webp?alt=media&token=123';
-    const expected = 'https://ik.imagekit.io/test-id/v0/b/bucket/o/artwork%2Fart.webp?alt=media&token=123&tr=f-auto';
+    const expected = 'https://ik.imagekit.io/test-id/v0/b/bucket/o/artwork%2Fart.webp?alt=media&tr=f-auto';
     expect(getOptimizedImageUrl(firebaseUrl)).toBe(expected);
   });
 
   it('should apply custom width transformation when width parameter is provided', () => {
     import.meta.env.PUBLIC_IMAGEKIT_URL_ENDPOINT = 'https://ik.imagekit.io/test-id';
     const firebaseUrl = 'https://firebasestorage.googleapis.com/v0/b/bucket/o/artwork%2Fart.webp?alt=media&token=123';
-    const expected = 'https://ik.imagekit.io/test-id/v0/b/bucket/o/artwork%2Fart.webp?alt=media&token=123&tr=f-auto,w-800';
+    const expected = 'https://ik.imagekit.io/test-id/v0/b/bucket/o/artwork%2Fart.webp?alt=media&tr=f-auto,w-800';
     expect(getOptimizedImageUrl(firebaseUrl, 800)).toBe(expected);
+  });
+
+  it('should map Cloudinary URL and apply auto format and quality', () => {
+    const cloudinaryUrl = 'https://res.cloudinary.com/demo/image/upload/v12345/artwork/my-art.png';
+    const expected = 'https://res.cloudinary.com/demo/image/upload/f_auto,q_auto/v12345/artwork/my-art.png';
+    expect(getOptimizedImageUrl(cloudinaryUrl)).toBe(expected);
+  });
+
+  it('should map Cloudinary URL and apply custom width when provided', () => {
+    const cloudinaryUrl = 'https://res.cloudinary.com/demo/image/upload/v12345/artwork/my-art.png';
+    const expected = 'https://res.cloudinary.com/demo/image/upload/f_auto,q_auto,c_limit,w_800/v12345/artwork/my-art.png';
+    expect(getOptimizedImageUrl(cloudinaryUrl, 800)).toBe(expected);
   });
 });
 
