@@ -194,6 +194,20 @@ import Layout from '../layouts/Layout.astro';
     const slideshow = document.getElementById('hero-slideshow');
     if (!slideshow) return;
 
+    // Try loading from localStorage cache first for instant render
+    let cachedData = null;
+    try {
+      const cached = localStorage.getItem('cached_hero_slides');
+      if (cached) {
+        cachedData = JSON.parse(cached);
+        if (Array.isArray(cachedData) && cachedData.length > 0) {
+          renderSlides(slideshow, cachedData);
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load cached hero slides:', e);
+    }
+
     try {
       let heroSlidesConfig = [];
       let artworksList: any[] = [];
@@ -235,35 +249,35 @@ import Layout from '../layouts/Layout.astro';
 
       let slidesData = [];
 
-        // 5. Build slide details based on Artwork vs. Custom mode
-        heroSlidesConfig.forEach((slide: any) => {
-          if (slide.mode === 'artwork') {
-            const artId = slide.artworkId;
-            const artIndex = artworksList.findIndex(a => a.id === artId);
-            if (artIndex !== -1) {
-              const artwork = artworksList[artIndex];
-              const pageNum = artIndex + 1;
-              slidesData.push({
-                image: artwork.imageUrl,
-                title: artwork.title,
-                subtitle: `${artwork.year}`,
-                link: `/artworks?page=${pageNum}`,
-                ctaText: 'Explore Paper Pictures'
-              });
-            }
-          } else {
-            // Custom mode (or legacy slide without mode)
-            if (slide.image) {
-              slidesData.push({
-                image: slide.image,
-                title: slide.title || '',
-                subtitle: slide.subtitle || '',
-                link: slide.link || '/artworks',
-                ctaText: slide.ctaText || 'Explore Paper Pictures'
-              });
-            }
+      // Build slide details based on Artwork vs. Custom mode
+      heroSlidesConfig.forEach((slide: any) => {
+        if (slide.mode === 'artwork') {
+          const artId = slide.artworkId;
+          const artIndex = artworksList.findIndex(a => a.id === artId);
+          if (artIndex !== -1) {
+            const artwork = artworksList[artIndex];
+            const pageNum = artIndex + 1;
+            slidesData.push({
+              image: artwork.imageUrl,
+              title: artwork.title,
+              subtitle: `${artwork.year}`,
+              link: `/artworks?page=${pageNum}`,
+              ctaText: 'Explore Paper Pictures'
+            });
           }
-        });
+        } else {
+          // Custom mode (or legacy slide without mode)
+          if (slide.image) {
+            slidesData.push({
+              image: slide.image,
+              title: slide.title || '',
+              subtitle: slide.subtitle || '',
+              link: slide.link || '/artworks',
+              ctaText: slide.ctaText || 'Explore Paper Pictures'
+            });
+          }
+        }
+      });
 
       if (slidesData.length === 0) {
         // Fallback if no settings yet or resolution failed
@@ -299,60 +313,75 @@ import Layout from '../layouts/Layout.astro';
         ];
       }
 
-      // Build Slides HTML
-      const heroWidth = window.innerWidth <= 768 ? 1000 : 1600;
-      slideshow.innerHTML = slidesData.map((slide: any, index: number) => `
-        <div class="slide ${index === 0 ? 'active' : ''}" data-index="${index}">
-          <img 
-            src="${getOptimizedImageUrl(slide.image, heroWidth)}" 
-            alt="${slide.title}" 
-            class="slide-image" 
-            loading="${index === 0 ? 'eager' : 'lazy'}"
-            ${index === 0 ? 'fetchpriority="high"' : ''}
-            onload="this.classList.add('loaded')"
-          />
-          <div class="slide-overlay">
-            <div class="slide-content">
-              <h2 class="slide-title">${slide.title}</h2>
-              <p class="slide-subtitle">${slide.subtitle}</p>
-              <a href="${slide.link}" class="slide-cta">
-                <span>${slide.ctaText}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cta-arrow">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      `).join('') + `
-        <div class="slider-controls">
-          ${slidesData.map((_: any, index: number) => `
-            <button class="dot ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="Go to slide ${index + 1}"></button>
-          `).join('')}
-        </div>
-      `;
-
-      // Fallback check for cached slide images
-      const imgs = slideshow.querySelectorAll('.slide-image');
-      imgs.forEach(img => {
-        if ((img as HTMLImageElement).complete) {
-          img.classList.add('loaded');
-        }
-      });
-
-      startSliderLogic(slideshow);
+      // Check if slides have changed from cached version. If so, update cache and re-render.
+      const slidesString = JSON.stringify(slidesData);
+      const cachedString = localStorage.getItem('cached_hero_slides');
+      
+      if (slidesString !== cachedString || !cachedData) {
+        localStorage.setItem('cached_hero_slides', slidesString);
+        renderSlides(slideshow, slidesData);
+      }
 
     } catch (err) {
       console.error("Hero slider load failed:", err);
     }
   }
 
+  function renderSlides(slideshow: HTMLElement, slidesData: any[]) {
+    const heroWidth = window.innerWidth <= 768 ? 1000 : 1600;
+    slideshow.innerHTML = slidesData.map((slide: any, index: number) => `
+      <div class="slide ${index === 0 ? 'active' : ''}" data-index="${index}">
+        <img 
+          src="${getOptimizedImageUrl(slide.image, heroWidth)}" 
+          alt="${slide.title}" 
+          class="slide-image" 
+          loading="${index === 0 ? 'eager' : 'lazy'}"
+          ${index === 0 ? 'fetchpriority="high"' : ''}
+          onload="this.classList.add('loaded')"
+        />
+        <div class="slide-overlay">
+          <div class="slide-content">
+            <h2 class="slide-title">${slide.title}</h2>
+            <p class="slide-subtitle">${slide.subtitle}</p>
+            <a href="${slide.link}" class="slide-cta">
+              <span>${slide.ctaText}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cta-arrow">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    `).join('') + `
+      <div class="slider-controls">
+        ${slidesData.map((_: any, index: number) => `
+          <button class="dot ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="Go to slide ${index + 1}"></button>
+        `).join('')}
+      </div>
+    `;
+
+    // Fallback check for cached slide images
+    const imgs = slideshow.querySelectorAll('.slide-image');
+    imgs.forEach(img => {
+      if ((img as HTMLImageElement).complete) {
+        img.classList.add('loaded');
+      }
+    });
+
+    startSliderLogic(slideshow);
+  }
+
   let activeSlideInterval: number | undefined;
 
   function startSliderLogic(slideshow: HTMLElement) {
-    const slides = document.querySelectorAll('.slide');
-    const dots = document.querySelectorAll('.dot');
+    // Clean up previous event listeners and intervals if they were set up on this container
+    if ((slideshow as any)._cleanupSlider) {
+      (slideshow as any)._cleanupSlider();
+    }
+
+    const slides = slideshow.querySelectorAll('.slide');
+    const dots = slideshow.querySelectorAll('.dot');
     let currentSlide = 0;
 
     const showSlide = (index: number) => {
@@ -369,17 +398,22 @@ import Layout from '../layouts/Layout.astro';
     };
 
     const nextSlide = () => {
+      if (slides.length === 0) return;
       const nextIndex = (currentSlide + 1) % slides.length;
       showSlide(nextIndex);
     };
 
     const startAutoplay = () => {
       if (activeSlideInterval) clearInterval(activeSlideInterval);
-      activeSlideInterval = window.setInterval(nextSlide, 4000);
+      if (slides.length > 0) {
+        activeSlideInterval = window.setInterval(nextSlide, 4000);
+      }
     };
 
+    // Track event listeners to remove them on cleanup
+    const dotListeners: { element: HTMLElement, handler: EventListener }[] = [];
     dots.forEach((dot) => {
-      dot.addEventListener('click', (e) => {
+      const handler = (e: Event) => {
         const index = parseInt((e.currentTarget as HTMLButtonElement).dataset.index || '0');
         
         slideshow.classList.add('instant-transition');
@@ -389,11 +423,13 @@ import Layout from '../layouts/Layout.astro';
         setTimeout(() => {
           slideshow.classList.remove('instant-transition');
         }, 50);
-      });
+      };
+      dot.addEventListener('click', handler);
+      dotListeners.push({ element: dot as HTMLElement, handler });
     });
 
     // Tap/Click to navigate to the next slide instantly
-    slideshow.addEventListener('click', (e) => {
+    const onSlideshowClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       
       // Ignore click if user clicked dots, CTA buttons or links
@@ -406,6 +442,7 @@ import Layout from '../layouts/Layout.astro';
         return;
       }
 
+      if (slides.length === 0) return;
       const nextIndex = (currentSlide + 1) % slides.length;
 
       slideshow.classList.add('instant-transition');
@@ -415,7 +452,21 @@ import Layout from '../layouts/Layout.astro';
       setTimeout(() => {
         slideshow.classList.remove('instant-transition');
       }, 50);
-    });
+    };
+
+    slideshow.addEventListener('click', onSlideshowClick);
+
+    // Save cleanup callback on the slideshow element
+    (slideshow as any)._cleanupSlider = () => {
+      if (activeSlideInterval) {
+        clearInterval(activeSlideInterval);
+        activeSlideInterval = undefined;
+      }
+      slideshow.removeEventListener('click', onSlideshowClick);
+      dotListeners.forEach(({ element, handler }) => {
+        element.removeEventListener('click', handler);
+      });
+    };
 
     startAutoplay();
   }

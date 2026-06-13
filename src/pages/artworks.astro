@@ -1127,25 +1127,86 @@ import Layout from '../layouts/Layout.astro';
     }
 
     // Load live content from Firestore database
+    function populateFilters(artworksList: any[]) {
+      const liveYears = new Set<string>();
+      const liveShows = new Set<string>();
+
+      artworksList.forEach((artwork) => {
+        const year = artwork.year || 2026;
+        const show = artwork.show || '';
+        liveYears.add(year.toString());
+        if (show) liveShows.add(show);
+      });
+
+      if (selectYear) {
+        const currentSelected = selectYear.value;
+        selectYear.innerHTML = '<option value="all">All</option>';
+        Array.from(liveYears).sort((a, b) => parseInt(b) - parseInt(a)).forEach(y => {
+          const opt = document.createElement('option');
+          opt.value = y;
+          opt.textContent = y;
+          selectYear.appendChild(opt);
+        });
+        if (Array.from(liveYears).includes(currentSelected)) {
+          selectYear.value = currentSelected;
+        }
+      }
+
+      if (selectShow) {
+        const currentSelected = selectShow.value;
+        selectShow.innerHTML = '<option value="all">All</option>';
+        Array.from(liveShows).sort().forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s;
+          opt.textContent = s;
+          selectShow.appendChild(opt);
+        });
+        if (Array.from(liveShows).includes(currentSelected)) {
+          selectShow.value = currentSelected;
+        }
+      }
+    }
+
+    // Load live content from Firestore database
     async function loadLiveArtworks() {
       const wrapper = displayContainer?.parentElement;
 
-      if (displayContainer) {
-        displayContainer.innerHTML = '';
+      // Try loading from localStorage cache first
+      let cachedLoaded = false;
+      try {
+        const cached = localStorage.getItem('cached_artworks');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            allArtworks = parsed;
+            isLoading = false;
+            populateFilters(allArtworks);
+            applyFilters();
+            cachedLoaded = true;
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load cached artworks:', e);
       }
 
-      // Clear any pre-existing loading state
-      const oldLoader = document.getElementById('loading-state');
-      if (oldLoader) oldLoader.remove();
+      if (!cachedLoaded) {
+        if (displayContainer) {
+          displayContainer.innerHTML = '';
+        }
 
-      // Insert single spinner inside wrapper to center it
-      if (wrapper && !document.getElementById('loading-state')) {
-        wrapper.insertAdjacentHTML('afterbegin', `
-          <div id="loading-state" class="loading-state">
-            <div class="loading-spinner"></div>
-            <p class="loading-text">Loading Gallery</p>
-          </div>
-        `);
+        // Clear any pre-existing loading state
+        const oldLoader = document.getElementById('loading-state');
+        if (oldLoader) oldLoader.remove();
+
+        // Insert single spinner inside wrapper to center it
+        if (wrapper && !document.getElementById('loading-state')) {
+          wrapper.insertAdjacentHTML('afterbegin', `
+            <div id="loading-state" class="loading-state">
+              <div class="loading-spinner"></div>
+              <p class="loading-text">Loading Gallery</p>
+            </div>
+          `);
+        }
       }
 
       try {
@@ -1167,17 +1228,10 @@ import Layout from '../layouts/Layout.astro';
         document.getElementById('loading-state')?.remove();
 
         if (!querySnapshot.empty) {
-          const liveYears = new Set<string>();
-          const liveShows = new Set<string>();
           const tempArtworks: any[] = [];
 
           querySnapshot.forEach((docSnap) => {
             const data = docSnap.data();
-            const year = data.year || 2026;
-            const show = data.show || '';
-            liveYears.add(year.toString());
-            if (show) liveShows.add(show);
-
             tempArtworks.push({
               ...data,
               id: docSnap.id,
@@ -1188,37 +1242,34 @@ import Layout from '../layouts/Layout.astro';
 
           // Sort in-memory based on stored sortBy preference
           sortArtworks(tempArtworks, sortBy);
-          allArtworks = tempArtworks;
 
-          // Populate filters dynamically and clear previous options to avoid duplicates on router transition
-          if (selectYear) {
-            selectYear.innerHTML = '<option value="all">All</option>';
-            Array.from(liveYears).sort((a, b) => parseInt(b) - parseInt(a)).forEach(y => {
-              const opt = document.createElement('option');
-              opt.value = y;
-              opt.textContent = y;
-              selectYear.appendChild(opt);
-            });
-          }
-          if (selectShow) {
-            selectShow.innerHTML = '<option value="all">All</option>';
-            Array.from(liveShows).sort().forEach(s => {
-              const opt = document.createElement('option');
-              opt.value = s;
-              opt.textContent = s;
-              selectShow.appendChild(opt);
-            });
+          // Check if data changed
+          const artworksString = JSON.stringify(tempArtworks);
+          const cachedString = localStorage.getItem('cached_artworks');
+
+          if (artworksString !== cachedString || !cachedLoaded) {
+            localStorage.setItem('cached_artworks', artworksString);
+            allArtworks = tempArtworks;
+            populateFilters(allArtworks);
+            
+            isLoading = false;
+            applyFilters();
           }
 
         } else {
+          allArtworks = [];
+          localStorage.removeItem('cached_artworks');
+          if (displayContainer) displayContainer.innerHTML = '';
           emptyState?.classList.remove('hidden');
         }
       } catch (err) {
         console.warn('Live artworks client loading failed.', err);
-        emptyState?.classList.remove('hidden');
+        if (!cachedLoaded) {
+          emptyState?.classList.remove('hidden');
+        }
       } finally {
         isLoading = false;
-        applyFilters();
+        updateActiveFilters();
       }
     }
 

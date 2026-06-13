@@ -35,6 +35,54 @@ import Layout from '../layouts/Layout.astro';
 
   let loaded = false;
 
+  function renderExhibitions(listContainer: HTMLElement, exhibitions: Exhibition[]) {
+    listContainer.innerHTML = '';
+    if (exhibitions.length > 0) {
+      exhibitions.forEach((exh, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'exh-list-item';
+
+        const defaultImg = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200&auto=format&fit=crop';
+        const imgSrc = getOptimizedImageUrl(exh.image || defaultImg, 1000);
+
+        itemDiv.innerHTML = `
+          <div class="exh-item-image-wrapper">
+            <img 
+              src="${imgSrc}"
+              alt="${exh.title || 'Exhibition'}" 
+              class="exh-item-image" 
+              loading="${index === 0 ? 'eager' : 'lazy'}"
+              ${index === 0 ? 'fetchpriority="high"' : ''}
+            />
+          </div>
+          <div class="exh-item-details">
+            <h2 class="exh-item-title">${exh.title || 'Untitled Exhibition'}</h2>
+            <p class="exh-item-dates">${exh.dates || ''}</p>
+            <p class="exh-item-location">
+              <strong>${exh.venue || ''}</strong>${(exh.venue && exh.city) ? ' — ' : ''}<span>${exh.city || ''}</span>
+            </p>
+          </div>
+          ${exh.description ? `<p class="exh-item-description">${exh.description}</p>` : ''}
+        `;
+        listContainer.appendChild(itemDiv);
+
+        // Programmatic load listener to prevent cached race condition
+        const img = itemDiv.querySelector('.exh-item-image') as HTMLImageElement;
+        if (img) {
+          if (img.complete) {
+            img.classList.add('loaded');
+          } else {
+            img.addEventListener('load', () => {
+              img.classList.add('loaded');
+            });
+          }
+        }
+      });
+    } else {
+      listContainer.innerHTML = '<p style="text-align: center; color: var(--color-text-muted); padding: 3rem 0;">No exhibitions or events listed at the moment.</p>';
+    }
+  }
+
   async function loadLiveExhibitions() {
     const pageContainer = document.getElementById('exh-page-container');
     if (!pageContainer) {
@@ -49,7 +97,22 @@ import Layout from '../layouts/Layout.astro';
     const listContainer = document.getElementById('exh-list-container');
 
     if (!listContainer) return;
-    listContainer.innerHTML = '';
+
+    // Try loading from localStorage cache first
+    let cachedData = null;
+    try {
+      const cached = localStorage.getItem('cached_exhibitions');
+      if (cached) {
+        cachedData = JSON.parse(cached);
+        if (Array.isArray(cachedData) && cachedData.length > 0) {
+          renderExhibitions(listContainer, cachedData);
+          loadingPanel?.classList.add('hidden');
+          pageContainer?.classList.remove('hidden');
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load cached exhibitions:', e);
+    }
 
     try {
       const querySnapshot = await getDocs(collection(db, 'exhibitions'));
@@ -72,49 +135,12 @@ import Layout from '../layouts/Layout.astro';
       // Sort by order descending (newest/highest order at the top)
       exhibitions.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
 
-      if (exhibitions.length > 0) {
-        exhibitions.forEach((exh, index) => {
-          const itemDiv = document.createElement('div');
-          itemDiv.className = 'exh-list-item';
+      const exhibitionsString = JSON.stringify(exhibitions);
+      const cachedString = localStorage.getItem('cached_exhibitions');
 
-          const defaultImg = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200&auto=format&fit=crop';
-          const imgSrc = getOptimizedImageUrl(exh.image || defaultImg, 1000);
-
-          itemDiv.innerHTML = `
-            <div class="exh-item-image-wrapper">
-              <img 
-                src="${imgSrc}"
-                alt="${exh.title || 'Exhibition'}" 
-                class="exh-item-image" 
-                loading="${index === 0 ? 'eager' : 'lazy'}"
-                ${index === 0 ? 'fetchpriority="high"' : ''}
-              />
-            </div>
-            <div class="exh-item-details">
-              <h2 class="exh-item-title">${exh.title || 'Untitled Exhibition'}</h2>
-              <p class="exh-item-dates">${exh.dates || ''}</p>
-              <p class="exh-item-location">
-                <strong>${exh.venue || ''}</strong>${(exh.venue && exh.city) ? ' — ' : ''}<span>${exh.city || ''}</span>
-              </p>
-            </div>
-            ${exh.description ? `<p class="exh-item-description">${exh.description}</p>` : ''}
-          `;
-          listContainer.appendChild(itemDiv);
-
-          // Programmatic load listener to prevent cached race condition
-          const img = itemDiv.querySelector('.exh-item-image') as HTMLImageElement;
-          if (img) {
-            if (img.complete) {
-              img.classList.add('loaded');
-            } else {
-              img.addEventListener('load', () => {
-                img.classList.add('loaded');
-              });
-            }
-          }
-        });
-      } else {
-        listContainer.innerHTML = '<p style="text-align: center; color: var(--color-text-muted); padding: 3rem 0;">No exhibitions or events listed at the moment.</p>';
+      if (exhibitionsString !== cachedString || !cachedData) {
+        localStorage.setItem('cached_exhibitions', exhibitionsString);
+        renderExhibitions(listContainer, exhibitions);
       }
 
       // Show Page
@@ -122,9 +148,11 @@ import Layout from '../layouts/Layout.astro';
       pageContainer?.classList.remove('hidden');
     } catch (err) {
       console.warn('Exhibitions client loading failed.', err);
-      listContainer.innerHTML = '<p style="text-align: center; color: var(--color-hockney-pink); padding: 3rem 0;">Unable to load exhibitions. Please try again later.</p>';
-      loadingPanel?.classList.add('hidden');
-      pageContainer?.classList.remove('hidden');
+      if (!cachedData) {
+        listContainer.innerHTML = '<p style="text-align: center; color: var(--color-hockney-pink); padding: 3rem 0;">Unable to load exhibitions. Please try again later.</p>';
+        loadingPanel?.classList.add('hidden');
+        pageContainer?.classList.remove('hidden');
+      }
     }
   }
 

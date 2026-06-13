@@ -46,8 +46,18 @@ export function compressImage(
         // Draw image onto canvas
         ctx.drawImage(img, 0, 0, width, height);
 
+        // Feature detect if WebP canvas writing is supported
+        let isWebPSupported = false;
+        try {
+          isWebPSupported = canvas.toDataURL('image/webp').startsWith('data:image/webp');
+        } catch (e) {
+          isWebPSupported = false;
+        }
+
+        const format = isWebPSupported ? 'image/webp' : 'image/jpeg';
+
         // Convert canvas to Blob
-        // Prefer image/webp, fallback to image/jpeg if webp isn't supported
+        // Prefer image/webp, fallback to image/jpeg if webp isn't supported for writing (e.g. older Safari)
         canvas.toBlob(
           (blob) => {
             if (blob) {
@@ -56,7 +66,7 @@ export function compressImage(
               resolve(file);
             }
           },
-          'image/webp',
+          format,
           quality
         );
       };
