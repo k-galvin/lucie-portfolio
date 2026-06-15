@@ -6,16 +6,18 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title?: string;
   description?: string;
+  isSlideshow?: boolean;
 }
 
 const { 
   title = "Lucie Galvin | Artist Portfolio", 
-  description = "Custom fine art portfolio of Lucie Galvin, featuring modern and sustainable Paper Pictures." 
+  description = "Custom fine art portfolio of Lucie Galvin, featuring modern and sustainable Paper Pictures.",
+  isSlideshow = false
 } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-slideshow={isSlideshow ? "true" : undefined}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
