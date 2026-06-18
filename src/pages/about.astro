@@ -1,5 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { db } from '../lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { splitBioParagraphs, parseMarkdownLinks } from '../lib/utils';
+
+let bioText = '';
+let bioTitle = 'Lucie Galvin (U.S.A., 1972)';
+let paragraphs: string[] = [];
+
+try {
+  const docRef = doc(db, 'biography', 'main');
+  const docSnap = await getDoc(docRef);
+  
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    bioText = data.text || '';
+    if (data.title) {
+      bioTitle = data.title;
+    }
+  }
+} catch (err) {
+  console.warn('Failed to fetch biography at build time:', err);
+}
+
+const formattedTitle = bioTitle.replace(/(\([^)]+\))/g, '<span style="font-weight: 400;">$1</span>');
+if (bioText) {
+  paragraphs = splitBioParagraphs(bioText);
+}
 ---
 
 <Layout title="About | Lucie Galvin">
@@ -11,13 +38,19 @@ import Layout from '../layouts/Layout.astro';
       <!-- Text Information Column -->
       <section class="about-text-column" aria-label="About">
         <div class="bio-section fade-in">
-          <h1 id="bio-title" class="section-title hockney-green-border" style="text-transform: none;">Lucie Galvin <span style="font-weight: 400;">(U.S.A., 1972)</span></h1>
+          <h1 id="bio-title" class="section-title hockney-green-border" style="text-transform: none;" set:html={formattedTitle}></h1>
           
           <div class="bio-text" id="bio-text-container">
-            <div id="bio-loading" class="bio-loading-simple">
-              <div class="spinner-mini"></div>
-              <span>Loading biography...</span>
-            </div>
+            {paragraphs.length > 0 ? (
+              paragraphs.map((pText) => (
+                <p set:html={parseMarkdownLinks(pText)} />
+              ))
+            ) : (
+              <div id="bio-loading" class="bio-loading-simple">
+                <div class="spinner-mini"></div>
+                <span>Loading biography...</span>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -137,11 +170,15 @@ import Layout from '../layouts/Layout.astro';
           }
         }
       } else {
-        container.innerHTML = '<p>Biography currently unavailable.</p>';
+        if (container.querySelector('#bio-loading')) {
+          container.innerHTML = '<p>Biography currently unavailable.</p>';
+        }
       }
     } catch (err) {
       console.warn('Biography client loading failed.', err);
-      container.innerHTML = '<p>Error loading biography. Please try again later.</p>';
+      if (container.querySelector('#bio-loading')) {
+        container.innerHTML = '<p>Error loading biography. Please try again later.</p>';
+      }
     }
   }
 
