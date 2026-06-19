@@ -89,6 +89,7 @@ import Layout from '../layouts/Layout.astro';
                     <tr>
                       <th>Image</th>
                       <th>Title</th>
+                      <th>Order</th>
                       <th>Year</th>
                       <th>Status</th>
                       <th>Prints</th>
@@ -1624,14 +1625,14 @@ import Layout from '../layouts/Layout.astro';
     // Load Artworks List
     async function loadArtworks() {
       if (!artworkTbody) return;
-      artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Loading works...</td></tr>';
+      artworkTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading works...</td></tr>';
       
       try {
         const querySnapshot = await getDocs(collection(db, 'artworks'));
         currentArtworks = [];
         
         if (querySnapshot.empty) {
-          artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No artworks in database. Add one to get started!</td></tr>';
+          artworkTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No artworks in database. Add one to get started!</td></tr>';
           return;
         }
 
@@ -1660,11 +1661,29 @@ import Layout from '../layouts/Layout.astro';
         // Sort by selected order
         sortArtworks(currentArtworks, currentSortBy);
 
+        // Normalize orders to clean 0-based index values for custom sorting
+        if (currentSortBy === 'custom') {
+          let needsUpdate = false;
+          const updates = currentArtworks.map((art, idx) => {
+            const expectedOrder = idx;
+            if (art.order !== expectedOrder) {
+              needsUpdate = true;
+              art.order = expectedOrder;
+              return updateDoc(doc(db, 'artworks', art.id), { order: expectedOrder });
+            }
+            return null;
+          }).filter(p => p !== null);
+          
+          if (needsUpdate) {
+            Promise.all(updates).catch(e => console.warn('Failed to normalize orders in database:', e));
+          }
+        }
+
         populateArtworkSelects();
         renderArtworks();
       } catch (err) {
         console.error("Load Artworks Error:", err);
-        artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Failed to load artworks. Check storage rules!</td></tr>';
+        artworkTbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Failed to load artworks. Check storage rules!</td></tr>';
       }
     }
 
@@ -1674,7 +1693,7 @@ import Layout from '../layouts/Layout.astro';
       artworkTbody.innerHTML = '';
 
       if (currentArtworks.length === 0) {
-        artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No artworks in database. Add one to get started!</td></tr>';
+        artworkTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No artworks in database. Add one to get started!</td></tr>';
         return;
       }
 
@@ -1689,7 +1708,7 @@ import Layout from '../layouts/Layout.astro';
       }
 
       if (displayArtworks.length === 0) {
-        artworkTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No artworks found matching your search.</td></tr>';
+        artworkTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No artworks found matching your search.</td></tr>';
         return;
       }
 
@@ -1699,13 +1718,14 @@ import Layout from '../layouts/Layout.astro';
         tr.innerHTML = `
           <td><img src="${artwork.imageUrl}" class="table-thumb" alt="thumb"/></td>
           <td><strong>${artwork.title}</strong></td>
+          <td>
+            <input type="number" class="artwork-order-input" value="${index + 1}" min="1" max="${displayArtworks.length}" data-id="${artwork.id}" style="width: 65px; padding: 0.25rem; border: 1px solid var(--color-border); border-radius: 0; font-family: inherit; font-size: 0.85rem;" ${currentSortBy !== 'custom' || isSearchActive ? 'disabled' : ''} />
+          </td>
           <td>${artwork.year}</td>
           <td>${artwork.status || '—'}</td>
           <td>${artwork.isPrint ? 'Yes' : 'No'}</td>
           <td>
             <div class="btn-row">
-              <button class="sm-btn move-up-btn" title="Move Up" ${currentSortBy !== 'custom' || isSearchActive || index === 0 ? 'disabled' : ''}>↑</button>
-              <button class="sm-btn move-down-btn" title="Move Down" ${currentSortBy !== 'custom' || isSearchActive || index === displayArtworks.length - 1 ? 'disabled' : ''}>↓</button>
               <button class="sm-btn edit-btn">Edit</button>
               <button class="sm-btn delete-btn">Delete</button>
             </div>
@@ -1713,53 +1733,57 @@ import Layout from '../layouts/Layout.astro';
         `;
 
         // Bind Actions
-        tr.querySelector('.move-up-btn')?.addEventListener('click', () => moveArtwork(index, -1));
-        tr.querySelector('.move-down-btn')?.addEventListener('click', () => moveArtwork(index, 1));
         tr.querySelector('.edit-btn')?.addEventListener('click', () => editArtwork(artwork.id));
         tr.querySelector('.delete-btn')?.addEventListener('click', () => deleteArtwork(artwork.id));
+
+        const orderInput = tr.querySelector('.artwork-order-input') as HTMLInputElement;
+        orderInput?.addEventListener('change', async () => {
+          let newPosition = parseInt(orderInput.value);
+          if (isNaN(newPosition)) {
+            orderInput.value = (index + 1).toString();
+            return;
+          }
+          // Constrain newPosition between 1 and displayArtworks.length
+          if (newPosition < 1) newPosition = 1;
+          if (newPosition > displayArtworks.length) newPosition = displayArtworks.length;
+
+          const targetIndex = newPosition - 1;
+          const currentIndex = index;
+
+          if (targetIndex === currentIndex) return;
+
+          // Reorder displayArtworks array in memory
+          const reorderedList = [...displayArtworks];
+          const [movedItem] = reorderedList.splice(currentIndex, 1);
+          reorderedList.splice(targetIndex, 0, movedItem);
+
+          try {
+            // Write updated order values to Firestore (0-based)
+            const updates = reorderedList.map((art, idx) => {
+              if (art.order !== idx) {
+                return updateDoc(doc(db, 'artworks', art.id), { order: idx });
+              }
+              return null;
+            }).filter(p => p !== null);
+
+            if (updates.length > 0) {
+              await Promise.all(updates);
+            }
+            
+            showToast('Artwork order updated');
+            await loadArtworks();
+          } catch (err) {
+            console.error("Update Order Error:", err);
+            showToast('Error updating order', true);
+            orderInput.value = (index + 1).toString();
+          }
+        });
 
         artworkTbody.appendChild(tr);
       });
     }
 
-    // Move Artwork Up/Down
-    async function moveArtwork(index: number, direction: number) {
-      if (currentArtSearchQuery.trim() !== '') return;
-      const otherIndex = index + direction;
-      if (otherIndex < 0 || otherIndex >= currentArtworks.length) return;
 
-      // Work with a copy of the list
-      const newList = [...currentArtworks];
-      const art1 = newList[index] as Artwork;
-      const art2 = newList[otherIndex] as Artwork;
-
-      // Swap their positions in our local array
-      newList[index] = art2;
-      newList[otherIndex] = art1;
-
-      // To ensure reordering works even if orders were identical (like 999),
-      // we'll assign new sequential orders to EVERY item based on their new positions.
-      // This "normalizes" the order values (0, 10, 20...) in the database.
-      try {
-        const updates = newList.map((art, idx) => {
-          const newOrder = idx * 10;
-          // Only update if the order actually changed to save on writes
-          if (art.order !== newOrder) {
-            return updateDoc(doc(db, 'artworks', art.id), { order: newOrder });
-          }
-          return null;
-        }).filter(p => p !== null);
-
-        if (updates.length > 0) {
-          await Promise.all(updates);
-        }
-        
-        loadArtworks();
-      } catch (err) {
-        console.error("Reorder Error:", err);
-        showToast('Error reordering artworks', true);
-      }
-    }
 
     // Load Exhibitions List
     async function loadExhibitions() {
