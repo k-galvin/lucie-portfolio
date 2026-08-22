@@ -31,8 +31,8 @@ describe('normalizeSubjects', () => {
 
 describe('formatStatus', () => {
   it('should format private collection statuses correctly', () => {
-    expect(formatStatus('Private Collection')).toBe('In private collection');
-    expect(formatStatus('in private collection')).toBe('In private collection');
+    expect(formatStatus('Private Collection')).toBe('In private collection.');
+    expect(formatStatus('in private collection')).toBe('In private collection.');
   });
 
   it('should format on exhibition status correctly', () => {

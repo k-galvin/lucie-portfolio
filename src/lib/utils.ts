@@ -31,7 +31,7 @@ export function formatStatus(statusInput: string): string {
   if (!statusInput) return '';
   const lowerStatus = statusInput.trim().toLowerCase();
   if (lowerStatus === 'private collection' || lowerStatus === 'in private collection') {
-    return 'In private collection';
+    return 'In private collection.';
   }
   if (lowerStatus === 'on exhibition') {
     return 'On exhibition';

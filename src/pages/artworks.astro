@@ -35,19 +35,6 @@ import Layout from '../layouts/Layout.astro';
           </select>
         </div>
 
-        <div class="filter-group">
-          <label for="filter-subject" class="filter-label label-subject">Subject</label>
-          <select id="filter-subject" class="filter-select">
-            <option value="all">All</option>
-            <option value="gardens">Gardens</option>
-            <option value="water">Water</option>
-            <option value="boats">Boats</option>
-            <option value="people">People</option>
-            <option value="beach">Beach</option>
-            <option value="animals">Animals</option>
-          </select>
-        </div>
-
         <div class="filter-group search-group">
           <label for="filter-search" class="filter-label label-search">Search</label>
           <div class="search-input-wrapper">
@@ -135,10 +122,6 @@ import Layout from '../layouts/Layout.astro';
 
   .label-exhibition {
     color: var(--color-hockney-green);
-  }
-
-  .label-subject {
-    color: var(--color-hockney-blue);
   }
 
   .label-search {
@@ -242,11 +225,6 @@ import Layout from '../layouts/Layout.astro';
     outline: none;
   }
 
-  #filter-subject:hover, #filter-subject:focus {
-    border-color: var(--color-hockney-blue);
-    outline: none;
-  }
-
   #filter-search:hover, #filter-search:focus {
     border-color: var(--color-text);
     outline: none;
@@ -279,7 +257,7 @@ import Layout from '../layouts/Layout.astro';
     width: min(100cqw, calc(100cqh * var(--ratio)));
     height: min(100cqh, calc(100cqw / var(--ratio)));
     background-color: transparent;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -304,7 +282,7 @@ import Layout from '../layouts/Layout.astro';
     background-color: #f9f9f9;
     border: 1px solid var(--color-border);
     transition: background-color 0.4s ease, border-color 0.4s ease;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .artwork-image-container.image-loading {
@@ -348,25 +326,37 @@ import Layout from '../layouts/Layout.astro';
     opacity: 1;
   }
 
-  /* Overlay details panel */
+  /* Universal Glassmorphism Details Hover Popup */
   .artwork-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.95);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.96);
+    width: min(320px, 90cqw);
+    max-width: 92vw;
+    min-height: 180px;
+    height: auto;
+    max-height: 90cqh;
+    background-color: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 2rem;
+    padding: 1.5rem;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 30;
+    box-sizing: border-box;
   }
 
   .artwork-card:hover .artwork-overlay {
     opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
   }
 
   /* zoom disabled for full screen single artwork */
@@ -672,8 +662,7 @@ import Layout from '../layouts/Layout.astro';
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-template-areas:
-        "year subject"
-        "exhibition exhibition"
+        "year exhibition"
         "search search";
       gap: 1rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -693,8 +682,7 @@ import Layout from '../layouts/Layout.astro';
 
     .filters-content > *:nth-child(1) { grid-area: year; }
     .filters-content > *:nth-child(2) { grid-area: exhibition; }
-    .filters-content > *:nth-child(3) { grid-area: subject; }
-    .filters-content > *:nth-child(4) { grid-area: search; }
+    .filters-content > *:nth-child(3) { grid-area: search; }
 
     .filter-group {
       width: 100%;
@@ -728,6 +716,7 @@ import Layout from '../layouts/Layout.astro';
     .artwork-card.overlay-active .artwork-overlay {
       opacity: 1;
       pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
     }
   }
 
@@ -760,7 +749,6 @@ import Layout from '../layouts/Layout.astro';
     const displayContainer = document.getElementById('artwork-display-container');
     const selectYear = document.getElementById('filter-year') as HTMLSelectElement;
     const selectShow = document.getElementById('filter-show') as HTMLSelectElement;
-    const selectSubject = document.getElementById('filter-subject') as HTMLSelectElement;
     const inputSearch = document.getElementById('filter-search') as HTMLInputElement;
     const emptyState = document.getElementById('empty-state');
     
@@ -977,7 +965,6 @@ import Layout from '../layouts/Layout.astro';
       let count = 0;
       if (selectYear && selectYear.value !== 'all') count++;
       if (selectShow && selectShow.value !== 'all') count++;
-      if (selectSubject && selectSubject.value !== 'all') count++;
       if (inputSearch && inputSearch.value.trim() !== '') count++;
 
       const badge = document.getElementById('active-filters-badge');
@@ -998,7 +985,6 @@ import Layout from '../layouts/Layout.astro';
     const applyFilters = () => {
       const yearVal = selectYear?.value || 'all';
       const showVal = selectShow?.value || 'all';
-      const subjectVal = selectSubject?.value || 'all';
       const searchVal = inputSearch?.value || '';
 
       filteredArtworks = allArtworks.filter((artwork) => {
@@ -1012,7 +998,7 @@ import Layout from '../layouts/Layout.astro';
           {
             yearVal,
             showVal,
-            subjectVal,
+            subjectVal: 'all',
             searchVal
           }
         );
@@ -1035,7 +1021,7 @@ import Layout from '../layouts/Layout.astro';
     };
 
     // Filter Listeners
-    [selectYear, selectShow, selectSubject].forEach(select => {
+    [selectYear, selectShow].forEach(select => {
       select?.addEventListener('change', applyFilters);
     });
 
@@ -1091,7 +1077,6 @@ import Layout from '../layouts/Layout.astro';
         e.stopPropagation();
         if (selectYear) selectYear.value = 'all';
         if (selectShow) selectShow.value = 'all';
-        if (selectSubject) selectSubject.value = 'all';
         if (inputSearch) {
           inputSearch.value = '';
           inputSearch.parentElement?.classList.remove('has-text');
@@ -1155,7 +1140,7 @@ import Layout from '../layouts/Layout.astro';
       if (selectShow) {
         const currentSelected = selectShow.value;
         selectShow.innerHTML = '<option value="all">All</option>';
-        Array.from(liveShows).sort().forEach(s => {
+        Array.from(liveShows).sort((a, b) => b.localeCompare(a, undefined, { numeric: true, sensitivity: 'base' })).forEach(s => {
           const opt = document.createElement('option');
           opt.value = s;
           opt.textContent = s;

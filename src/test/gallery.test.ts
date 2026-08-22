@@ -124,17 +124,13 @@ describe('Gallery Filter and Search Logic tests', () => {
           <option value="all">All</option>
           <option value="Library Show">Library Show</option>
         </select>
-        <select id="filter-subject">
-          <option value="all">All</option>
-          <option value="water">Water</option>
-        </select>
         <input id="filter-search" value="" />
 
         <div id="artworks-grid">
-          <div class="artwork-card" data-year="2023" data-show="Library Show" data-subject="boats,water">
+          <div class="artwork-card" data-year="2023" data-show="Library Show">
             <span class="overlay-title">Boats in the Harbor</span>
           </div>
-          <div class="artwork-card" data-year="2024" data-show="Summer Exhibition" data-subject="water,gardens">
+          <div class="artwork-card" data-year="2024" data-show="Summer Exhibition">
             <span class="overlay-title">Water Lily Garden</span>
           </div>
         </div>
@@ -147,7 +143,6 @@ describe('Gallery Filter and Search Logic tests', () => {
     const applyFiltersSimulated = () => {
       const yearVal = (document.getElementById('filter-year') as HTMLSelectElement).value;
       const showVal = (document.getElementById('filter-show') as HTMLSelectElement).value;
-      const subjectVal = (document.getElementById('filter-subject') as HTMLSelectElement).value;
       const searchVal = (document.getElementById('filter-search') as HTMLInputElement).value;
 
       cards.forEach(card => {
@@ -155,10 +150,10 @@ describe('Gallery Filter and Search Logic tests', () => {
           {
             year: card.dataset.year || '',
             show: card.dataset.show || '',
-            subjects: card.dataset.subject ? card.dataset.subject.split(',') : [],
+            subjects: [],
             title: card.querySelector('.overlay-title')?.textContent || ''
           },
-          { yearVal, showVal, subjectVal, searchVal }
+          { yearVal, showVal, subjectVal: 'all', searchVal }
         );
 
         if (matches) {
@@ -180,17 +175,18 @@ describe('Gallery Filter and Search Logic tests', () => {
     expect(cards[0]!.classList.contains('filtered-out')).toBe(false);
     expect(cards[1]!.classList.contains('filtered-out')).toBe(true);
 
-    // Filter by subject = water (both have water, but page 1 is filtered out due to year 2023)
-    (document.getElementById('filter-subject') as HTMLSelectElement).value = 'water';
-    applyFiltersSimulated();
-    expect(cards[0]!.classList.contains('filtered-out')).toBe(false);
-    expect(cards[1]!.classList.contains('filtered-out')).toBe(true);
-
     // Set year back to all
     (document.getElementById('filter-year') as HTMLSelectElement).value = 'all';
     applyFiltersSimulated();
     expect(cards[0]!.classList.contains('filtered-out')).toBe(false);
     expect(cards[1]!.classList.contains('filtered-out')).toBe(false);
+  });
+
+  it('should sort exhibitions in reverse alphabetical order (2026 before 2025)', () => {
+    const shows = ['2025 Summer Solo Show', '2026 Retrospective', '2024 Group Exhibition'];
+    const sortedShows = Array.from(shows).sort((a, b) => b.localeCompare(a, undefined, { numeric: true, sensitivity: 'base' }));
+
+    expect(sortedShows).toEqual(['2026 Retrospective', '2025 Summer Solo Show', '2024 Group Exhibition']);
   });
 
   it('should calculate pagination slices, toggle prev/next button states, and render correct page controls', () => {
